@@ -1,5 +1,9 @@
 <resources>
-    <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="btn_fab_size">56dp</dimen>
+    <dimen name="btn_fab_margins">16dp</dimen>
+    <dimen name="default_elevation">8dp</dimen>
+    <dimen name="comment_avatar_size">56dp</dimen>
+    <dimen name="user_profile_avatar_size">88dp</dimen>
+    <dimen name="global_menu_avatar_size">64dp</dimen>
+    <dimen name="publish_photo_thumbnail_size">96dp</dimen>
 </resources>
