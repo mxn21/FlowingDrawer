@@ -1,0 +1,54 @@
+<com.mxn.soul.fluiddrawer.drawer.LeftDrawerLayout
+    android:id="@+id/id_drawerlayout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipChildren="false"
+    >
+
+    <!--content-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#44ff0000"
+        android:clickable="true"
+        android:clipChildren="false">
+
+        <TextView
+            android:id="@+id/id_content_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="hello world"
+            android:textSize="40sp"/>
+
+    </RelativeLayout>
+
+
+    <!--menu-->
+    <RelativeLayout
+        android:id="@+id/parentF"
+        android:layout_width="270dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="left"
+        android:clipChildren="false"
+        >
+
+        <com.mxn.soul.fluiddrawer.drawer.FluidView
+            android:id="@+id/sv"
+            android:layout_width="270dp"
+            android:layout_height="fill_parent"/>
+
+        <FrameLayout
+            android:id="@+id/id_container_menu"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="left"
+            android:layout_marginRight="25dp"
+            android:paddingRight="10dp"
+            android:clipChildren="false"
+            />
+
+    </RelativeLayout>
+
+</com.mxn.soul.fluiddrawer.drawer.LeftDrawerLayout>

@@ -6,4 +6,5 @@
     <dimen name="user_profile_avatar_size">88dp</dimen>
     <dimen name="global_menu_avatar_size">64dp</dimen>
     <dimen name="publish_photo_thumbnail_size">96dp</dimen>
+    <dimen name="arc_max_width">50dp</dimen>
 </resources>

@@ -2,9 +2,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/btn_context_menu"
+    android:background="@android:color/transparent"
     android:clickable="true">
-
     <LinearLayout
         android:id="@+id/vGlobalMenuHeader"
         android:layout_width="match_parent"
@@ -21,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:text="froger_mcs"
+            android:text="soul.mxn"
             android:textColor="@color/style_color_primary"
             android:textSize="16sp"
             android:textStyle="bold" />

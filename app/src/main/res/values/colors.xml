@@ -20,4 +20,15 @@
     <color name="text_like_counter">#2b5a83</color>
 
     <color name="bg_comments">#ffffff</color>
+
+    <color name="item_checked">#44ff0000</color>
+    <color name="item_normal">#11eeeeee</color>
+    <color name="window_background">#FFF5F5F5</color>
+
+
+
+    <color name="material_blue_500">#009688</color>
+    <color name="material_blue_700">#00796B</color>
+    <color name="material_green_A200">#FD87A9</color>
+    <color name="state_menu_item_selected">#44009688</color>
 </resources>

@@ -23,6 +23,16 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".activity.TestActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.Test2Activity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".drawer.LeftDrawerLayoutActivity"
+            android:screenOrientation="portrait"/>
 
     </application>
 

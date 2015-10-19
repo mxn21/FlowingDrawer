@@ -1,7 +1,15 @@
 <resources>
-    <string name="app_name">FluidDrawer</string>
+    <string name="app_name">FlowingDrawer</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="user_profile_photo">https://avatars1.githubusercontent.com/u/6947495?v=3&amp;s=460</string>
+
+
+    <string-array name="array_left_menu">
+        <item>立即欣赏</item>
+        <item>我的乐库</item>
+        <item>播放列表</item>
+    </string-array>
+
 </resources>
