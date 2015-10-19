@@ -90,8 +90,7 @@ public class LeftDrawerLayout extends ViewGroup {
                 final int childWidth = changedView.getWidth();
                 float offset = (float) (childWidth + left) / childWidth;
                 mLeftMenuOnScrren = offset;
-                //TODO
-                showShowdown(offset) ;
+                showShadow(offset) ;
                 changedView.setVisibility(offset == 0 ? View.INVISIBLE : View.VISIBLE);
                 rightX = left + childWidth ;
                 if (mFluidView.isStartAuto(rightX)) {
@@ -233,7 +232,7 @@ public class LeftDrawerLayout extends ViewGroup {
     }
 
 
-    protected void showShowdown(float per ) {
+    protected void showShadow(float per ) {
         if(mBg == null){
             mBg = new ImageView(mContentView.getContext());
             mBg.setBackgroundColor(Color.argb(150, 25, 25, 25));
