@@ -1,15 +1,20 @@
 package com.mxn.soul.flowingdrawer_core;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.ViewDragHelper;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+
+import com.nineoldandroids.view.ViewHelper;
 
 
 public class LeftDrawerLayout extends ViewGroup {
+
     private static final int MIN_DRAWER_MARGIN = 0; // dp
     /**
      * Minimum velocity that will be detected as a fling
@@ -22,7 +27,7 @@ public class LeftDrawerLayout extends ViewGroup {
     private int mMinDrawerMargin;
 
     private View mLeftMenuView;
-    private View mContentView;
+    private ViewGroup mContentView;
 
     private ViewDragHelper mHelper;
     /**
@@ -36,6 +41,8 @@ public class LeftDrawerLayout extends ViewGroup {
     private float rightX ;
     //返回动画是否结束
     private boolean releasing = false ;
+
+    private ImageView mBg ;
 
     public void setFluidView(FluidView mFluidView) {
         this.mFluidView = mFluidView;
@@ -83,7 +90,8 @@ public class LeftDrawerLayout extends ViewGroup {
                 final int childWidth = changedView.getWidth();
                 float offset = (float) (childWidth + left) / childWidth;
                 mLeftMenuOnScrren = offset;
-                //offset can callback here
+                //TODO
+                showShowdown(offset) ;
                 changedView.setVisibility(offset == 0 ? View.INVISIBLE : View.VISIBLE);
                 rightX = left + childWidth ;
                 if (mFluidView.isStartAuto(rightX)) {
@@ -153,7 +161,7 @@ public class LeftDrawerLayout extends ViewGroup {
         contentView.measure(contentWidthSpec, contentHeightSpec);
 
         mLeftMenuView = leftMenuView;
-        mContentView = contentView;
+        mContentView = (ViewGroup) contentView;
 
 
     }
@@ -225,4 +233,14 @@ public class LeftDrawerLayout extends ViewGroup {
     }
 
 
+    protected void showShowdown(float per ) {
+        if(mBg == null){
+            mBg = new ImageView(mContentView.getContext());
+            mBg.setBackgroundColor(Color.argb(150, 25, 25, 25));
+            ViewGroup.LayoutParams lp =
+                    new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            mContentView.addView(mBg, lp);
+        }
+        ViewHelper.setAlpha(mBg, per);
+    }
 }

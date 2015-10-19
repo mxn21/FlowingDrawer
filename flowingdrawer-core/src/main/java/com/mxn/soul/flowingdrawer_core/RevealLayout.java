@@ -13,9 +13,6 @@ import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorListenerAdapter;
 import com.nineoldandroids.animation.ObjectAnimator;
 
-/**
- * Created by yugy on 14/11/21.
- */
 public class RevealLayout extends FrameLayout {
 
     private Path mClipPath;

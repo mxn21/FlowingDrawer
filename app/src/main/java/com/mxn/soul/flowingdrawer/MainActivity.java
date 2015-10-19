@@ -15,7 +15,6 @@ import com.mxn.soul.flowingdrawer_core.LeftDrawerLayout;
 public class MainActivity extends AppCompatActivity {
 
     private MenuFragment mMenuFragment;
-    private LeftDrawerLayout mLeftDrawerLayout ;
     private RecyclerView rvFeed;
 
     @Override
@@ -25,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setupToolbar();
 
-        mLeftDrawerLayout = (LeftDrawerLayout) findViewById(R.id.id_drawerlayout);
+        LeftDrawerLayout mLeftDrawerLayout = (LeftDrawerLayout) findViewById(R.id.id_drawerlayout);
         rvFeed = (RecyclerView) findViewById(R.id.rvFeed);
 
         FragmentManager fm = getSupportFragmentManager();
