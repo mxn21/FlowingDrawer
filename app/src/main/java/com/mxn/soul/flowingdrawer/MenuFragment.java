@@ -15,20 +15,15 @@ import com.squareup.picasso.Picasso;
 
 public class MenuFragment extends Fragment {
 
-
     private ImageView ivMenuUserProfilePhoto;
-
-
     private RevealLayout mRevealLayout;
-
     private boolean isShown;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -53,16 +48,11 @@ public class MenuFragment extends Fragment {
                 .into(ivMenuUserProfilePhoto);
     }
 
-
     public void show(int y) {
         if (!isShown) {
             isShown = true;
             mRevealLayout.show(100, y, 1000);
         }
-    }
-
-    public void reset() {
-        isShown = false ;
     }
 
     public void hideView(){

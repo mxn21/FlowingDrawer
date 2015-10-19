@@ -130,7 +130,6 @@ public class FluidView extends View {
 
         }
         invalidate();
-//        Log.e("====", mStatus + "===show") ;
     }
 
     public void downing() {
@@ -139,8 +138,6 @@ public class FluidView extends View {
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-//                mArcWidth = (int) animation.getAnimatedValue();
-//                invalidate();
                 currentPointX = (int) animation.getAnimatedValue();
                 float fraction = animation.getAnimatedFraction();
                 autoUppingX = (int) (w - 50 * fraction);

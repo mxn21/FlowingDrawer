@@ -3,8 +3,8 @@ package com.mxn.soul.flowingdrawer;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.FrameLayout;
-import android.widget.TextView;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import com.mxn.soul.flowingdrawer_core.FluidView;
 import com.mxn.soul.flowingdrawer_core.LeftDrawerLayout;
@@ -14,21 +14,18 @@ public class MainActivity extends AppCompatActivity {
 
     private MenuFragment mMenuFragment;
     private LeftDrawerLayout mLeftDrawerLayout ;
-    private TextView mContentTv ;
-    private FrameLayout id_container_menu ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setupToolbar();
 
         mLeftDrawerLayout = (LeftDrawerLayout) findViewById(R.id.id_drawerlayout);
-        mContentTv = (TextView) findViewById(R.id.id_content_tv);
 
         FragmentManager fm = getSupportFragmentManager();
         mMenuFragment = (MenuFragment) fm.findFragmentById(R.id.id_container_menu);
-        id_container_menu = (FrameLayout) findViewById(R.id.id_container_menu);
         FluidView mFluidView = (FluidView) findViewById(R.id.sv);
         mFluidView.setAnimationListener(new AnimationImp());
         mLeftDrawerLayout.setFluidView(mFluidView) ;
@@ -39,6 +36,20 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
+
+    protected void setupToolbar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationIcon(R.drawable.ic_menu_white);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            }
+        });
+    }
+
 
 
     class AnimationImp implements FluidView.AnimationListener {

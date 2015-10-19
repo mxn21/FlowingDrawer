@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.ViewDragHelper;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,48 +80,36 @@ public class LeftDrawerLayout extends ViewGroup {
 
             @Override
             public void onViewPositionChanged(View changedView, int left, int top, int dx, int dy) {
-//                Log.e("==onViewPositionChanged", left + "") ;
                 final int childWidth = changedView.getWidth();
                 float offset = (float) (childWidth + left) / childWidth;
                 mLeftMenuOnScrren = offset;
                 //offset can callback here
                 changedView.setVisibility(offset == 0 ? View.INVISIBLE : View.VISIBLE);
                 rightX = left + childWidth ;
-                Log.e("=======","11111111"+ "==="+mFluidView.getStatus()) ;
                 if (mFluidView.isStartAuto(rightX)) {
-//                    if (!mFluidView.isupping()) {
-                    Log.e("=======","222222222"+ "==="+mFluidView.getStatus()) ;
                         mFluidView.autoUpping( rightX);
                     if(rightX == 0  ) {
                         mFluidView.resetStatus() ;
                         releasing = false;
-                        Log.e("=======","autoUpping") ;
                     }
-//                    }
                     return ;
                 }
 
                 if (mFluidView.isupping()){
-                    Log.e("=======","333333333====="+rightX + "==="+mFluidView.getStatus()) ;
                     if(rightX == 0  ) {
                         mFluidView.resetStatus() ;
                         releasing = false;
-                        Log.e("=======","4444444====="+rightX+ "==="+mFluidView.getStatus()) ;
                     }
                     return ;
-
                 }
                 if(!releasing) {
                     mFluidView.show(rightX, pointY, FluidView.Status.STATUS_UP);
-                    Log.e("=======", "up"+ "==="+mFluidView.getStatus()) ;
                 }else{
                     mFluidView.show(rightX, pointY, FluidView.Status.STATUS_DOWN);
                     if(rightX == 0  ) {
                         mFluidView.resetStatus() ;
                         releasing = false;
-                        Log.e("=======","down"+ "==="+mFluidView.getStatus()) ;
                     }
-
                 }
                 invalidate();
             }
@@ -199,16 +186,6 @@ public class LeftDrawerLayout extends ViewGroup {
     public boolean onTouchEvent(@NonNull MotionEvent event) {
         mHelper.processTouchEvent(event);
         pointY = event.getY();
-     //   Log.e("====touch",pointX+"") ;
-//        if (mFluidView.isStartAuto(pointX)) {
-//            if (!mFluidView.isupping()) {
-//                mFluidView.autoUpping();
-//            }
-//            return false;
-//        }
-//        if (mFluidView.isupping())
-//            return false;
-//        mFluidView.show(pointX, pointY, FluidView.Status.STATUS_UP);
         return true;
     }
 
