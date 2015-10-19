@@ -9,11 +9,18 @@
         <dex dex="/Users/cys/Desktop/studio/FlowingDrawer/app/build/intermediates/pre-dexed/debug/classes-c2ebcce33600d0583d399305e9b355c6f3a17f3b.jar" />
     </item>
     <item
-        jar="/Users/cys/MyGithub/FlowingDrawer/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.0/jars/classes.jar"
+        jar="/Users/cys/MyGithub/FlowingDrawer/app/build/intermediates/exploded-aar/com.android.support/design/22.2.1/jars/classes.jar"
         jumboMode="false"
         revision="23.0.0 rc2"
-        sha1="73753982da6bde518f3a4c6b372749981d14d1a0">
-        <dex dex="/Users/cys/MyGithub/FlowingDrawer/app/build/intermediates/pre-dexed/debug/classes-0daf3793d9692fc6180383daaf11f012c616aa66.jar" />
+        sha1="1821601ddbec5ff125653097812823388700af74">
+        <dex dex="/Users/cys/MyGithub/FlowingDrawer/app/build/intermediates/pre-dexed/debug/classes-73d6ff5090e4874e30026cbfd5a22de0f56f9ae2.jar" />
+    </item>
+    <item
+        jar="/Users/cys/MyGithub/FlowingDrawer/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.1/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.0 rc2"
+        sha1="f8efd0096475e0daf054267b61544e10dc776503">
+        <dex dex="/Users/cys/MyGithub/FlowingDrawer/app/build/intermediates/pre-dexed/debug/classes-cb9d85a9fcc9ddc7f26321b14e3584879058f34f.jar" />
     </item>
     <item
         jar="/Users/cys/Public/androidADT/sdk/extras/android/m2repository/com/android/support/support-annotations/22.2.0/support-annotations-22.2.0.jar"
@@ -23,11 +30,39 @@
         <dex dex="/Users/cys/Desktop/studio/FlowingDrawer/app/build/intermediates/pre-dexed/debug/support-annotations-22.2.0-db26586b3c591ee244a44decf0605dc7120ea5de.jar" />
     </item>
     <item
-        jar="/Users/cys/MyGithub/FlowingDrawer/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.0/jars/libs/internal_impl-22.2.0.jar"
+        jar="/Users/cys/Desktop/studio/FlowingDrawer/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.0/jars/libs/internal_impl-22.2.0.jar"
         jumboMode="false"
         revision="23.0.0 rc2"
         sha1="57f2ab85c164ff1676ec64dee787981c046fab79">
-        <dex dex="/Users/cys/MyGithub/FlowingDrawer/app/build/intermediates/pre-dexed/debug/internal_impl-22.2.0-a828c7d6c6bc64ad62dfbbefbcad09c8150cff77.jar" />
+        <dex dex="/Users/cys/Desktop/studio/FlowingDrawer/app/build/intermediates/pre-dexed/debug/internal_impl-22.2.0-78c0132c705282ec4a87a583736e6128f288a4e9.jar" />
+    </item>
+    <item
+        jar="/Users/cys/MyGithub/FlowingDrawer/app/build/intermediates/exploded-aar/FlowingDrawer/flowingdrawer-core/unspecified/jars/libs/nineoldandroids-2.4.0.jar"
+        jumboMode="false"
+        revision="23.0.0 rc2"
+        sha1="59f19e43354d32de831379c23ce03bb259a4c2b7">
+        <dex dex="/Users/cys/MyGithub/FlowingDrawer/app/build/intermediates/pre-dexed/debug/nineoldandroids-2.4.0-7bc7ba3e458ce08d07af52b6684c27a2116a0796.jar" />
+    </item>
+    <item
+        jar="/Users/cys/MyGithub/FlowingDrawer/app/build/intermediates/exploded-aar/FlowingDrawer/flowingdrawer-core/unspecified/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.0 rc2"
+        sha1="899137f2c4116ce85f6d687d9150a139b358071d">
+        <dex dex="/Users/cys/MyGithub/FlowingDrawer/app/build/intermediates/pre-dexed/debug/classes-39f5a8aab60a69a3fb2c38fb2f73efd6cd4ef3bc.jar" />
+    </item>
+    <item
+        jar="/Users/cys/MyGithub/FlowingDrawer/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.1/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.0 rc2"
+        sha1="4486e953d1f35f8ccab098b1dd67146366d5f731">
+        <dex dex="/Users/cys/MyGithub/FlowingDrawer/app/build/intermediates/pre-dexed/debug/classes-7ff8e28472a7c85d696a7f8a846fca54a5542afb.jar" />
+    </item>
+    <item
+        jar="/Users/cys/Public/androidADT/sdk/extras/android/m2repository/com/android/support/support-annotations/22.2.1/support-annotations-22.2.1.jar"
+        jumboMode="false"
+        revision="23.0.0 rc2"
+        sha1="61a0ff5c29295ec56d7e0bd3d25d95dbf71b4b2b">
+        <dex dex="/Users/cys/MyGithub/FlowingDrawer/app/build/intermediates/pre-dexed/debug/support-annotations-22.2.1-492dc43209f92cf8723dd153dc502657f31ddd50.jar" />
     </item>
     <item
         jar="/Users/cys/Desktop/studio/FlowingDrawer/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.0/jars/classes.jar"
@@ -37,18 +72,18 @@
         <dex dex="/Users/cys/Desktop/studio/FlowingDrawer/app/build/intermediates/pre-dexed/debug/classes-c47496ae6ca90125826aebdd8c61a337731a5473.jar" />
     </item>
     <item
-        jar="/Users/cys/Desktop/studio/FlowingDrawer/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.0/jars/libs/internal_impl-22.2.0.jar"
+        jar="/Users/cys/MyGithub/FlowingDrawer/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.1/jars/libs/internal_impl-22.2.1.jar"
         jumboMode="false"
         revision="23.0.0 rc2"
-        sha1="57f2ab85c164ff1676ec64dee787981c046fab79">
-        <dex dex="/Users/cys/Desktop/studio/FlowingDrawer/app/build/intermediates/pre-dexed/debug/internal_impl-22.2.0-78c0132c705282ec4a87a583736e6128f288a4e9.jar" />
+        sha1="c471eaaba13ff64f6e0383d1c30a9cdc9a97efeb">
+        <dex dex="/Users/cys/MyGithub/FlowingDrawer/app/build/intermediates/pre-dexed/debug/internal_impl-22.2.1-70103343af613170c1bd14dea6f11bc93d5a4f50.jar" />
     </item>
     <item
-        jar="/Users/cys/MyGithub/FlowingDrawer/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.0/jars/classes.jar"
+        jar="/Users/cys/.gradle/caches/modules-2/files-2.1/com.squareup.picasso/picasso/2.5.0/7ff0e000d1e27e356567f56c92af3b8ab912636f/picasso-2.5.0.jar"
         jumboMode="false"
         revision="23.0.0 rc2"
-        sha1="1ee588ff2c4daf7b97c1cbf922a6c7f027285c2f">
-        <dex dex="/Users/cys/MyGithub/FlowingDrawer/app/build/intermediates/pre-dexed/debug/classes-79698b56bd179a1204c789b7272c405844c26676.jar" />
+        sha1="7ff0e000d1e27e356567f56c92af3b8ab912636f">
+        <dex dex="/Users/cys/MyGithub/FlowingDrawer/app/build/intermediates/pre-dexed/debug/picasso-2.5.0-ed5e0e6ef9e4022aca0fd7a399dfbfa085a4f0ab.jar" />
     </item>
 
 </items>
