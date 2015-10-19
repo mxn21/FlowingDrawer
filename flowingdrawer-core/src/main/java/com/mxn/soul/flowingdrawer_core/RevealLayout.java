@@ -6,7 +6,6 @@ import android.graphics.Canvas;
 import android.graphics.Path;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 
@@ -195,7 +194,6 @@ public class RevealLayout extends FrameLayout {
             mClipPath.reset();
             mClipPath.addCircle(mClipCenterX, mClipCenterY, mClipRadius, Path.Direction.CW);
 
-            Log.d("RevealLayout", "ClipRadius: " + mClipRadius);
             canvas.save();
             canvas.clipPath(mClipPath);
             result = super.drawChild(canvas, child, drawingTime);

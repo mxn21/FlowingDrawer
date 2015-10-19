@@ -3,6 +3,8 @@ package com.mxn.soul.flowingdrawer;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
@@ -14,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
 
     private MenuFragment mMenuFragment;
     private LeftDrawerLayout mLeftDrawerLayout ;
+    private RecyclerView rvFeed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -23,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
         setupToolbar();
 
         mLeftDrawerLayout = (LeftDrawerLayout) findViewById(R.id.id_drawerlayout);
+        rvFeed = (RecyclerView) findViewById(R.id.rvFeed);
 
         FragmentManager fm = getSupportFragmentManager();
         mMenuFragment = (MenuFragment) fm.findFragmentById(R.id.id_container_menu);
@@ -34,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         {
             fm.beginTransaction().add(R.id.id_container_menu, mMenuFragment = new MenuFragment()).commit();
         }
+        setupFeed() ;
 
     }
 
@@ -51,32 +56,34 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    private void setupFeed() {
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this) {
+            @Override
+            protected int getExtraLayoutSpace(RecyclerView.State state) {
+                return 300;
+            }
+        };
+        rvFeed.setLayoutManager(linearLayoutManager);
+
+        FeedAdapter feedAdapter = new FeedAdapter(this);
+        rvFeed.setAdapter(feedAdapter);
+        feedAdapter.updateItems();
+    }
+
+
 
     class AnimationImp implements FluidView.AnimationListener {
 
         @Override
         public void onStart() {
-//            mStatus = Status.SHOWING;
-//            mContentRL.setVisibility(View.GONE);
-
         }
 
         @Override
         public void onEnd(int y ) {
-//            mStatus = Status.SHOW;
-//            id_container_menu.setVisibility(View.VISIBLE);
-//            mMenuFragment.show(y) ;
-
         }
 
         @Override
         public void onContentShow(int y ) {
-
-//            mContentRL.setVisibility(View.VISIBLE);
-
-//            setContentViewAnimation();
-//            mContentRL.scheduleLayoutAnimation();
-//            mLeftDrawerLayout.openDrawer();
             mMenuFragment.show(y) ;
         }
 

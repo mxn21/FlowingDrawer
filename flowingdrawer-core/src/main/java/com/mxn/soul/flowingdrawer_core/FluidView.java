@@ -13,9 +13,8 @@ import android.view.animation.OvershootInterpolator;
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.ValueAnimator;
 
-/**
- * Created by cys on 15/10/8.
- */
+
+
 public class FluidView extends View {
 
     private Paint mPaint;
