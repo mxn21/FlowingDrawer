@@ -16,28 +16,27 @@ public class MainActivity extends AppCompatActivity {
 
     private MenuFragment mMenuFragment;
     private RecyclerView rvFeed;
+    private LeftDrawerLayout mLeftDrawerLayout;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setupToolbar();
 
-        LeftDrawerLayout mLeftDrawerLayout = (LeftDrawerLayout) findViewById(R.id.id_drawerlayout);
+        mLeftDrawerLayout = (LeftDrawerLayout) findViewById(R.id.id_drawerlayout);
         rvFeed = (RecyclerView) findViewById(R.id.rvFeed);
 
         FragmentManager fm = getSupportFragmentManager();
         mMenuFragment = (MenuFragment) fm.findFragmentById(R.id.id_container_menu);
         FluidView mFluidView = (FluidView) findViewById(R.id.sv);
         mFluidView.setAnimationListener(new AnimationImp());
-        mLeftDrawerLayout.setFluidView(mFluidView) ;
+        mLeftDrawerLayout.setFluidView(mFluidView);
 
-        if (mMenuFragment == null)
-        {
+        if (mMenuFragment == null) {
             fm.beginTransaction().add(R.id.id_container_menu, mMenuFragment = new MenuFragment()).commit();
         }
-        setupFeed() ;
+        setupFeed();
 
     }
 
@@ -50,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mLeftDrawerLayout.toggle();
             }
         });
     }
@@ -70,7 +70,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     class AnimationImp implements FluidView.AnimationListener {
 
         @Override
@@ -78,18 +77,26 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onEnd(int y ) {
+        public void onEnd(int y) {
         }
 
         @Override
-        public void onContentShow(int y ) {
-            mMenuFragment.show(y) ;
+        public void onContentShow(int y) {
+            mMenuFragment.show(y);
         }
 
         @Override
         public void onReSet() {
-            mMenuFragment.hideView() ;
+            mMenuFragment.hideView();
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        if (mLeftDrawerLayout.isShownMenu()) {
+            mLeftDrawerLayout.closeDrawer();
+        } else {
+            super.onBackPressed();
+        }
+    }
 }

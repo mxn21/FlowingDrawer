@@ -204,18 +204,33 @@ public class LeftDrawerLayout extends ViewGroup {
         }
     }
 
+    public boolean  isShownMenu(){
+      return   mLeftMenuOnScrren > 0.5 ;
+    }
+
+
+    public void toggle(){
+        if(isShownMenu()){
+            closeDrawer() ;
+        }else{
+            openDrawer() ;
+        }
+    }
+
     public void closeDrawer() {
         View menuView = mLeftMenuView;
         mLeftMenuOnScrren = 0.f;
+        pointY = getHeight()/2;
         mHelper.smoothSlideViewTo(menuView, -menuView.getWidth(), menuView.getTop());
+        postInvalidate();
     }
 
     public void openDrawer() {
         View menuView = mLeftMenuView;
         mLeftMenuOnScrren = 1.0f;
+        pointY = getHeight()/2;
         mHelper.smoothSlideViewTo(menuView, 0, menuView.getTop());
         postInvalidate();
-
     }
 
     @Override
