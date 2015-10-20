@@ -1,8 +1,12 @@
 package com.mxn.soul.flowingdrawer_core;
 
 import android.content.Context;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PaintFlagsDrawFilter;
 import android.support.annotation.NonNull;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.ViewDragHelper;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -46,10 +50,18 @@ public class LeftDrawerLayout extends ViewGroup {
 
     public void setFluidView(FluidView mFluidView) {
         this.mFluidView = mFluidView;
+
+        ViewCompat.setLayerType(this, ViewCompat.LAYER_TYPE_NONE, null);
+        final int childCount = getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            ViewCompat.setLayerType(getChildAt(i), ViewCompat.LAYER_TYPE_NONE,
+                    null);
+        }
     }
 
     public LeftDrawerLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
+
         //setup drawer's minMargin
         final float density = getResources().getDisplayMetrics().density;
         final float minVel = MIN_FLING_VELOCITY * density;
@@ -202,6 +214,20 @@ public class LeftDrawerLayout extends ViewGroup {
         if (mHelper.continueSettling(true)) {
             invalidate();
         }
+    }
+
+    @Override
+    protected void dispatchDraw(@NonNull Canvas canvas) {
+        PaintFlagsDrawFilter pfd = new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG | Paint
+                .FILTER_BITMAP_FLAG);
+        canvas.setDrawFilter(pfd);
+        final int count = getChildCount();
+        for (int i = 0; i < count; i++) {
+            final View child = getChildAt(i);
+            if (child == null)
+                return;
+        }
+        super.dispatchDraw(canvas);
     }
 
     public boolean  isShownMenu(){

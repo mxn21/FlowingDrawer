@@ -36,25 +36,24 @@
 
     <!--menu-->
     <RelativeLayout
-        android:layout_width="270dp"
+        android:layout_width="280dp"
         android:layout_height="match_parent"
-        android:layout_gravity="left"
+        android:layout_gravity="start"
         android:clipChildren="false"
         >
 
         <com.mxn.soul.flowingdrawer_core.FluidView
             android:id="@+id/sv"
-            android:layout_width="270dp"
-            android:layout_height="fill_parent"/>
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
         <FrameLayout
             android:id="@+id/id_container_menu"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_gravity="left"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
             android:layout_marginRight="25dp"
             android:paddingRight="10dp"
-            android:clipChildren="false"
             />
 
     </RelativeLayout>
