@@ -2,22 +2,19 @@ package com.mxn.soul.flowingdrawer;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.mxn.soul.flowingdrawer_core.RevealLayout;
+import com.mxn.soul.flowingdrawer_core.MenuFragment;
 import com.squareup.picasso.Picasso;
 
 
 
-public class MenuFragment extends Fragment {
+public class MyMenuFragment extends MenuFragment {
 
     private ImageView ivMenuUserProfilePhoto;
-    private RevealLayout mRevealLayout;
-    private boolean isShown;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -30,10 +27,8 @@ public class MenuFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_menu, container,
                 false);
         ivMenuUserProfilePhoto = (ImageView) view.findViewById(R.id.ivMenuUserProfilePhoto);
-        mRevealLayout = (RevealLayout) view.findViewById(R.id.reveal_layout);
         setupHeader();
-        hideView() ;
-        return view;
+        return  setupReveal(view) ;
     }
 
     private void setupHeader() {
@@ -46,18 +41,6 @@ public class MenuFragment extends Fragment {
                 .centerCrop()
                 .transform(new CircleTransformation())
                 .into(ivMenuUserProfilePhoto);
-    }
-
-    public void show(int y) {
-        if (!isShown) {
-            isShown = true;
-            mRevealLayout.show(100, y, 1000);
-        }
-    }
-
-    public void hideView(){
-        mRevealLayout.hide();
-        isShown = false;
     }
 
 }

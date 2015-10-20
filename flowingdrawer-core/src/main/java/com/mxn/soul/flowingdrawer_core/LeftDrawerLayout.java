@@ -39,7 +39,7 @@ public class LeftDrawerLayout extends ViewGroup {
      */
     private float mLeftMenuOnScrren;
 
-    private FluidView mFluidView;
+    private FlowingView mFlowingView;
 
     private float pointY;
     private float rightX ;
@@ -48,8 +48,9 @@ public class LeftDrawerLayout extends ViewGroup {
 
     private ImageView mBg ;
 
-    public void setFluidView(FluidView mFluidView) {
-        this.mFluidView = mFluidView;
+
+    public void setFluidView(FlowingView mFlowingView) {
+        this.mFlowingView = mFlowingView;
 
         ViewCompat.setLayerType(this, ViewCompat.LAYER_TYPE_NONE, null);
         final int childCount = getChildCount();
@@ -57,6 +58,10 @@ public class LeftDrawerLayout extends ViewGroup {
             ViewCompat.setLayerType(getChildAt(i), ViewCompat.LAYER_TYPE_NONE,
                     null);
         }
+    }
+
+    public void setMenuFragment(MenuFragment mMenuFragment ){
+        mFlowingView.setMenuFragment(mMenuFragment) ;
     }
 
     public LeftDrawerLayout(Context context, AttributeSet attrs) {
@@ -92,7 +97,7 @@ public class LeftDrawerLayout extends ViewGroup {
                 mHelper.settleCapturedViewAt(openMark ? 0 : -childWidth, releasedChild.getTop());
                 if(!openMark){
                     releasing = true ;
-                    mFluidView.resetContent();
+                    mFlowingView.resetContent();
                 }
                 invalidate();
             }
@@ -105,28 +110,28 @@ public class LeftDrawerLayout extends ViewGroup {
                 showShadow(offset) ;
                 changedView.setVisibility(offset == 0 ? View.INVISIBLE : View.VISIBLE);
                 rightX = left + childWidth ;
-                if (mFluidView.isStartAuto(rightX)) {
-                        mFluidView.autoUpping( rightX);
+                if (mFlowingView.isStartAuto(rightX)) {
+                        mFlowingView.autoUpping( rightX);
                     if(rightX == 0  ) {
-                        mFluidView.resetStatus() ;
+                        mFlowingView.resetStatus() ;
                         releasing = false;
                     }
                     return ;
                 }
 
-                if (mFluidView.isupping()){
+                if (mFlowingView.isupping()){
                     if(rightX == 0  ) {
-                        mFluidView.resetStatus() ;
+                        mFlowingView.resetStatus() ;
                         releasing = false;
                     }
                     return ;
                 }
                 if(!releasing) {
-                    mFluidView.show(rightX, pointY, FluidView.Status.STATUS_UP);
+                    mFlowingView.show(rightX, pointY, FlowingView.Status.STATUS_UP);
                 }else{
-                    mFluidView.show(rightX, pointY, FluidView.Status.STATUS_DOWN);
+                    mFlowingView.show(rightX, pointY, FlowingView.Status.STATUS_DOWN);
                     if(rightX == 0  ) {
-                        mFluidView.resetStatus() ;
+                        mFlowingView.resetStatus() ;
                         releasing = false;
                     }
                 }
@@ -248,7 +253,7 @@ public class LeftDrawerLayout extends ViewGroup {
         mLeftMenuOnScrren = 0.f;
         pointY = getHeight()/2;
         releasing = true ;
-        mFluidView.resetContent();
+        mFlowingView.resetContent();
         mHelper.smoothSlideViewTo(menuView, -menuView.getWidth(), menuView.getTop());
         postInvalidate();
     }

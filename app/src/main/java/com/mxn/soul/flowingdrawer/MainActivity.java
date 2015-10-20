@@ -8,13 +8,12 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import com.mxn.soul.flowingdrawer_core.FluidView;
+import com.mxn.soul.flowingdrawer_core.FlowingView;
 import com.mxn.soul.flowingdrawer_core.LeftDrawerLayout;
 
 
 public class MainActivity extends AppCompatActivity {
 
-    private MenuFragment mMenuFragment;
     private RecyclerView rvFeed;
     private LeftDrawerLayout mLeftDrawerLayout;
 
@@ -28,14 +27,13 @@ public class MainActivity extends AppCompatActivity {
         rvFeed = (RecyclerView) findViewById(R.id.rvFeed);
 
         FragmentManager fm = getSupportFragmentManager();
-        mMenuFragment = (MenuFragment) fm.findFragmentById(R.id.id_container_menu);
-        FluidView mFluidView = (FluidView) findViewById(R.id.sv);
-        mFluidView.setAnimationListener(new AnimationImp());
-        mLeftDrawerLayout.setFluidView(mFluidView);
-
+        MyMenuFragment mMenuFragment = (MyMenuFragment) fm.findFragmentById(R.id.id_container_menu);
+        FlowingView mFlowingView = (FlowingView) findViewById(R.id.sv);
         if (mMenuFragment == null) {
-            fm.beginTransaction().add(R.id.id_container_menu, mMenuFragment = new MenuFragment()).commit();
+            fm.beginTransaction().add(R.id.id_container_menu, mMenuFragment = new MyMenuFragment()).commit();
         }
+        mLeftDrawerLayout.setFluidView(mFlowingView);
+        mLeftDrawerLayout.setMenuFragment(mMenuFragment);
         setupFeed();
 
     }
@@ -67,28 +65,6 @@ public class MainActivity extends AppCompatActivity {
         FeedAdapter feedAdapter = new FeedAdapter(this);
         rvFeed.setAdapter(feedAdapter);
         feedAdapter.updateItems();
-    }
-
-
-    class AnimationImp implements FluidView.AnimationListener {
-
-        @Override
-        public void onStart() {
-        }
-
-        @Override
-        public void onEnd(int y) {
-        }
-
-        @Override
-        public void onContentShow(int y) {
-            mMenuFragment.show(y);
-        }
-
-        @Override
-        public void onReSet() {
-            mMenuFragment.hideView();
-        }
     }
 
     @Override

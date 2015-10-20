@@ -1,12 +1,6 @@
-<com.mxn.soul.flowingdrawer_core.RevealLayout
-    android:id="@+id/reveal_layout"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
-
     <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -21,4 +15,3 @@
             app:itemTextColor="#666666"
             app:menu="@menu/drawer_menu"/>
     </RelativeLayout>
-</com.mxn.soul.flowingdrawer_core.RevealLayout>

@@ -15,11 +15,10 @@ import com.nineoldandroids.animation.ValueAnimator;
 
 
 
-public class FluidView extends View {
+public class FlowingView extends View {
 
     private Paint mPaint;
     private Status mStatus = Status.NONE;
-    private AnimationListener mAnimationListener;
     private Path mPath = new Path();
     private int currentPointX = 0;
     private int currentPointY = 0;
@@ -30,7 +29,9 @@ public class FluidView extends View {
 
     private int autoUppingX;
 
-    boolean showContent = true;
+    private boolean showContent = true;
+
+    private MenuFragment mMenuFragment ;
 
 
     public enum Status {
@@ -40,18 +41,18 @@ public class FluidView extends View {
         STATUS_DOWN,
     }
 
-    public FluidView(Context context) {
+    public FlowingView(Context context) {
         super(context);
         init();
     }
 
-    public FluidView(Context context, AttributeSet attrs) {
+    public FlowingView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         init();
     }
 
-    public FluidView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public FlowingView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }
@@ -63,7 +64,7 @@ public class FluidView extends View {
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public FluidView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public FlowingView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
@@ -104,11 +105,8 @@ public class FluidView extends View {
         valueAnimator.addListener(new FlowingAnimationListener() {
             @Override
             public void onAnimationEnd(Animator animation) {
-                if (mAnimationListener != null) {
-                    mAnimationListener.onEnd(currentPointY);
                     isupping = false;
                     showContent = true;
-                }
             }
         });
         valueAnimator.setDuration(500);
@@ -168,20 +166,6 @@ public class FluidView extends View {
     }
 
 
-    public void setAnimationListener(AnimationListener animationListener) {
-        mAnimationListener = animationListener;
-    }
-
-    public interface AnimationListener {
-        void onStart();
-
-        void onEnd(int y);
-
-        void onContentShow(int y);
-
-        void onReSet() ;
-    }
-
     public boolean isStartAuto(float x) {
         return x >= getWidth() / 2;
     }
@@ -197,7 +181,7 @@ public class FluidView extends View {
         if(per > 0.8){
             if (showContent) {
                 showContent = false;
-                mAnimationListener.onContentShow(currentPointY);
+                mMenuFragment.show(currentPointY) ;
             }
         }
         invalidate();
@@ -211,7 +195,7 @@ public class FluidView extends View {
     public void resetContent() {
         showContent = true ;
         isupping  = false ;
-        mAnimationListener.onReSet();
+        mMenuFragment.hideView();
     }
 
     public void resetStatus(){
@@ -219,4 +203,8 @@ public class FluidView extends View {
         isupping = false ;
     }
 
+
+    public void setMenuFragment(MenuFragment mMenuFragment ){
+        this.mMenuFragment = mMenuFragment ;
+    }
 }
