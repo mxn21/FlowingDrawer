@@ -221,6 +221,8 @@ public class LeftDrawerLayout extends ViewGroup {
         View menuView = mLeftMenuView;
         mLeftMenuOnScrren = 0.f;
         pointY = getHeight()/2;
+        releasing = true ;
+        mFluidView.resetContent();
         mHelper.smoothSlideViewTo(menuView, -menuView.getWidth(), menuView.getTop());
         postInvalidate();
     }
