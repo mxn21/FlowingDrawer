@@ -98,7 +98,16 @@ fragment .
 
 5.make the fragment of menu extends MenuFragment.
 
-6.you can call mLeftDrawerLayout.closeDrawer()  and  mLeftDrawerLayout.openDrawer() to close or
+6.in MenuFragment'xml ,add 'android:background="@android:color/transparent" '
+
+7.in MainActivity,call
+mMenuFragment = new MyMenuFragment();
+mLeftDrawerLayout.setFluidView(mFlowingView);
+mLeftDrawerLayout.setMenuFragment(mMenuFragment);
+
+in order .
+
+8.you can call mLeftDrawerLayout.closeDrawer()  and  mLeftDrawerLayout.openDrawer() to close or
 open drawer automatically.
 
 ### V1.0
