@@ -1,8 +1,26 @@
-# FlowingDrawer
+# FlowingDrawer [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-FlowingDrawer-green.svg?style=flat)](https://android-arsenal.com/details/1/2658)
+
 
 ![Showcase](screen.gif)
 
 swipe right to display drawer with flowing effects.
+
+
+# Download
+
+Include the following dependency in your build.gradle file.
+
+Gradle:
+
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        compile 'com.mxn.soul:flowingdrawer-core:1.0.0'
+    }
+
+
 
 # Usage
 
@@ -85,7 +103,7 @@ open drawer automatically.
 
 ### V1.0
 
-Submit to jcenter Just now . use build.gradle  compile  soon.
+
 
 
 # TODO
