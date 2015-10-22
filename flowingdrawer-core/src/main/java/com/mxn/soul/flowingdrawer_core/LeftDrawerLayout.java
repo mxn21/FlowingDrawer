@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.ViewDragHelper;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -111,7 +112,8 @@ public class LeftDrawerLayout extends ViewGroup {
                 changedView.setVisibility(offset == 0 ? View.INVISIBLE : View.VISIBLE);
                 rightX = left + childWidth ;
                 if (mFlowingView.isStartAuto(rightX)) {
-                        mFlowingView.autoUpping( rightX);
+                    Log.e("====",dx+"") ;
+                        mFlowingView.autoUpping( rightX,dx);
                     if(rightX == 0  ) {
                         mFlowingView.resetStatus() ;
                         releasing = false;
@@ -283,7 +285,7 @@ public class LeftDrawerLayout extends ViewGroup {
     protected void showShadow(float per ) {
         if(mBg == null){
             mBg = new ImageView(mContentView.getContext());
-            mBg.setBackgroundColor(Color.argb(150, 25, 25, 25));
+            mBg.setBackgroundColor(Color.argb(150, 20, 20, 20));
             ViewGroup.LayoutParams lp =
                     new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             mContentView.addView(mBg, lp);

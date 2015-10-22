@@ -171,13 +171,18 @@ public class FlowingView extends View {
     }
 
 
-    public void autoUpping(float x) {
+    public void autoUpping(float x,int dx) {
         mStatus = Status.STATUS_SMOOTH_UP;
         isupping = true;
         final int w = getWidth();
         double per = (2 * x - w) / w;
-        autoUppingX = (int) (0.25 * w * per + 0.75 * w);
-        currentPointX = (int) (100 * per + w);
+        if(dx>=0) {
+            autoUppingX = (int) (0.25 * w * per + 0.75 * w);
+            currentPointX = (int) (100 * per + w);
+        }else{
+            autoUppingX = w ;
+            currentPointX = w + 100;
+        }
         if(per > 0.8){
             if (showContent) {
                 showContent = false;
