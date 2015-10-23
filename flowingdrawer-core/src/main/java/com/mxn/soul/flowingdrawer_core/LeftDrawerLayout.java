@@ -48,10 +48,12 @@ public class LeftDrawerLayout extends ViewGroup {
 
     private ImageView mBg ;
 
+    private int rightMargin ;
+
 
     public void setFluidView(FlowingView mFlowingView) {
         this.mFlowingView = mFlowingView;
-
+        mFlowingView.setRightMargin(rightMargin);
         ViewCompat.setLayerType(this, ViewCompat.LAYER_TYPE_NONE, null);
         final int childCount = getChildCount();
         for (int i = 0; i < childCount; i++) {
@@ -179,7 +181,12 @@ public class LeftDrawerLayout extends ViewGroup {
         mLeftMenuView = leftMenuView;
         mContentView = (ViewGroup) contentView;
 
-
+        ViewGroup mLeftView  = (ViewGroup)mLeftMenuView ;
+        View fragmentLayout = mLeftView.getChildAt(1) ;
+        MarginLayoutParams mlp = (MarginLayoutParams) fragmentLayout.getLayoutParams();
+        rightMargin = mlp.rightMargin  ;
+        if(mFlowingView!=null)
+            mFlowingView.setRightMargin(rightMargin);
     }
 
     @Override
@@ -283,7 +290,7 @@ public class LeftDrawerLayout extends ViewGroup {
     protected void showShadow(float per ) {
         if(mBg == null){
             mBg = new ImageView(mContentView.getContext());
-            mBg.setBackgroundColor(Color.argb(150, 25, 25, 25));
+            mBg.setBackgroundColor(Color.argb(150, 20, 20, 20));
             ViewGroup.LayoutParams lp =
                     new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             mContentView.addView(mBg, lp);

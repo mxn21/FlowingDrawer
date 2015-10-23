@@ -33,6 +33,9 @@ public class FlowingView extends View {
 
     private MenuFragment mMenuFragment ;
 
+    private double per = 0 ;
+
+    private int rightMargin ;
 
     public enum Status {
         NONE,
@@ -92,13 +95,13 @@ public class FlowingView extends View {
 
     public void downing() {
         final int w = getWidth();
-        ValueAnimator valueAnimator = ValueAnimator.ofInt(w + 100, w - 50);
+        ValueAnimator valueAnimator = ValueAnimator.ofInt(w + 100, w - rightMargin);
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 currentPointX = (int) animation.getAnimatedValue();
                 float fraction = animation.getAnimatedFraction();
-                autoUppingX = (int) (w - 50 * fraction);
+                autoUppingX = (int) (w - rightMargin * fraction);
                 invalidate();
             }
         });
@@ -175,9 +178,17 @@ public class FlowingView extends View {
         mStatus = Status.STATUS_SMOOTH_UP;
         isupping = true;
         final int w = getWidth();
-        double per = (2 * x - w) / w;
-        autoUppingX = (int) (0.25 * w * per + 0.75 * w);
-        currentPointX = (int) (100 * per + w);
+        if(per == 1 && x !=w){
+            autoUppingX = w ;
+            currentPointX = w + 100;
+            invalidate();
+            return ;
+        }else{
+             per = (2 * x - w) / w;
+            autoUppingX = (int) (0.25 * w * per + 0.75 * w);
+            currentPointX = (int) (100 * per + w);
+        }
+
         if(per > 0.8){
             if (showContent) {
                 showContent = false;
@@ -185,8 +196,10 @@ public class FlowingView extends View {
             }
         }
         invalidate();
-        if (per == 1)
+        if (per == 1){
             downing();
+        }
+
     }
 
     public boolean isupping() {
@@ -199,6 +212,7 @@ public class FlowingView extends View {
     }
 
     public void resetStatus(){
+        per = 0 ;
         mStatus = Status.NONE ;
         isupping = false ;
     }
@@ -206,5 +220,9 @@ public class FlowingView extends View {
 
     public void setMenuFragment(MenuFragment mMenuFragment ){
         this.mMenuFragment = mMenuFragment ;
+    }
+
+    public void setRightMargin(int rightMargin){
+        this.rightMargin = rightMargin ;
     }
 }
