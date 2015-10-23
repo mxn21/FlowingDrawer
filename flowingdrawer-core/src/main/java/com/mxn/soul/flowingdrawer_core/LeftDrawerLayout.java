@@ -9,7 +9,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.ViewDragHelper;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,10 +48,12 @@ public class LeftDrawerLayout extends ViewGroup {
 
     private ImageView mBg ;
 
+    private int rightMargin ;
+
 
     public void setFluidView(FlowingView mFlowingView) {
         this.mFlowingView = mFlowingView;
-
+        mFlowingView.setRightMargin(rightMargin);
         ViewCompat.setLayerType(this, ViewCompat.LAYER_TYPE_NONE, null);
         final int childCount = getChildCount();
         for (int i = 0; i < childCount; i++) {
@@ -112,8 +113,7 @@ public class LeftDrawerLayout extends ViewGroup {
                 changedView.setVisibility(offset == 0 ? View.INVISIBLE : View.VISIBLE);
                 rightX = left + childWidth ;
                 if (mFlowingView.isStartAuto(rightX)) {
-                    Log.e("====",dx+"") ;
-                        mFlowingView.autoUpping( rightX,dx);
+                        mFlowingView.autoUpping( rightX);
                     if(rightX == 0  ) {
                         mFlowingView.resetStatus() ;
                         releasing = false;
@@ -181,7 +181,12 @@ public class LeftDrawerLayout extends ViewGroup {
         mLeftMenuView = leftMenuView;
         mContentView = (ViewGroup) contentView;
 
-
+        ViewGroup mLeftView  = (ViewGroup)mLeftMenuView ;
+        View fragmentLayout = mLeftView.getChildAt(1) ;
+        MarginLayoutParams mlp = (MarginLayoutParams) fragmentLayout.getLayoutParams();
+        rightMargin = mlp.rightMargin  ;
+        if(mFlowingView!=null)
+            mFlowingView.setRightMargin(rightMargin);
     }
 
     @Override
