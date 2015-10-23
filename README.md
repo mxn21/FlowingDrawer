@@ -103,14 +103,13 @@ Try to set '10dp', '25dp' ,'50dp' to see the difference.
 
 * pay attention to MenuFragment's onCreateView: return setupReveal(root) ;
 
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-          View view = inflater.inflate(R.layout.fragment_menu, container,
-                  false);
-          .......
-          return  setupReveal(view) ;
-      }
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            View view = inflater.inflate(R.layout.fragment_menu, container,
+                    false);
+            .......
+            return  setupReveal(view) ;
+        }
 
 * in MenuFragment'xml ,add 'android:background="@android:color/transparent" '
 
@@ -118,7 +117,6 @@ Try to set '10dp', '25dp' ,'50dp' to see the difference.
 mMenuFragment = new MyMenuFragment();
 mLeftDrawerLayout.setFluidView(mFlowingView);
 mLeftDrawerLayout.setMenuFragment(mMenuFragment);
-
 in order .
 
 * you can call mLeftDrawerLayout.closeDrawer()  and  mLeftDrawerLayout.openDrawer() to close or
