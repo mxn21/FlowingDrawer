@@ -20,7 +20,7 @@ Gradle:
         compile 'com.mxn.soul:flowingdrawer-core:1.1.0'
     }
 
-
+# V1.1
 
 # Usage
 
@@ -121,9 +121,6 @@ in order .
 
 * you can call mLeftDrawerLayout.closeDrawer()  and  mLeftDrawerLayout.openDrawer() to close or
 open drawer automatically.
-
-### V1.0
-
 
 
 
