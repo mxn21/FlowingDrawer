@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 
-version = "1.0.0"
+version = "1.1.0"
 
 def siteUrl = 'https://github.com/mxn21/FlowingDrawer'    // project homepage
 def gitUrl = 'https://github.com/mxn21/FlowingDrawer.git' // project git

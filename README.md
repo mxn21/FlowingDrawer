@@ -17,7 +17,7 @@ Gradle:
     }
 
     dependencies {
-        compile 'com.mxn.soul:flowingdrawer-core:1.0.0'
+        compile 'com.mxn.soul:flowingdrawer-core:1.1.0'
     }
 
 
@@ -87,27 +87,41 @@ activity_main.xml:
 
     </com.mxn.soul.flowingdrawer_core.LeftDrawerLayout>
 
-1.use LeftDrawerLayout as the root of xml.
+* use LeftDrawerLayout as the root of xml.
 
-2.The root has two child, first for content,second for menu.
+* The root has two child, first for content,second for menu.
 
-3.menu'root alse has two child , first for FlowingView to display flowing effects,second for
+* menu'root alse has two child , first for FlowingView to display flowing effects,second for
 fragment .
 
-4.fragment need to has a 'marginRight', for example 25dp.
+* fragment need to has a 'marginRight', for example 25dp.
+marginRight here is important .
+'marginRight'  have effect on drawer's elasticity. The more  'marginRight' is  the more elastic.
+Try to set '10dp', '25dp' ,'50dp' to see the difference.
 
-5.make the fragment of menu extends MenuFragment.
+* make the fragment of menu extends MenuFragment.
 
-6.in MenuFragment'xml ,add 'android:background="@android:color/transparent" '
+* pay attention to MenuFragment's onCreateView: return setupReveal(root) ;
 
-7.in MainActivity,call
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+          View view = inflater.inflate(R.layout.fragment_menu, container,
+                  false);
+          .......
+          return  setupReveal(view) ;
+      }
+
+* in MenuFragment'xml ,add 'android:background="@android:color/transparent" '
+
+* in MainActivity,call
 mMenuFragment = new MyMenuFragment();
 mLeftDrawerLayout.setFluidView(mFlowingView);
 mLeftDrawerLayout.setMenuFragment(mMenuFragment);
 
 in order .
 
-8.you can call mLeftDrawerLayout.closeDrawer()  and  mLeftDrawerLayout.openDrawer() to close or
+* you can call mLeftDrawerLayout.closeDrawer()  and  mLeftDrawerLayout.openDrawer() to close or
 open drawer automatically.
 
 ### V1.0
