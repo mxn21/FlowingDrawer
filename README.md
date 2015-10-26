@@ -12,6 +12,7 @@ Include the following dependency in your build.gradle file.
 
 Gradle:
 
+```Gradle
     repositories {
         jcenter()
     }
@@ -19,6 +20,8 @@ Gradle:
     dependencies {
         compile 'com.mxn.soul:flowingdrawer-core:1.1.0'
     }
+```
+
 
 # V1.1
 
@@ -28,6 +31,7 @@ Gradle:
 
 MainActivity:
 
+```java
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,9 +48,11 @@ MainActivity:
         mLeftDrawerLayout.setMenuFragment(mMenuFragment);
         ...
     }
+```
 
 activity_main.xml:
 
+```xml
     <com.mxn.soul.flowingdrawer_core.LeftDrawerLayout
         android:id="@+id/id_drawerlayout"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -86,6 +92,7 @@ activity_main.xml:
         </RelativeLayout>
 
     </com.mxn.soul.flowingdrawer_core.LeftDrawerLayout>
+```
 
 * use LeftDrawerLayout as the root of xml.
 
@@ -103,6 +110,7 @@ Try to set '10dp', '25dp' ,'50dp' to see the difference.
 
 * pay attention to MenuFragment's onCreateView: return setupReveal(root) ;
 
+```java
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             View view = inflater.inflate(R.layout.fragment_menu, container,
@@ -110,13 +118,18 @@ Try to set '10dp', '25dp' ,'50dp' to see the difference.
             .......
             return  setupReveal(view) ;
         }
+```
 
 * in MenuFragment'xml ,add 'android:background="@android:color/transparent" '
 
-* in MainActivity,call
+* in MainActivity,use
+
+```java
 mMenuFragment = new MyMenuFragment();
 mLeftDrawerLayout.setFluidView(mFlowingView);
 mLeftDrawerLayout.setMenuFragment(mMenuFragment);
+```
+
 in order .
 
 * you can call mLeftDrawerLayout.closeDrawer()  and  mLeftDrawerLayout.openDrawer() to close or
