@@ -6,7 +6,7 @@
 swipe right to display drawer with flowing effects.
 
 
-# Download
+## Download
 
 Include the following dependency in your build.gradle file.
 
@@ -23,9 +23,9 @@ Gradle:
 ```
 
 
-# V1.2
+## V1.2
 
-# Usage
+## Usage
 
 *For a working implementation of this project see the `app/` folder.*
 
@@ -137,7 +137,22 @@ open drawer automatically.
 
 
 
-# TODO
+## TODO
+
+* use spring dynamics models to make more bouncing effects.
+* close by touch effect need to enhance.
+* improve the lines to be smoother when open and close drawer.
+* some part of the code need to simplify.
+
+
+## Contribution
+
+First of all, thank you ! As you see ,the project is not as good as the original design
+sketch and thank you for watch and star. At present we still have a lot of things to do .
+So if you find a bug in the library or want a feature and think you can fix it yourself,
+fork + pull request and i will greatly appreciate it!
+I would love to get some help on the TODO list. Pull requests are more than welcome,
+help me and others improve this library.
 
 
 
