@@ -18,12 +18,12 @@ Gradle:
     }
 
     dependencies {
-        compile 'com.mxn.soul:flowingdrawer-core:1.1.0'
+        compile 'com.mxn.soul:flowingdrawer-core:1.2.0'
     }
 ```
 
 
-# V1.1
+# V1.2
 
 # Usage
 

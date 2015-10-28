@@ -42,13 +42,13 @@ public class LeftDrawerLayout extends ViewGroup {
     private FlowingView mFlowingView;
 
     private float pointY;
-    private float rightX ;
+    private float rightX;
     //返回动画是否结束
-    private boolean releasing = false ;
+    private boolean releasing = false;
 
-    private ImageView mBg ;
+    private ImageView mBg;
 
-    private int rightMargin ;
+    private int rightMargin;
 
 
     public void setFluidView(FlowingView mFlowingView) {
@@ -62,8 +62,8 @@ public class LeftDrawerLayout extends ViewGroup {
         }
     }
 
-    public void setMenuFragment(MenuFragment mMenuFragment ){
-        mFlowingView.setMenuFragment(mMenuFragment) ;
+    public void setMenuFragment(MenuFragment mMenuFragment) {
+        mFlowingView.setMenuFragment(mMenuFragment);
     }
 
     public LeftDrawerLayout(Context context, AttributeSet attrs) {
@@ -77,7 +77,7 @@ public class LeftDrawerLayout extends ViewGroup {
         mHelper = ViewDragHelper.create(this, 1.0f, new ViewDragHelper.Callback() {
             @Override
             public int clampViewPositionHorizontal(View child, int left, int dx) {
-                return  Math.max(-child.getWidth(), Math.min(left, 0));
+                return Math.max(-child.getWidth(), Math.min(left, 0));
             }
 
             @Override
@@ -95,10 +95,10 @@ public class LeftDrawerLayout extends ViewGroup {
             public void onViewReleased(View releasedChild, float xvel, float yvel) {
                 final int childWidth = releasedChild.getWidth();
                 float offset = (childWidth + releasedChild.getLeft()) * 1.0f / childWidth;
-                boolean openMark = xvel > 0 || xvel == 0 && offset > 0.5f ;
+                boolean openMark = xvel > 0 || xvel == 0 && offset > 0.5f;
                 mHelper.settleCapturedViewAt(openMark ? 0 : -childWidth, releasedChild.getTop());
-                if(!openMark){
-                    releasing = true ;
+                if (!openMark) {
+                    releasing = true;
                     mFlowingView.resetContent();
                 }
                 invalidate();
@@ -109,31 +109,31 @@ public class LeftDrawerLayout extends ViewGroup {
                 final int childWidth = changedView.getWidth();
                 float offset = (float) (childWidth + left) / childWidth;
                 mLeftMenuOnScrren = offset;
-                showShadow(offset) ;
+                showShadow(offset);
                 changedView.setVisibility(offset == 0 ? View.INVISIBLE : View.VISIBLE);
-                rightX = left + childWidth ;
+                rightX = left + childWidth;
                 if (mFlowingView.isStartAuto(rightX)) {
-                        mFlowingView.autoUpping( rightX);
-                    if(rightX == 0  ) {
-                        mFlowingView.resetStatus() ;
+                    mFlowingView.autoUpping(rightX);
+                    if (rightX == 0) {
+                        mFlowingView.resetStatus();
                         releasing = false;
                     }
-                    return ;
+                    return;
                 }
 
-                if (mFlowingView.isupping()){
-                    if(rightX == 0  ) {
-                        mFlowingView.resetStatus() ;
+                if (mFlowingView.isupping()) {
+                    if (rightX == 0) {
+                        mFlowingView.resetStatus();
                         releasing = false;
                     }
-                    return ;
+                    return;
                 }
-                if(!releasing) {
+                if (!releasing) {
                     mFlowingView.show(rightX, pointY, FlowingView.Status.STATUS_UP);
-                }else{
+                } else {
                     mFlowingView.show(rightX, pointY, FlowingView.Status.STATUS_DOWN);
-                    if(rightX == 0  ) {
-                        mFlowingView.resetStatus() ;
+                    if (rightX == 0) {
+                        mFlowingView.resetStatus();
                         releasing = false;
                     }
                 }
@@ -181,11 +181,11 @@ public class LeftDrawerLayout extends ViewGroup {
         mLeftMenuView = leftMenuView;
         mContentView = (ViewGroup) contentView;
 
-        ViewGroup mLeftView  = (ViewGroup)mLeftMenuView ;
-        View fragmentLayout = mLeftView.getChildAt(1) ;
+        ViewGroup mLeftView = (ViewGroup) mLeftMenuView;
+        View fragmentLayout = mLeftView.getChildAt(1);
         MarginLayoutParams mlp = (MarginLayoutParams) fragmentLayout.getLayoutParams();
-        rightMargin = mlp.rightMargin  ;
-        if(mFlowingView!=null)
+        rightMargin = mlp.rightMargin;
+        if (mFlowingView != null)
             mFlowingView.setRightMargin(rightMargin);
     }
 
@@ -242,24 +242,24 @@ public class LeftDrawerLayout extends ViewGroup {
         super.dispatchDraw(canvas);
     }
 
-    public boolean  isShownMenu(){
-      return   mLeftMenuOnScrren > 0.5 ;
+    public boolean isShownMenu() {
+        return mLeftMenuOnScrren > 0.5;
     }
 
 
-    public void toggle(){
-        if(isShownMenu()){
-            closeDrawer() ;
-        }else{
-            openDrawer() ;
+    public void toggle() {
+        if (isShownMenu()) {
+            closeDrawer();
+        } else {
+            openDrawer();
         }
     }
 
     public void closeDrawer() {
         View menuView = mLeftMenuView;
         mLeftMenuOnScrren = 0.f;
-        pointY = getHeight()/2;
-        releasing = true ;
+        pointY = getHeight() / 2;
+        releasing = true;
         mFlowingView.resetContent();
         mHelper.smoothSlideViewTo(menuView, -menuView.getWidth(), menuView.getTop());
         postInvalidate();
@@ -268,7 +268,7 @@ public class LeftDrawerLayout extends ViewGroup {
     public void openDrawer() {
         View menuView = mLeftMenuView;
         mLeftMenuOnScrren = 1.0f;
-        pointY = getHeight()/2;
+        pointY = getHeight() / 2;
         mHelper.smoothSlideViewTo(menuView, 0, menuView.getTop());
         postInvalidate();
     }
@@ -287,8 +287,8 @@ public class LeftDrawerLayout extends ViewGroup {
     }
 
 
-    protected void showShadow(float per ) {
-        if(mBg == null){
+    protected void showShadow(float per) {
+        if (mBg == null) {
             mBg = new ImageView(mContentView.getContext());
             mBg.setBackgroundColor(Color.argb(150, 20, 20, 20));
             ViewGroup.LayoutParams lp =
@@ -296,5 +296,6 @@ public class LeftDrawerLayout extends ViewGroup {
             mContentView.addView(mBg, lp);
         }
         ViewHelper.setAlpha(mBg, per);
+        mBg.setClickable(per > 0);
     }
 }

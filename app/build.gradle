@@ -8,8 +8,8 @@ android {
         applicationId "com.mxn.soul.flowingdrawer"
         minSdkVersion 14
         targetSdkVersion 22
-        versionCode 110
-        versionName "1.1.0"
+        versionCode 120
+        versionName "1.2.0"
     }
     buildTypes {
         release {

@@ -225,4 +225,5 @@ public class FlowingView extends View {
     public void setRightMargin(int rightMargin){
         this.rightMargin = rightMargin ;
     }
+
 }
