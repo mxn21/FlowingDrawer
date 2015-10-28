@@ -149,10 +149,8 @@ open drawer automatically.
 
 First of all, thank you ! As you see ,the project is not as good as the original design
 sketch and thank you for watch and star. At present we still have a lot of things to do .
-So if you find a bug in the library or want a feature and think you can fix it yourself,
-fork + pull request and i will greatly appreciate it!
-I would love to get some help on the TODO list. Pull requests are more than welcome,
-help me and others improve this library.
+I would love to get some help on the TODO list .So if you find a bug in the library or want a feature
+and think you can fix it yourself,fork + pull request and i will greatly appreciate it!
 
 
 
