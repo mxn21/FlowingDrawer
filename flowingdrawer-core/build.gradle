@@ -9,6 +9,7 @@ def gitUrl = 'https://github.com/mxn21/FlowingDrawer.git' // project git
 
 group = "com.mxn.soul"
 
+/**
 // 根节点添加
 install {
     repositories.mavenInstaller {
@@ -41,6 +42,8 @@ install {
     }
 }
 
+ */
+
 android {
     compileSdkVersion 22
     buildToolsVersion "22.0.1"
@@ -59,6 +62,7 @@ android {
     }
 }
 
+/**
 task sourcesJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
     classifier = 'sources'
@@ -96,6 +100,7 @@ bintray {
         publish = true
     }
 }
+ */
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
