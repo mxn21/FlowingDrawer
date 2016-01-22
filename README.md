@@ -18,14 +18,16 @@ Gradle:
     }
 
     dependencies {
-        compile 'com.mxn.soul:flowingdrawer-core:1.2.0'
+        compile 'com.mxn.soul:flowingdrawer-core:1.2.1'
+        compile 'com.nineoldandroids:library:2.4.0'
     }
 ```
 
 
 ## V1.2.1 
 
-add o
+add onOpenMenu and onCloseMenu event Listener to catch open and close event . Add these two 
+method in MyMenuFragment extends MenuFragment.
 
 ## Usage
 

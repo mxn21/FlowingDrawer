@@ -29,9 +29,3 @@ proguard/
 
 # Log Files
 *.log
-
-.gradle/
-
-*.iml
-
-*.txt
