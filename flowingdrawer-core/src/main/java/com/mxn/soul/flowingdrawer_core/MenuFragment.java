@@ -28,12 +28,16 @@ public class MenuFragment extends Fragment {
         if (!isShown) {
             isShown = true;
             mRevealLayout.show(100, y, 1000);
+            //event call back
+            onOpenMenu() ;
         }
     }
 
     public void hideView(){
         mRevealLayout.hide();
         isShown = false;
+        //event call back
+        onCloseMenu() ;
     }
 
 
@@ -43,4 +47,7 @@ public class MenuFragment extends Fragment {
         hideView() ;
         return mRevealLayout ;
     }
+
+    public  void onOpenMenu(){} ;
+    public  void onCloseMenu(){} ;
 }
