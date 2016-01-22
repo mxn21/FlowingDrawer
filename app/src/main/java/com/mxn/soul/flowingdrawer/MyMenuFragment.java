@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.mxn.soul.flowingdrawer_core.MenuFragment;
 import com.squareup.picasso.Picasso;
@@ -43,4 +44,10 @@ public class MyMenuFragment extends MenuFragment {
                 .into(ivMenuUserProfilePhoto);
     }
 
+    public void onOpenMenu(){
+        Toast.makeText(getActivity(),"onOpenMenu",Toast.LENGTH_SHORT).show();
+    }
+    public void onCloseMenu(){
+        Toast.makeText(getActivity(),"onCloseMenu",Toast.LENGTH_SHORT).show();
+    }
 }

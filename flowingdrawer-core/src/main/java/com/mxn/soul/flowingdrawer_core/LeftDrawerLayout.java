@@ -298,4 +298,5 @@ public class LeftDrawerLayout extends ViewGroup {
         ViewHelper.setAlpha(mBg, per);
         mBg.setClickable(per > 0);
     }
+
 }
