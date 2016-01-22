@@ -11,7 +11,6 @@ import com.mxn.soul.flowingdrawer_core.MenuFragment;
 import com.squareup.picasso.Picasso;
 
 
-
 public class MyMenuFragment extends MenuFragment {
 
     private ImageView ivMenuUserProfilePhoto;
@@ -26,8 +25,10 @@ public class MyMenuFragment extends MenuFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_menu, container,
                 false);
-        ivMenuUserProfilePhoto = (ImageView) view.findViewById(R.id.ivMenuUserProfilePhoto);
-        setupHeader();
+//        NavigationView mNavigationView = (NavigationView) view.findViewById(R.id.vNavigation);
+//        View mNavigationHeader = mNavigationView.getHeaderView(0) ;
+//        ivMenuUserProfilePhoto = (ImageView) mNavigationHeader.findViewById(R.id.ivMenuUserProfilePhoto);
+//        setupHeader();
         return  setupReveal(view) ;
     }
 

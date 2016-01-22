@@ -113,7 +113,9 @@ public class RevealLayout extends FrameLayout {
 
     public void show(int x, int y, int duration) {
         if (x < 0 || x > getWidth() || y < 0 || y > getHeight()) {
-            throw new RuntimeException("Center point out of range or call method when View is not initialed yet.");
+            //TODO
+            return ;
+//            throw new RuntimeException("Center point out of range or call method when View is not initialed yet.");
         }
 
         mClipCenterX = x;

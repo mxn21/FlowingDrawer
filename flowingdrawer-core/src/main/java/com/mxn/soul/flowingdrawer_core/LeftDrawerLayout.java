@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.ViewDragHelper;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -112,8 +113,11 @@ public class LeftDrawerLayout extends ViewGroup {
                 showShadow(offset);
                 changedView.setVisibility(offset == 0 ? View.INVISIBLE : View.VISIBLE);
                 rightX = left + childWidth;
+                Log.e("====",offset+"===="+rightX) ;
                 if (mFlowingView.isStartAuto(rightX)) {
+                    //TODO
                     mFlowingView.autoUpping(rightX);
+//                    mFlowingView.autoUpping2(rightX,pointY);
                     if (rightX == 0) {
                         mFlowingView.resetStatus();
                         releasing = false;
@@ -121,7 +125,7 @@ public class LeftDrawerLayout extends ViewGroup {
                     return;
                 }
 
-                if (mFlowingView.isupping()) {
+                if (mFlowingView.isUpping()) {
                     if (rightX == 0) {
                         mFlowingView.resetStatus();
                         releasing = false;
@@ -145,6 +149,7 @@ public class LeftDrawerLayout extends ViewGroup {
                 return mLeftMenuView == child ? child.getWidth() : 0;
             }
         });
+
         //设置edge_left track
         mHelper.setEdgeTrackingEnabled(ViewDragHelper.EDGE_LEFT);
         //设置minVelocity
@@ -215,8 +220,14 @@ public class LeftDrawerLayout extends ViewGroup {
 
     @Override
     public boolean onTouchEvent(@NonNull MotionEvent event) {
-        mHelper.processTouchEvent(event);
-        pointY = event.getY();
+
+        pointY = event.getY() ;
+
+//        //TODO
+//        if(mLeftMenuOnScrren<0.5) {
+//            mHelper.processTouchEvent(event);
+//        }
+        mHelper.processTouchEvent(event) ;
         return true;
     }
 

@@ -8,6 +8,7 @@ import android.graphics.Path;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.OvershootInterpolator;
 
 import com.nineoldandroids.animation.Animator;
@@ -28,6 +29,9 @@ public class FlowingView extends View {
     private boolean isupping = false;
 
     private int autoUppingX;
+    private int autoUppingTopY;
+    private int autoUppingBottomY;
+
 
     private boolean showContent = true;
 
@@ -129,6 +133,30 @@ public class FlowingView extends View {
                 mPath.lineTo(0, 0);
                 mPath.lineTo(autoUppingX, 0);
                 canvas.drawPath(mPath, mPaint);
+                //TODO  ＝＝＝＝＝＝＝＝＝
+//                mPath.moveTo(autoUppingX, topY);
+////                mPath.quadTo(currentPointX, currentPointY, autoUppingX, bottomY);
+//
+//                mPath.cubicTo(getWidth() - currentPointX, currentPointY / 4 + 3 * topY / 4, getWidth(), 3 * currentPointY / 4
+//                                + topY / 4,
+//                        getWidth()
+//                        , currentPointY);
+//                mPath.cubicTo(getWidth(), 5 * currentPointY / 4 - topY / 4, getWidth() - currentPointX,
+//                        7 * currentPointY / 4 - 3 * topY / 4, getWidth() - currentPointX, bottomY);
+//
+//                mPath.lineTo(0, bottomY);
+//                mPath.lineTo(0, topY);
+//                mPath.lineTo(autoUppingX, topY);
+//                Log.e("=====", currentPointX + "") ;
+//                canvas.drawPath(mPath, mPaint);
+
+//                mPath.moveTo(autoUppingX, autoUppingTopY);
+//                mPath.quadTo(currentPointX, currentPointY, autoUppingX, autoUppingBottomY);
+//                mPath.lineTo(0, autoUppingBottomY);
+//                mPath.lineTo(0, autoUppingTopY);
+//                mPath.lineTo(autoUppingX, autoUppingTopY);
+//                canvas.drawPath(mPath, mPaint);
+
                 break;
             case STATUS_UP:
                 if (isupping) return;
@@ -185,7 +213,8 @@ public class FlowingView extends View {
             return ;
         }else{
              per = (2 * x - w) / w;
-            autoUppingX = (int) (0.25 * w * per + 0.75 * w);
+//            autoUppingX = (int) (0.25 * w * per + 0.75 * w);
+            autoUppingX  = (int) (0.5 * w * per + 0.5 * w);
             currentPointX = (int) (100 * per + w);
         }
 
@@ -195,6 +224,10 @@ public class FlowingView extends View {
                 mMenuFragment.show(currentPointY) ;
             }
         }
+        //TODO  ======
+        autoUppingTopY = (int) ((1-per)* topY);
+        autoUppingBottomY = (int) ((1-per)* bottomY);
+        //TODO  ======/
         invalidate();
         if (per == 1){
             downing();
@@ -202,7 +235,39 @@ public class FlowingView extends View {
 
     }
 
-    public boolean isupping() {
+    public void autoUpping2(float x,float y ) {
+        mStatus = Status.STATUS_SMOOTH_UP;
+        isupping = true;
+        //TODO
+        ValueAnimator valueAnimator = ValueAnimator.ofInt(getWidth()/2, getWidth() + 100);
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                currentPointX = (int) animation.getAnimatedValue();
+                float fraction = animation.getAnimatedFraction();
+                if(fraction<0.5){
+                    autoUppingX = (int) (fraction * 3 * getWidth());
+                }else{
+                    autoUppingX = (int) ((-fraction) * getWidth() + 2*getWidth()) ;
+                }
+                autoUppingTopY = topY;
+                autoUppingBottomY = bottomY;
+                invalidate();
+            }
+        });
+        valueAnimator.addListener(new FlowingAnimationListener() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                downing();
+            }
+        });
+        valueAnimator.setDuration(500);
+        valueAnimator.setInterpolator(new AccelerateInterpolator(4f));
+        valueAnimator.start();
+
+    }
+
+    public boolean isUpping() {
         return isupping;
     }
     public void resetContent() {
