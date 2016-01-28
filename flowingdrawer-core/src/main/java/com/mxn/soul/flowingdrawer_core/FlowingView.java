@@ -63,7 +63,7 @@ public class FlowingView extends View {
     private void init() {
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
-        mPaint.setColor(getResources().getColor(android.R.color.white));
+        mPaint.setColor(getResources().getColor(R.color.paint_color));
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
