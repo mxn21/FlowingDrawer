@@ -1,0 +1,32 @@
+language: android
+
+notifications:
+  email: false
+
+sudo: false
+
+android:
+  components:
+    - tools
+    - build-tools-23.0.2
+    - android-23
+    - extra-android-m2repository
+    - extra-android-support
+
+before_install:
+ - chmod +x gradlew
+
+script:
+   - chmod +x ./gradlew
+
+before_deploy:
+  - mv app/build/outputs/apk/app-release.apk app/build/outputs/apk/FlowingDrawer.apk
+
+deploy:
+  provider: releases
+  api_key:
+    secure: 3cb2c71a8165ed3eb18990692d0383c1cc975a18
+  file: app/build/outputs/apk/FlowingDrawer.apk
+  skip_cleanup: true
+  on:
+    tags: true
