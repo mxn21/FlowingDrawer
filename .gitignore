@@ -30,4 +30,7 @@ proguard/
 # Log Files
 *.log
 
-local.properties
+# Gradle files
+.gradle
+.gradle/
+
