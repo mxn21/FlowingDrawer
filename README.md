@@ -141,6 +141,7 @@ in order .
 * you can call mLeftDrawerLayout.closeDrawer()  and  mLeftDrawerLayout.openDrawer() to close or
 open drawer automatically.
 
+* change background color for drawer by "paint_color" in colors.xml.This is not a good way.
 
 
 ## TODO
