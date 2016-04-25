@@ -3,7 +3,7 @@
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-FlowingDrawer-green.svg?style=flat)](https://android-arsenal.com/details/1/2658)
 [![travis-ic](https://travis-ci.org/mxn21/FlowingDrawer.svg?branch=master)](https://travis-ci.org/mxn21/FlowingDrawer)
 
-![Showcase](screen.gif)
+![Showcase](http://baobaoloveyou.com/flowingdrawer.gif)
 
 swipe right to display drawer with flowing effects.
 
@@ -141,7 +141,8 @@ in order .
 * you can call mLeftDrawerLayout.closeDrawer()  and  mLeftDrawerLayout.openDrawer() to close or
 open drawer automatically.
 
-
+* change background color for drawer by "paint_color" in colors.xml.This is not a good way,and 
+will be improved in the next version.
 
 ## TODO
 
