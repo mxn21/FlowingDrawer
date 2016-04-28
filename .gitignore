@@ -34,3 +34,12 @@ proguard/
 .gradle
 .gradle/
 
+
+*.bin
+
+*.lock
+
+
+.idea/workspace.xml
+
+.idea/workspace.xml

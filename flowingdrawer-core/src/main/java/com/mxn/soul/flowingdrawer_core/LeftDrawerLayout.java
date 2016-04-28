@@ -39,7 +39,7 @@ public class LeftDrawerLayout extends ViewGroup {
      */
     private float mLeftMenuOnScrren;
 
-    private FlowingView mFlowingView;
+    private FlowingView2 mFlowingView;
 
     private float pointY;
     private float rightX;
@@ -51,7 +51,7 @@ public class LeftDrawerLayout extends ViewGroup {
     private int rightMargin;
 
 
-    public void setFluidView(FlowingView mFlowingView) {
+    public void setFluidView(FlowingView2 mFlowingView) {
         this.mFlowingView = mFlowingView;
         mFlowingView.setRightMargin(rightMargin);
         ViewCompat.setLayerType(this, ViewCompat.LAYER_TYPE_NONE, null);
@@ -129,9 +129,9 @@ public class LeftDrawerLayout extends ViewGroup {
                     return;
                 }
                 if (!releasing) {
-                    mFlowingView.show(rightX, pointY, FlowingView.Status.STATUS_UP);
+                    mFlowingView.show(rightX, pointY, FlowingView2.Status.STATUS_UP);
                 } else {
-                    mFlowingView.show(rightX, pointY, FlowingView.Status.STATUS_DOWN);
+                    mFlowingView.show(rightX, pointY, FlowingView2.Status.STATUS_DOWN);
                     if (rightX == 0) {
                         mFlowingView.resetStatus();
                         releasing = false;

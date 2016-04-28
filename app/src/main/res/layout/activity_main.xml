@@ -42,7 +42,7 @@
         android:clipChildren="false"
         >
 
-        <com.mxn.soul.flowingdrawer_core.FlowingView
+        <com.mxn.soul.flowingdrawer_core.FlowingView2
             android:id="@+id/sv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>

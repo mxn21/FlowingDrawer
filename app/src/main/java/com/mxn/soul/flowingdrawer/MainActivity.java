@@ -8,7 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import com.mxn.soul.flowingdrawer_core.FlowingView;
+import com.mxn.soul.flowingdrawer_core.FlowingView2;
 import com.mxn.soul.flowingdrawer_core.LeftDrawerLayout;
 
 
@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
         FragmentManager fm = getSupportFragmentManager();
         MyMenuFragment mMenuFragment = (MyMenuFragment) fm.findFragmentById(R.id.id_container_menu);
-        FlowingView mFlowingView = (FlowingView) findViewById(R.id.sv);
+        FlowingView2 mFlowingView = (FlowingView2) findViewById(R.id.sv);
         if (mMenuFragment == null) {
             fm.beginTransaction().add(R.id.id_container_menu, mMenuFragment = new MyMenuFragment()).commit();
         }
