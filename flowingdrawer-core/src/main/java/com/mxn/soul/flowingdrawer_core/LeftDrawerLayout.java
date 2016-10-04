@@ -296,7 +296,16 @@ public class LeftDrawerLayout extends ViewGroup {
             mContentView.addView(mBg, lp);
         }
         ViewHelper.setAlpha(mBg, per);
+
         mBg.setClickable(per > 0);
+
+        mBg.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                closeDrawer();
+            }
+        });
+
+
     }
 
 }
