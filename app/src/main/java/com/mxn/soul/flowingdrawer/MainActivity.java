@@ -1,5 +1,8 @@
 package com.mxn.soul.flowingdrawer;
 
+import com.mxn.soul.flowingdrawer_core.FlowingDrawerLayout;
+import com.mxn.soul.flowingdrawer_core.FlowingView;
+
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -8,14 +11,11 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import com.mxn.soul.flowingdrawer_core.FlowingView;
-import com.mxn.soul.flowingdrawer_core.LeftDrawerLayout;
-
 
 public class MainActivity extends AppCompatActivity {
 
     private RecyclerView rvFeed;
-    private LeftDrawerLayout mLeftDrawerLayout;
+    private FlowingDrawerLayout mLeftDrawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setupToolbar();
 
-        mLeftDrawerLayout = (LeftDrawerLayout) findViewById(R.id.id_drawerlayout);
+        mLeftDrawerLayout = (FlowingDrawerLayout) findViewById(R.id.id_drawerlayout);
         rvFeed = (RecyclerView) findViewById(R.id.rvFeed);
 
         FragmentManager fm = getSupportFragmentManager();
@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (mLeftDrawerLayout.isShownMenu()) {
+        if (mLeftDrawerLayout.isForbidManual()) {
             mLeftDrawerLayout.closeDrawer();
         } else {
             super.onBackPressed();

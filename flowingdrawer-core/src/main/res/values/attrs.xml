@@ -1,0 +1,63 @@
+<!--
+  ~ Copyright (C) 2016 Baidu, Inc. All Rights Reserved.
+  -->
+<resources>
+
+    <!-- Reference to a style for the menu drawer. -->
+    <attr name="elasticDrawerStyle" format="reference" />
+
+    <!-- Styleables used for styling the menu drawer. -->
+    <declare-styleable name="ElasticDrawer">
+
+        <!-- Drawable to use for the background of the content. -->
+        <attr name="edContentBackground" format="reference" />
+
+        <!-- Drawable to use for the background of the menu. -->
+        <attr name="edMenuBackground" format="reference" />
+
+        <!-- The size of the menu. -->
+        <attr name="edMenuSize" format="dimension" />
+
+        <!-- Defines whether the content will have a dropshadow onto the menu. Default is true. -->
+        <attr name="edShadowEnabled" format="boolean" />
+
+        <!-- The size of the drop shadow. Default is 6dp -->
+        <attr name="edShadowSize" format="dimension" />
+
+        <!-- The color of the drop shadow. Default is #FF000000. -->
+        <attr name="edShadowColor" format="color" />
+
+        <!-- Drawable used for the drop shadow. -->
+        <attr name="edShadowDrawable" format="reference" />
+
+        <!-- The touch bezel size. -->
+        <attr name="edTouchBezelSize" format="dimension" />
+
+        <!-- Whether the indicator should be animated between active views. -->
+        <attr name="mdAllowIndicatorAnimation" format="boolean" />
+
+        <!-- The maximum animation duration -->
+        <attr name="mdMaxAnimationDuration" format="integer" />
+
+        <!-- Drawable that replaces the up indicator -->
+        <attr name="mdSlideDrawable" format="reference" />
+
+        <!-- String to use as the up indicators content description when the drawer is open -->
+        <attr name="mdDrawerOpenUpContentDescription" format="string" />
+
+        <!-- String to use as the up indicators content description when the drawer is closed -->
+        <attr name="mdDrawerClosedUpContentDescription" format="string" />
+
+        <!-- Whether an overlay should be drawn as the drawer is opened and closed -->
+        <attr name="edDrawOverlay" format="boolean" />
+
+        <!-- The position of the drawer -->
+        <attr name="mdPosition" format="enum">
+            <enum name="left" value="0" />
+            <enum name="right" value="2" />
+            <enum name="start" value="4" />
+            <enum name="end" value="5" />
+        </attr>
+    </declare-styleable>
+
+</resources>

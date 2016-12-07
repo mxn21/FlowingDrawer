@@ -1,5 +1,7 @@
 package com.mxn.soul.flowingdrawer_core;
 
+import com.nineoldandroids.view.ViewHelper;
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -13,8 +15,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-
-import com.nineoldandroids.view.ViewHelper;
 
 
 public class LeftDrawerLayout extends ViewGroup {
@@ -107,7 +107,9 @@ public class LeftDrawerLayout extends ViewGroup {
             @Override
             public void onViewPositionChanged(View changedView, int left, int top, int dx, int dy) {
                 final int childWidth = changedView.getWidth();
+
                 float offset = (float) (childWidth + left) / childWidth;
+
                 mLeftMenuOnScrren = offset;
                 showShadow(offset);
                 changedView.setVisibility(offset == 0 ? View.INVISIBLE : View.VISIBLE);
