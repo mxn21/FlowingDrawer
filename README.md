@@ -20,7 +20,7 @@ Gradle:
     }
 
     dependencies {
-        compile 'com.mxn.soul:flowingdrawer-core:1.2.2'
+        compile 'com.mxn.soul:flowingdrawer-core:1.2.5'
         compile 'com.nineoldandroids:library:2.4.0'
     }
 ```

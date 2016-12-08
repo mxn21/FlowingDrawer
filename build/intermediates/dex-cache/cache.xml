@@ -2,11 +2,19 @@
 <items version="2" >
 
     <item
+<<<<<<< HEAD
         jar="/Users/baidu/AndroidStudioProjects/github/FlowingDrawer/app/build/intermediates/exploded-aar/FlowingDrawer/flowingdrawer-core/unspecified/jars/classes.jar"
         jumboMode="false"
         revision="22.0.1"
         sha1="1b50a40403221f633e59c41bb67303b7425c0023">
         <dex dex="/Users/baidu/AndroidStudioProjects/github/FlowingDrawer/app/build/intermediates/pre-dexed/debug/classes-983a1cc5300b1fa0b2e20eff30f2fa38d4e1460a.jar" />
+=======
+        jar="/Users/cys/MyGithub/FlowingDrawer/app/build/intermediates/exploded-aar/com.mxn.soul/flowingdrawer-core/1.2.4/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="9bafda303ea0f7096469be6454c26f607ae04f2a">
+        <dex dex="/Users/cys/MyGithub/FlowingDrawer/app/build/intermediates/pre-dexed/debug/classes-01ade1863018f7e2d0e678305915c5792d08b446.jar" />
+>>>>>>> master
     </item>
 
 </items>

@@ -28,7 +28,7 @@ dependencies {
 
 /**
 // 根节点添加
-version = "1.2.2"
+version = "1.2.5"
 
 def siteUrl = 'https://github.com/mxn21/FlowingDrawer'    // project homepage
 def gitUrl = 'https://github.com/mxn21/FlowingDrawer.git' // project git
