@@ -3,13 +3,24 @@
  */
 package com.mxn.soul.flowingdrawer_core;
 
+import com.nineoldandroids.view.ViewHelper;
+
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Canvas;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.view.animation.Interpolator;
 import android.widget.Scroller;
 
@@ -21,12 +32,19 @@ public abstract class ElasticDrawer extends ViewGroup {
     /**
      * Tag used when logging.
      */
-    private static final String TAG = "DraggableDrawer";
+    private static final String TAG = "ElasticDrawer";
 
     /**
      * Indicates whether debug code should be enabled.
      */
     private static final boolean DEBUG = false;
+    /**
+     * The time between each frame when animating the drawer.
+     */
+    protected static final int ANIMATION_DELAY = 1000 / 60;
+
+
+
     /**
      * The size of the menu (width or height depending on the gravity).
      */
@@ -43,7 +61,10 @@ public abstract class ElasticDrawer extends ViewGroup {
      * The color of the drop shadow.
      */
     protected int mShadowColor;
-
+    /**
+     * Defines whether the drop shadow is enabled.
+     */
+    protected boolean mDropShadowEnabled;
 
     private boolean mCustomShadowEnabled;
     /**
@@ -54,11 +75,6 @@ public abstract class ElasticDrawer extends ViewGroup {
      * The touch bezel size of the drawer in px.
      */
     protected int mTouchBezelSize;
-
-    /**
-     * Whether an overlay should be drawn as the drawer is opened and closed.
-     */
-    protected boolean mDrawOverlay;
 
     /**
      * Interpolator used when animating the drawer open/closed.
@@ -123,6 +139,7 @@ public abstract class ElasticDrawer extends ViewGroup {
      */
     protected float mOffsetPixels;
 
+    protected final Rect mDropShadowRect = new Rect();
 
     /**
      * The default drop shadow size in dp.
@@ -149,6 +166,56 @@ public abstract class ElasticDrawer extends ViewGroup {
      * Allow opening drawer by dragging anywhere on the screen.
      */
     public static final int TOUCH_MODE_FULLSCREEN = 2;
+
+    /**
+     * Listener used to dispatch state change events.
+     */
+    private OnDrawerStateChangeListener mOnDrawerStateChangeListener;
+    /**
+     * Callback that lets the listener override intercepting of touch events.
+     */
+    protected OnInterceptMoveEventListener mOnInterceptMoveEventListener;
+
+    /**
+     * Indicates that the drawer is currently closed.
+     */
+    public static final int STATE_CLOSED = 0;
+
+    /**
+     * Indicates that the drawer is currently closing.
+     */
+    public static final int STATE_CLOSING = 1;
+
+    /**
+     * Indicates that the drawer is currently being dragged by the user.
+     */
+    public static final int STATE_DRAGGING = 2;
+
+    /**
+     * Indicates that the drawer is currently opening.
+     */
+    public static final int STATE_OPENING = 4;
+
+    /**
+     * Indicates that the drawer is currently open.
+     */
+    public static final int STATE_OPEN = 8;
+
+    /**
+     * The current drawer state.
+     *
+     * @see #STATE_CLOSED
+     * @see #STATE_CLOSING
+     * @see #STATE_DRAGGING
+     * @see #STATE_OPENING
+     * @see #STATE_OPEN
+     */
+    protected int mDrawerState = STATE_CLOSED;
+
+    /**
+     * Bundle used to hold the drawers state.
+     */
+    protected Bundle mState;
 
 
     public ElasticDrawer(Context context) {
@@ -191,8 +258,6 @@ public abstract class ElasticDrawer extends ViewGroup {
         mTouchBezelSize = a.getDimensionPixelSize(R.styleable.ElasticDrawer_edTouchBezelSize,
                 dpToPx(DEFAULT_DRAG_BEZEL_DP));
 
-        mDrawOverlay = a.getBoolean(R.styleable.ElasticDrawer_edDrawOverlay, true);
-
         a.recycle();
 
 
@@ -216,6 +281,17 @@ public abstract class ElasticDrawer extends ViewGroup {
 
     protected int dpToPx(int dp) {
         return (int) (getResources().getDisplayMetrics().density * dp + 0.5f);
+    }
+
+    protected boolean isViewDescendant(View v) {
+        ViewParent parent = v.getParent();
+        while (parent != null) {
+            if (parent == this) {
+                return true;
+            }
+            parent = parent.getParent();
+        }
+        return false;
     }
 
     /**
@@ -295,7 +371,7 @@ public abstract class ElasticDrawer extends ViewGroup {
             mContentContainer.addView(content, new ViewGroup.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
         } else {
             throw new IllegalStateException(
-                    "content and Menu view must be added in xml .");
+                    "content view must be added in xml .");
         }
         View menu = getChildAt(1);
         if (menu != null) {
@@ -305,7 +381,7 @@ public abstract class ElasticDrawer extends ViewGroup {
             mMenuContainer.addView(menu, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
         } else {
             throw new IllegalStateException(
-                    "content and Menu view must be added in xml .");
+                    "menu view must be added in xml .");
         }
     }
 
@@ -372,4 +448,202 @@ public abstract class ElasticDrawer extends ViewGroup {
         animateOffsetTo(position, duration);
     }
 
+
+    /**
+     * Register a callback to be invoked when the drawer state changes.
+     *
+     * @param listener The callback that will run.
+     */
+    public void setOnDrawerStateChangeListener(OnDrawerStateChangeListener listener) {
+        mOnDrawerStateChangeListener = listener;
+    }
+    /**
+     * Register a callback that will be invoked when the drawer is about to intercept touch events.
+     *
+     * @param listener The callback that will be invoked.
+     */
+    public void setOnInterceptMoveEventListener(OnInterceptMoveEventListener listener) {
+        mOnInterceptMoveEventListener = listener;
+    }
+
+    /**
+     * Get the current state of the drawer.
+     *
+     * @return The state of the drawer.
+     */
+    public int getDrawerState() {
+        return mDrawerState;
+    }
+
+
+    protected void setDrawerState(int state) {
+        if (state != mDrawerState) {
+            final int oldState = mDrawerState;
+            mDrawerState = state;
+            if (mOnDrawerStateChangeListener != null) mOnDrawerStateChangeListener.onDrawerStateChange(oldState, state);
+            if (DEBUG) logDrawerState(state);
+        }
+    }
+
+    protected void logDrawerState(int state) {
+        switch (state) {
+            case STATE_CLOSED:
+                Log.d(TAG, "[DrawerState] STATE_CLOSED");
+                break;
+
+            case STATE_CLOSING:
+                Log.d(TAG, "[DrawerState] STATE_CLOSING");
+                break;
+
+            case STATE_DRAGGING:
+                Log.d(TAG, "[DrawerState] STATE_DRAGGING");
+                break;
+
+            case STATE_OPENING:
+                Log.d(TAG, "[DrawerState] STATE_OPENING");
+                break;
+
+            case STATE_OPEN:
+                Log.d(TAG, "[DrawerState] STATE_OPEN");
+                break;
+            default:
+                Log.d(TAG, "[DrawerState] Unknown: " + state);
+        }
+    }
+
+    @Override
+    public void postOnAnimation(Runnable action) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            super.postOnAnimation(action);
+        } else {
+            postDelayed(action, ANIMATION_DELAY);
+        }
+    }
+
+    @Override
+    protected void dispatchDraw(Canvas canvas) {
+        super.dispatchDraw(canvas);
+        final int offsetPixels = (int) mOffsetPixels;
+
+        if (offsetPixels != 0) {
+            drawOverlay(canvas);
+        }
+        if (mDropShadowEnabled && offsetPixels != 0 ) {
+            drawDropShadow(canvas);
+        }
+        if (shouldDrawIndicator() && offsetPixels != 0 ) {
+            drawIndicator(canvas);
+        }
+    }
+
+    protected abstract void drawOverlay(Canvas canvas);
+
+    private void drawDropShadow(Canvas canvas) {
+        // Can't pass the position to the constructor, so wait with loading the drawable until the drop shadow is
+        // actually drawn.
+        if (mDropShadowDrawable == null) {
+            setDropShadowColor(mShadowColor);
+        }
+        updateDropShadowRect();
+        mDropShadowDrawable.setBounds(mDropShadowRect);
+        mDropShadowDrawable.draw(canvas);
+    }
+
+    /**
+     * Sets the color of the drop shadow.
+     *
+     * @param color The color of the drop shadow.
+     */
+    public void setDropShadowColor(int color) {
+        GradientDrawable.Orientation orientation = getDropShadowOrientation();
+
+        final int endColor = color & 0x00FFFFFF;
+        mDropShadowDrawable = new GradientDrawable(orientation,
+                new int[] {
+                        color,
+                        endColor,
+                });
+        invalidate();
+    }
+
+    protected abstract void updateDropShadowRect() ;
+
+    protected abstract GradientDrawable.Orientation getDropShadowOrientation() ;
+
+    /**
+     * Saves the state of the drawer.
+     *
+     * @return Returns a Parcelable containing the drawer state.
+     */
+    public final Parcelable saveState() {
+        if (mState == null) mState = new Bundle();
+        saveState(mState);
+        return mState;
+    }
+
+    void saveState(Bundle state) {
+        // State saving isn't required for subclasses.
+    }
+
+    /**
+     * Restores the state of the drawer.
+     *
+     * @param in A parcelable containing the drawer state.
+     */
+    public void restoreState(Parcelable in) {
+        mState = (Bundle) in;
+    }
+
+    @Override
+    protected Parcelable onSaveInstanceState() {
+        Parcelable superState = super.onSaveInstanceState();
+        SavedState state = new SavedState(superState);
+
+        if (mState == null) mState = new Bundle();
+        saveState(mState);
+
+        state.mState = mState;
+        return state;
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Parcelable state) {
+        SavedState savedState = (SavedState) state;
+        super.onRestoreInstanceState(savedState.getSuperState());
+
+        restoreState(savedState.mState);
+    }
+
+    static class SavedState extends BaseSavedState {
+
+        Bundle mState;
+
+        public SavedState(Parcelable superState) {
+            super(superState);
+        }
+
+        public SavedState(Parcel in) {
+            super(in);
+            mState = in.readBundle();
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            super.writeToParcel(dest, flags);
+            dest.writeBundle(mState);
+        }
+
+        @SuppressWarnings("UnusedDeclaration")
+        public static final Creator<SavedState> CREATOR = new Creator<SavedState>() {
+            @Override
+            public SavedState createFromParcel(Parcel in) {
+                return new SavedState(in);
+            }
+
+            @Override
+            public SavedState[] newArray(int size) {
+                return new SavedState[size];
+            }
+        };
+    }
 }
