@@ -1,7 +1,3 @@
 <component name="CopyrightManager">
-  <settings default="Baidu">
-    <LanguageOptions name="__TEMPLATE__">
-      <option name="addBlankAfter" value="false" />
-    </LanguageOptions>
-  </settings>
+  <settings default="" />
 </component>
