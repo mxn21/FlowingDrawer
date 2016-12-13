@@ -1,6 +1,4 @@
-<!--
-  ~ Copyright (C) 2016 Baidu, Inc. All Rights Reserved.
-  -->
+
 <resources>
 
     <!-- Reference to a style for the menu drawer. -->
@@ -33,31 +31,14 @@
         <!-- The touch bezel size. -->
         <attr name="edTouchBezelSize" format="dimension" />
 
-        <!-- Whether the indicator should be animated between active views. -->
-        <attr name="mdAllowIndicatorAnimation" format="boolean" />
-
         <!-- The maximum animation duration -->
-        <attr name="mdMaxAnimationDuration" format="integer" />
-
-        <!-- Drawable that replaces the up indicator -->
-        <attr name="mdSlideDrawable" format="reference" />
-
-        <!-- String to use as the up indicators content description when the drawer is open -->
-        <attr name="mdDrawerOpenUpContentDescription" format="string" />
-
-        <!-- String to use as the up indicators content description when the drawer is closed -->
-        <attr name="mdDrawerClosedUpContentDescription" format="string" />
+        <attr name="edMaxAnimationDuration" format="integer" />
 
         <!-- Whether an overlay should be drawn as the drawer is opened and closed -->
         <attr name="edDrawOverlay" format="boolean" />
 
         <!-- The position of the drawer -->
-        <attr name="mdPosition" format="enum">
-            <enum name="left" value="0" />
-            <enum name="right" value="2" />
-            <enum name="start" value="4" />
-            <enum name="end" value="5" />
-        </attr>
+        <attr name="edPosition" format="integer"/>
     </declare-styleable>
 
 </resources>

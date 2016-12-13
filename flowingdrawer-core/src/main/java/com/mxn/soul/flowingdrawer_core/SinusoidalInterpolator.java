@@ -1,12 +1,10 @@
-/*
- * Copyright (C) 2016 Baidu, Inc. All Rights Reserved.
- */
+
 package com.mxn.soul.flowingdrawer_core;
 
 import android.view.animation.Interpolator;
 
 /**
- * Created by baidu on 2016/10/17.
+ * Created by mxn on 2016/10/17.
  */
 public class SinusoidalInterpolator implements Interpolator {
 

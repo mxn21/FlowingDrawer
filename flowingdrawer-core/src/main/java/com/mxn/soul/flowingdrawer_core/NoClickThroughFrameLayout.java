@@ -1,6 +1,4 @@
-/*
- * Copyright (C) 2016 Baidu, Inc. All Rights Reserved.
- */
+
 package com.mxn.soul.flowingdrawer_core;
 
 import android.content.Context;
@@ -8,7 +6,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 
 /**
- * Created by baidu on 2016/10/18.
+ * Created by mxn on 2016/10/18.
  */
 public class NoClickThroughFrameLayout  extends BuildLayerFrameLayout {
 
