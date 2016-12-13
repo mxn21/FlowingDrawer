@@ -1,6 +1,3 @@
-/*
- * Copyright (C) 2016 Baidu, Inc. All Rights Reserved.
- */
 package com.mxn.soul.flowingdrawer_core;
 
 import android.annotation.SuppressLint;
@@ -8,7 +5,7 @@ import android.os.Build;
 import android.view.View;
 
 /**
- * Created by baidu on 2016/12/9.
+ * Created by mxn on 2016/12/9.
  */
 
 final class ViewHelper {

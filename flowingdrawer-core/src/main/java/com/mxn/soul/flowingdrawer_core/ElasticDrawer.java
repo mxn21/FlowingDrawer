@@ -1,8 +1,5 @@
-/*
- * Copyright (C) 2016 Baidu, Inc. All Rights Reserved.
- */
-package com.mxn.soul.flowingdrawer_core;
 
+package com.mxn.soul.flowingdrawer_core;
 
 import static com.mxn.soul.flowingdrawer_core.FlowingDrawer.USE_TRANSLATIONS;
 
@@ -11,6 +8,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
@@ -49,7 +47,6 @@ public abstract class ElasticDrawer extends ViewGroup {
      */
     protected static final int ANIMATION_DELAY = 1000 / 60;
 
-
     /**
      * Indicates whether the menu is currently visible.
      */
@@ -70,6 +67,10 @@ public abstract class ElasticDrawer extends ViewGroup {
      * The color of the drop shadow.
      */
     protected int mShadowColor;
+    /**
+     * Drawable used as menu overlay.
+     */
+    protected Drawable mMenuOverlay;
     /**
      * Defines whether the drop shadow is enabled.
      */
@@ -112,22 +113,29 @@ public abstract class ElasticDrawer extends ViewGroup {
     protected boolean mHardwareLayersEnabled = true;
 
     /**
-     * Default delay between each subsequent animation, after {@link #peekDrawer()} has been called.
+     * The initial X position of a drag.
      */
-    protected long mPeekDelay;
+    protected float mInitialMotionX;
 
     /**
-     * Scroller used for the peek drawer animation.
+     * The initial Y position of a drag.
      */
-    protected Scroller mPeekScroller;
+    protected float mInitialMotionY;
+
+    /**
+     * The last X position of a drag.
+     */
+    protected float mLastMotionX = -1;
+
+    /**
+     * The last Y position of a drag.
+     */
+    protected float mLastMotionY = -1;
+
     /**
      * Velocity tracker used when animating the drawer open/closed after a drag.
      */
     protected VelocityTracker mVelocityTracker;
-    /**
-     * Interpolator used for peeking at the drawer.
-     */
-    private static final Interpolator PEEK_INTERPOLATOR = new PeekInterpolator();
 
     /**
      * Indicates whether the menu should be offset when dragging the drawer.
@@ -177,7 +185,6 @@ public abstract class ElasticDrawer extends ViewGroup {
      * Whether an overlay should be drawn as the drawer is opened and closed.
      */
     protected boolean mDrawOverlay;
-
 
     protected final Rect mDropShadowRect = new Rect();
 
@@ -281,28 +288,10 @@ public abstract class ElasticDrawer extends ViewGroup {
     public static final int INVALID_POINTER = -1;
 
     /**
-     * Default delay from {@link #peekDrawer()} is called until first animation is run.
+     * The maximum alpha of the dark menu overlay used for dimming the menu.
      */
-    private static final long DEFAULT_PEEK_START_DELAY = 5000;
-    /**
-     * Default delay between each subsequent animation, after {@link #peekDrawer()} has been called.
-     */
-    private static final long DEFAULT_PEEK_DELAY = 10000;
+    protected static final int MAX_MENU_OVERLAY_ALPHA = 185;
 
-    /**
-     * Runnable used for first call to {@link #startPeek()} after {@link #peekDrawer()}  has been called.
-     */
-    private Runnable mPeekStartRunnable;
-
-    /**
-     * Runnable used when the peek animation is running.
-     */
-    protected final Runnable mPeekRunnable = new Runnable() {
-        @Override
-        public void run() {
-            peekDrawerInvalidate();
-        }
-    };
     /**
      * Runnable used when animating the drawer open/closed.
      */
@@ -312,10 +301,6 @@ public abstract class ElasticDrawer extends ViewGroup {
             postAnimationInvalidate();
         }
     };
-
-    protected boolean mIsPeeking;
-
-
 
     public ElasticDrawer(Context context) {
         super(context);
@@ -330,6 +315,7 @@ public abstract class ElasticDrawer extends ViewGroup {
         initDrawer(context, attrs, defStyle);
     }
 
+    @SuppressLint("NewApi")
     protected void initDrawer(Context context, AttributeSet attrs, int defStyle) {
         setWillNotDraw(false);
         setFocusable(false);
@@ -366,7 +352,6 @@ public abstract class ElasticDrawer extends ViewGroup {
 
         a.recycle();
 
-
         mMenuContainer = new NoClickThroughFrameLayout(context);
         mMenuContainer.setId(R.id.md__menu);
         mMenuContainer.setBackgroundDrawable(menuBackground);
@@ -374,16 +359,20 @@ public abstract class ElasticDrawer extends ViewGroup {
         mContentContainer = new NoClickThroughFrameLayout(context);
         mContentContainer.setId(R.id.md__content);
 
+        mMenuOverlay = new ColorDrawable(0xFF000000);
+
         final ViewConfiguration configuration = ViewConfiguration.get(context);
         mTouchSlop = configuration.getScaledTouchSlop();
         mMaxVelocity = configuration.getScaledMaximumFlingVelocity();
 
         mScroller = new Scroller(context, SMOOTH_INTERPOLATOR);
-        mPeekScroller = new Scroller(context, PEEK_INTERPOLATOR);
-
         mCloseEnough = dpToPx(CLOSE_ENOUGH);
-    }
 
+        if (USE_TRANSLATIONS) {
+            mContentContainer.setLayerType(View.LAYER_TYPE_NONE, null);
+        }
+        mContentContainer.setHardwareLayersEnabled(false);
+    }
 
     protected int dpToPx(int dp) {
         return (int) (getResources().getDisplayMetrics().density * dp + 0.5f);
@@ -436,6 +425,7 @@ public abstract class ElasticDrawer extends ViewGroup {
          * @param delta Delta drag in pixels
          * @param x     X coordinate of the active touch point
          * @param y     Y coordinate of the active touch point
+         *
          * @return true if view is draggable by delta dx.
          */
         boolean isViewDraggable(View v, int delta, int x, int y);
@@ -443,19 +433,21 @@ public abstract class ElasticDrawer extends ViewGroup {
 
     class Position {
         // Positions the drawer to the left of the content.
-        static final int LEFT = 1 ;
+        static final int LEFT = 1;
         // Positions the drawer to the right of the content.
-        static final int RIGHT = 2 ;
+        static final int RIGHT = 2;
         /**
-         * Position the drawer at the start edge. This will position the drawer to the {@link #LEFT} with LTR languages and
+         * Position the drawer at the start edge. This will position the drawer to the {@link #LEFT} with LTR
+         * languages and
          * {@link #RIGHT} with RTL languages.
          */
-        static final int START = 3 ;
+        static final int START = 3;
         /**
-         * Position the drawer at the end edge. This will position the drawer to the {@link #RIGHT} with LTR languages and
+         * Position the drawer at the end edge. This will position the drawer to the {@link #RIGHT} with LTR
+         * languages and
          * {@link #LEFT} with RTL languages.
          */
-        static final int END = 4 ;
+        static final int END = 4;
     }
 
     protected void updateTouchAreaSize() {
@@ -480,12 +472,13 @@ public abstract class ElasticDrawer extends ViewGroup {
         if (content != null) {
             removeView(content);
             mContentContainer.removeAllViews();
-            mContentContainer.addView(content, new ViewGroup.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+            mContentContainer
+                    .addView(content, new ViewGroup.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
         } else {
             throw new IllegalStateException(
                     "content view must be added in xml .");
         }
-        View menu = getChildAt(1);
+        View menu = getChildAt(0);
         if (menu != null) {
             removeView(menu);
             mMenuView = menu;
@@ -495,6 +488,8 @@ public abstract class ElasticDrawer extends ViewGroup {
             throw new IllegalStateException(
                     "menu view must be added in xml .");
         }
+        addView(mContentContainer, -1, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+        addView(mMenuContainer, -1, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
     }
 
     /**
@@ -503,6 +498,7 @@ public abstract class ElasticDrawer extends ViewGroup {
      * @param offsetPixels The number of pixels to offset the content by.
      */
     protected abstract void onOffsetPixelsChanged(int offsetPixels);
+
     /**
      * Toggles the menu open and close with animation.
      */
@@ -522,6 +518,7 @@ public abstract class ElasticDrawer extends ViewGroup {
             openMenu(animate);
         }
     }
+
     /**
      * Animates the menu open.
      */
@@ -549,6 +546,7 @@ public abstract class ElasticDrawer extends ViewGroup {
      * @param animate Whether open/close should be animated.
      */
     public abstract void closeMenu(boolean animate);
+
     /**
      * Indicates whether the menu is currently visible.
      *
@@ -557,7 +555,6 @@ public abstract class ElasticDrawer extends ViewGroup {
     public boolean isMenuVisible() {
         return mMenuVisible;
     }
-
 
     /**
      * Set the size of the menu drawer when open.
@@ -582,8 +579,6 @@ public abstract class ElasticDrawer extends ViewGroup {
      */
     protected void animateOffsetTo(int position, int velocity, boolean animate) {
         endDrag();
-        endPeek();
-
         final int startX = (int) mOffsetPixels;
         final int dx = position - startX;
         if (dx == 0 || !animate) {
@@ -636,13 +631,17 @@ public abstract class ElasticDrawer extends ViewGroup {
             // Notify any attached listeners of the current open ratio
             final float openRatio = ((float) Math.abs(newOffset)) / mMenuSize;
             dispatchOnDrawerSlide(openRatio, newOffset);
+//            ((FlowingMenuLayout)mMenuView).setClipOffsetPixels(mOffsetPixels) ;
         }
     }
+
     @Override
     public void onRtlPropertiesChanged(int layoutDirection) {
         super.onRtlPropertiesChanged(layoutDirection);
 
-        if (!mCustomShadowEnabled) setDropShadowColor(mShadowColor);
+        if (!mCustomShadowEnabled) {
+            setDropShadowColor(mShadowColor);
+        }
 
         if (getPosition() != mResolvedPosition) {
             mResolvedPosition = getPosition();
@@ -688,6 +687,7 @@ public abstract class ElasticDrawer extends ViewGroup {
     public void setOnDrawerStateChangeListener(OnDrawerStateChangeListener listener) {
         mOnDrawerStateChangeListener = listener;
     }
+
     /**
      * Register a callback that will be invoked when the drawer is about to intercept touch events.
      *
@@ -697,55 +697,6 @@ public abstract class ElasticDrawer extends ViewGroup {
         mOnInterceptMoveEventListener = listener;
     }
 
-
-    /**
-     * Animates the drawer slightly open until the user opens the drawer.
-     */
-    public void peekDrawer() {
-        peekDrawer(DEFAULT_PEEK_START_DELAY, DEFAULT_PEEK_DELAY);
-    }
-
-    /**
-     * Animates the drawer slightly open. If delay is larger than 0, this happens until the user opens the drawer.
-     *
-     * @param delay The delay (in milliseconds) between each run of the animation. If 0, this animation is only run
-     *              once.
-     */
-    public void peekDrawer(long delay) {
-        peekDrawer(DEFAULT_PEEK_START_DELAY, delay);
-    }
-
-    /**
-     * Animates the drawer slightly open. If delay is larger than 0, this happens until the user opens the drawer.
-     *
-     * @param startDelay The delay (in milliseconds) until the animation is first run.
-     * @param delay      The delay (in milliseconds) between each run of the animation. If 0, this animation is only run
-     *                   once.
-     */
-    public void peekDrawer(final long startDelay, final long delay) {
-        if (startDelay < 0) {
-            throw new IllegalArgumentException("startDelay must be zero or larger.");
-        }
-        if (delay < 0) {
-            throw new IllegalArgumentException("delay must be zero or larger");
-        }
-        removeCallbacks(mPeekRunnable);
-        removeCallbacks(mPeekStartRunnable);
-        mPeekDelay = delay;
-        mPeekStartRunnable = new Runnable() {
-            @Override
-            public void run() {
-                startPeek();
-            }
-        };
-        postDelayed(mPeekStartRunnable, startDelay);
-    }
-
-    /**
-     * Returns the ViewGroup used as a parent for the menu view.
-     *
-     * @return The menu view's parent.
-     */
     /**
      * Sets the maximum duration of open/close animations.
      *
@@ -776,8 +727,6 @@ public abstract class ElasticDrawer extends ViewGroup {
     public ViewGroup getMenuContainer() {
         return mMenuContainer;
     }
-
-
 
     /**
      * Returns the ViewGroup used as a parent for the content view.
@@ -819,14 +768,16 @@ public abstract class ElasticDrawer extends ViewGroup {
         return mOffsetMenu;
     }
 
-
-
     protected void setDrawerState(int state) {
         if (state != mDrawerState) {
             final int oldState = mDrawerState;
             mDrawerState = state;
-            if (mOnDrawerStateChangeListener != null) mOnDrawerStateChangeListener.onDrawerStateChange(oldState, state);
-            if (DEBUG) logDrawerState(state);
+            if (mOnDrawerStateChangeListener != null) {
+                mOnDrawerStateChangeListener.onDrawerStateChange(oldState, state);
+            }
+            if (DEBUG) {
+                logDrawerState(state);
+            }
         }
     }
 
@@ -873,7 +824,6 @@ public abstract class ElasticDrawer extends ViewGroup {
         return mTouchMode;
     }
 
-
     @Override
     public void postOnAnimation(Runnable action) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
@@ -889,7 +839,6 @@ public abstract class ElasticDrawer extends ViewGroup {
         }
     }
 
-
     @Override
     protected void dispatchDraw(Canvas canvas) {
         super.dispatchDraw(canvas);
@@ -898,7 +847,8 @@ public abstract class ElasticDrawer extends ViewGroup {
         if (mDrawOverlay && offsetPixels != 0) {
             drawOverlay(canvas);
         }
-        if (mDropShadowEnabled && offsetPixels != 0 ) {
+        // todo 删
+        if (mDropShadowEnabled && offsetPixels != 0) {
             drawDropShadow(canvas);
         }
     }
@@ -906,8 +856,6 @@ public abstract class ElasticDrawer extends ViewGroup {
     protected abstract void drawOverlay(Canvas canvas);
 
     private void drawDropShadow(Canvas canvas) {
-        // Can't pass the position to the constructor, so wait with loading the drawable until the drop shadow is
-        // actually drawn.
         if (mDropShadowDrawable == null) {
             setDropShadowColor(mShadowColor);
         }
@@ -926,6 +874,7 @@ public abstract class ElasticDrawer extends ViewGroup {
         mCustomShadowEnabled = drawable != null;
         invalidate();
     }
+
     /**
      * Sets the color of the drop shadow.
      *
@@ -942,6 +891,7 @@ public abstract class ElasticDrawer extends ViewGroup {
                 });
         invalidate();
     }
+
     /**
      * Defines whether the drop shadow is enabled.
      *
@@ -952,9 +902,9 @@ public abstract class ElasticDrawer extends ViewGroup {
         invalidate();
     }
 
-    protected abstract void updateDropShadowRect() ;
+    protected abstract void updateDropShadowRect();
 
-    protected abstract GradientDrawable.Orientation getDropShadowOrientation() ;
+    protected abstract GradientDrawable.Orientation getDropShadowOrientation();
 
     /**
      * Saves the state of the drawer.
@@ -962,7 +912,9 @@ public abstract class ElasticDrawer extends ViewGroup {
      * @return Returns a Parcelable containing the drawer state.
      */
     public final Parcelable saveState() {
-        if (mState == null) mState = new Bundle();
+        if (mState == null) {
+            mState = new Bundle();
+        }
         saveState(mState);
         return mState;
     }
@@ -993,7 +945,9 @@ public abstract class ElasticDrawer extends ViewGroup {
         Parcelable superState = super.onSaveInstanceState();
         SavedState state = new SavedState(superState);
 
-        if (mState == null) mState = new Bundle();
+        if (mState == null) {
+            mState = new Bundle();
+        }
         saveState(mState);
 
         state.mState = mState;
@@ -1084,6 +1038,7 @@ public abstract class ElasticDrawer extends ViewGroup {
      * @param dx     Delta scrolled in pixels
      * @param x      X coordinate of the active touch point
      * @param y      Y coordinate of the active touch point
+     *
      * @return true if child views of v can be scrolled by delta of dx.
      */
     protected boolean canChildScrollHorizontally(View v, boolean checkV, int dx, int x, int y) {
@@ -1118,6 +1073,7 @@ public abstract class ElasticDrawer extends ViewGroup {
      * @param dx     Delta scrolled in pixels
      * @param x      X coordinate of the active touch point
      * @param y      Y coordinate of the active touch point
+     *
      * @return true if child views of v can be scrolled by delta of dx.
      */
     protected boolean canChildScrollVertically(View v, boolean checkV, int dx, int x, int y) {
@@ -1165,66 +1121,6 @@ public abstract class ElasticDrawer extends ViewGroup {
     }
 
     /**
-     * Stops ongoing peek drawer animation.
-     */
-    protected void endPeek() {
-        removeCallbacks(mPeekStartRunnable);
-        removeCallbacks(mPeekRunnable);
-        stopLayerTranslation();
-        mIsPeeking = false;
-    }
-
-    /**
-     * Called when the peek drawer animation has successfully completed.
-     */
-    private void completePeek() {
-        mPeekScroller.abortAnimation();
-        setOffsetPixels(0);
-        setDrawerState(STATE_CLOSED);
-        stopLayerTranslation();
-        mIsPeeking = false;
-    }
-
-    protected abstract void initPeekScroller();
-
-    /**
-     * Callback when each frame in the peek drawer animation should be drawn.
-     */
-    private void peekDrawerInvalidate() {
-        if (mPeekScroller.computeScrollOffset()) {
-            final int oldX = (int) mOffsetPixels;
-            final int x = mPeekScroller.getCurrX();
-            if (x != oldX) setOffsetPixels(x);
-
-            if (!mPeekScroller.isFinished()) {
-                postOnAnimation(mPeekRunnable);
-                return;
-
-            } else if (mPeekDelay > 0) {
-                mPeekStartRunnable = new Runnable() {
-                    @Override
-                    public void run() {
-                        startPeek();
-                    }
-                };
-                postDelayed(mPeekStartRunnable, mPeekDelay);
-            }
-        }
-
-        completePeek();
-    }
-
-    /**
-     * Starts peek drawer animation.
-     */
-    protected void startPeek() {
-        mIsPeeking = true;
-        initPeekScroller();
-        startLayerTranslation();
-        peekDrawerInvalidate();
-    }
-
-    /**
      * Callback when each frame in the drawer animation should be drawn.
      */
     private void postAnimationInvalidate() {
@@ -1232,7 +1128,9 @@ public abstract class ElasticDrawer extends ViewGroup {
             final int oldX = (int) mOffsetPixels;
             final int x = mScroller.getCurrX();
 
-            if (x != oldX) setOffsetPixels(x);
+            if (x != oldX) {
+                setOffsetPixels(x);
+            }
             if (x != mScroller.getFinalX()) {
                 postOnAnimation(mDragRunnable);
                 return;
@@ -1307,6 +1205,7 @@ public abstract class ElasticDrawer extends ViewGroup {
             mMenuContainer.setLayerType(View.LAYER_TYPE_NONE, null);
         }
     }
+
     public void setTouchBezelSize(int size) {
         mTouchBezelSize = size;
     }
@@ -1314,7 +1213,6 @@ public abstract class ElasticDrawer extends ViewGroup {
     public int getTouchBezelSize() {
         return mTouchBezelSize;
     }
-
 
     public void setHardwareLayerEnabled(boolean enabled) {
         if (enabled != mHardwareLayersEnabled) {
