@@ -3,102 +3,102 @@
 
     <item
         is-multidex="true"
-        jar="/Users/baidu/AndroidStudioProjects/github/FlowingDrawer/app/build/intermediates/exploded-aar/com.android.support/design/22.2.1/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="22.0.1"
-        sha1="1821601ddbec5ff125653097812823388700af74">
-        <dex dex="/Users/baidu/AndroidStudioProjects/github/FlowingDrawer/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-design-22.2.1_4d0fd5e909ee4c51d4ed39cdd54de672ff3558f5/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/baidu/AndroidStudioProjects/github/FlowingDrawer/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.1/jars/libs/internal_impl-22.2.1.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="22.0.1"
-        sha1="c471eaaba13ff64f6e0383d1c30a9cdc9a97efeb">
-        <dex dex="/Users/baidu/AndroidStudioProjects/github/FlowingDrawer/app/build/intermediates/transforms/dex/debug/folders/1000/10/internal_impl-22.2.1_ada3896133a0a24fd326f99e7247aaa7d2f2616e/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/baidu/AndroidStudioProjects/github/FlowingDrawer/app/build/intermediates/exploded-aar/com.android.support/cardview-v7/22.2.1/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="22.0.1"
-        sha1="e1fa5e1123997a55e3ed65b44892993ff4b58cfe">
-        <dex dex="/Users/baidu/AndroidStudioProjects/github/FlowingDrawer/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-cardview-v7-22.2.1_f79242de6fd47cfe616d7e14a14367b5cb0185ab/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/baidu/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/22.2.1/support-annotations-22.2.1.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="22.0.1"
-        sha1="61a0ff5c29295ec56d7e0bd3d25d95dbf71b4b2b">
-        <dex dex="/Users/baidu/AndroidStudioProjects/github/FlowingDrawer/app/build/intermediates/transforms/dex/debug/folders/1000/10/support-annotations-22.2.1_f377f549bb18b83c02de347014ef34588a52ec3c/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/baidu/.gradle/caches/modules-2/files-2.1/com.squareup.picasso/picasso/2.5.0/7ff0e000d1e27e356567f56c92af3b8ab912636f/picasso-2.5.0.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="22.0.1"
-        sha1="7ff0e000d1e27e356567f56c92af3b8ab912636f">
-        <dex dex="/Users/baidu/AndroidStudioProjects/github/FlowingDrawer/app/build/intermediates/transforms/dex/debug/folders/1000/10/picasso-2.5.0_286127e5a3b7e469baa440dd42f11094e0193979/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/baidu/.gradle/caches/modules-2/files-2.1/com.nineoldandroids/library/2.4.0/e9b63380f3a242dbdbf103a2355ad7e43bad17cb/library-2.4.0.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="22.0.1"
-        sha1="e9b63380f3a242dbdbf103a2355ad7e43bad17cb">
-        <dex dex="/Users/baidu/AndroidStudioProjects/github/FlowingDrawer/app/build/intermediates/transforms/dex/debug/folders/1000/10/library-2.4.0_f1167f3cbb36496fe820fed56f6dc71f9b6d282d/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/baidu/AndroidStudioProjects/github/FlowingDrawer/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.1/jars/classes.jar"
+        jar="/Users/cys/MyGithub/FlowingDrawer/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.1/jars/classes.jar"
         jumboMode="true"
         optimize="true"
         revision="22.0.1"
         sha1="4486e953d1f35f8ccab098b1dd67146366d5f731">
-        <dex dex="/Users/baidu/AndroidStudioProjects/github/FlowingDrawer/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-appcompat-v7-22.2.1_39528d01557f94670e148d2f87962b5e8b1409f1/classes.dex" />
+        <dex dex="/Users/cys/MyGithub/FlowingDrawer/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-appcompat-v7-22.2.1_7ff8e28472a7c85d696a7f8a846fca54a5542afb/classes.dex" />
     </item>
     <item
         is-multidex="true"
-        jar="/Users/baidu/AndroidStudioProjects/github/FlowingDrawer/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/22.2.1/jars/classes.jar"
+        jar="/Users/cys/MyGithub/FlowingDrawer/app/build/intermediates/exploded-aar/com.android.support/design/22.2.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="22.0.1"
+        sha1="1821601ddbec5ff125653097812823388700af74">
+        <dex dex="/Users/cys/MyGithub/FlowingDrawer/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-design-22.2.1_73d6ff5090e4874e30026cbfd5a22de0f56f9ae2/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/cys/MyGithub/FlowingDrawer/app/build/intermediates/exploded-aar/com.android.support/cardview-v7/22.2.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="22.0.1"
+        sha1="e1fa5e1123997a55e3ed65b44892993ff4b58cfe">
+        <dex dex="/Users/cys/MyGithub/FlowingDrawer/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-cardview-v7-22.2.1_1f95ffe643364ee8a074896fc090056175e7b513/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/cys/.gradle/caches/modules-2/files-2.1/com.squareup.picasso/picasso/2.5.0/7ff0e000d1e27e356567f56c92af3b8ab912636f/picasso-2.5.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="22.0.1"
+        sha1="7ff0e000d1e27e356567f56c92af3b8ab912636f">
+        <dex dex="/Users/cys/MyGithub/FlowingDrawer/app/build/intermediates/transforms/dex/debug/folders/1000/10/picasso-2.5.0_ed5e0e6ef9e4022aca0fd7a399dfbfa085a4f0ab/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/cys/MyGithub/FlowingDrawer/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="22.0.1"
+        sha1="945e02617856ace88fa7cec821c805b02165ef2b">
+        <dex dex="/Users/cys/MyGithub/FlowingDrawer/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_4174f17b33dab878e5596f1b7a7b60ec7050de3a/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/cys/MyGithub/FlowingDrawer/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.1/jars/libs/internal_impl-22.2.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="22.0.1"
+        sha1="c471eaaba13ff64f6e0383d1c30a9cdc9a97efeb">
+        <dex dex="/Users/cys/MyGithub/FlowingDrawer/app/build/intermediates/transforms/dex/debug/folders/1000/10/internal_impl-22.2.1_70103343af613170c1bd14dea6f11bc93d5a4f50/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/cys/Public/androidADT/sdk/extras/android/m2repository/com/android/support/support-annotations/22.2.1/support-annotations-22.2.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="22.0.1"
+        sha1="61a0ff5c29295ec56d7e0bd3d25d95dbf71b4b2b">
+        <dex dex="/Users/cys/MyGithub/FlowingDrawer/app/build/intermediates/transforms/dex/debug/folders/1000/10/support-annotations-22.2.1_492dc43209f92cf8723dd153dc502657f31ddd50/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/cys/MyGithub/FlowingDrawer/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="22.0.1"
+        sha1="0b37e76dc700995e0aba82a185d8ad4f11b5d608">
+        <dex dex="/Users/cys/MyGithub/FlowingDrawer/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_7e85ece6561bd7b56dcef543c43f28b9278b5134/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/cys/MyGithub/FlowingDrawer/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/22.2.1/jars/classes.jar"
         jumboMode="true"
         optimize="true"
         revision="22.0.1"
         sha1="3abb4b88f5a8a0584a9b01d3170d7165f12f8588">
-        <dex dex="/Users/baidu/AndroidStudioProjects/github/FlowingDrawer/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-recyclerview-v7-22.2.1_8c437e8b3c860c567fe6a592fe89e205a2e5941e/classes.dex" />
+        <dex dex="/Users/cys/MyGithub/FlowingDrawer/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-recyclerview-v7-22.2.1_acab96953803076870e701b4bcf3cc151d2facda/classes.dex" />
     </item>
     <item
         is-multidex="true"
-        jar="/Users/baidu/AndroidStudioProjects/github/FlowingDrawer/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jar="/Users/cys/.gradle/caches/modules-2/files-2.1/com.nineoldandroids/library/2.4.0/e9b63380f3a242dbdbf103a2355ad7e43bad17cb/library-2.4.0.jar"
         jumboMode="true"
         optimize="true"
         revision="22.0.1"
-        sha1="7a9f2ff1baf7a9b3272a8250b45f9b25e6f54b3f">
-        <dex dex="/Users/baidu/AndroidStudioProjects/github/FlowingDrawer/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_23ffcba8a6625d1dfdd741a30c2ea4e4a90e9238/classes.dex" />
+        sha1="e9b63380f3a242dbdbf103a2355ad7e43bad17cb">
+        <dex dex="/Users/cys/MyGithub/FlowingDrawer/app/build/intermediates/transforms/dex/debug/folders/1000/10/library-2.4.0_97f58fec8fe2aa4cab97c210f061d3ad02b20c5b/classes.dex" />
     </item>
     <item
         is-multidex="true"
-        jar="/Users/baidu/AndroidStudioProjects/github/FlowingDrawer/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="22.0.1"
-        sha1="8f8ee9b8fb2ad9688dcac402489f74314cf99d2c">
-        <dex dex="/Users/baidu/AndroidStudioProjects/github/FlowingDrawer/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_c351061687c6c99fcc45cf477109363ea6a1d2ce/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/baidu/AndroidStudioProjects/github/FlowingDrawer/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.1/jars/classes.jar"
+        jar="/Users/cys/MyGithub/FlowingDrawer/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.1/jars/classes.jar"
         jumboMode="true"
         optimize="true"
         revision="22.0.1"
         sha1="f8efd0096475e0daf054267b61544e10dc776503">
-        <dex dex="/Users/baidu/AndroidStudioProjects/github/FlowingDrawer/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-v4-22.2.1_25a449c7bb0f75e1849e98b149770ba908c19e74/classes.dex" />
+        <dex dex="/Users/cys/MyGithub/FlowingDrawer/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-v4-22.2.1_cb9d85a9fcc9ddc7f26321b14e3584879058f34f/classes.dex" />
     </item>
 
 </items>

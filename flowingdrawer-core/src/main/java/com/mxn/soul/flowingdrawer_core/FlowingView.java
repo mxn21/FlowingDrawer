@@ -1,8 +1,5 @@
 package com.mxn.soul.flowingdrawer_core;
 
-import com.nineoldandroids.animation.Animator;
-import com.nineoldandroids.animation.ValueAnimator;
-
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -14,6 +11,9 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.OvershootInterpolator;
+
+import com.nineoldandroids.animation.Animator;
+import com.nineoldandroids.animation.ValueAnimator;
 
 public class FlowingView extends View {
 
@@ -202,12 +202,12 @@ public class FlowingView extends View {
                 if (currentPointY - getHeight() / 2 >= 0) {
                     bottomY = (int) (currentPointY + 0.7 * height / (ratio1 + 1) + currentPointX * 6 / (ratio2 + 1));
                     topY = (int) (currentPointY - 0.7 * height / (1 + 1 / ratio1) - currentPointX * 6 / (1 / ratio2 +
-                                                                                                                 1));
+                            1));
                 } else {
                     bottomY = (int) (currentPointY + 0.7 * height / (1 / ratio1 + 1) + currentPointX * 6 / (1 /
-                                                                                                                    ratio2
-                                                                                                                    +
-                                                                                                                    1));
+                            ratio2
+                            +
+                            1));
                     topY = (int) (currentPointY - 0.7 * height / (1 + ratio1) - currentPointX * 6 / (ratio2 + 1));
                 }
 

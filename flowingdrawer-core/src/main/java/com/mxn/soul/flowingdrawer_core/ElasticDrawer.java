@@ -1,8 +1,6 @@
 
 package com.mxn.soul.flowingdrawer_core;
 
-import static com.mxn.soul.flowingdrawer_core.FlowingDrawer.USE_TRANSLATIONS;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -26,6 +24,8 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.animation.Interpolator;
 import android.widget.Scroller;
+
+import static com.mxn.soul.flowingdrawer_core.FlowingDrawer.USE_TRANSLATIONS;
 
 /**
  * Created by mxn on 2016/10/15.
@@ -327,7 +327,7 @@ public abstract class ElasticDrawer extends ViewGroup {
 
         mMenuSize = a.getDimensionPixelSize(R.styleable.ElasticDrawer_edMenuSize, dpToPx(240));
 
-        mShadowEnabled = a.getBoolean(R.styleable.ElasticDrawer_edShadowEnabled, true);
+        mShadowEnabled = a.getBoolean(R.styleable.ElasticDrawer_edShadowEnabled, false);
 
         mDropShadowDrawable = a.getDrawable(R.styleable.ElasticDrawer_edShadowDrawable);
 
@@ -345,7 +345,7 @@ public abstract class ElasticDrawer extends ViewGroup {
 
         mMaxAnimationDuration = a.getInt(R.styleable.ElasticDrawer_edMaxAnimationDuration, DEFAULT_ANIMATION_DURATION);
 
-        mDrawOverlay = a.getBoolean(R.styleable.ElasticDrawer_edDrawOverlay, true);
+        mDrawOverlay = a.getBoolean(R.styleable.ElasticDrawer_edDrawOverlay, false);
 
         final int position = a.getInt(R.styleable.ElasticDrawer_edPosition, 0);
         setPosition(position);
@@ -354,7 +354,7 @@ public abstract class ElasticDrawer extends ViewGroup {
 
         mMenuContainer = new NoClickThroughFrameLayout(context);
         mMenuContainer.setId(R.id.md__menu);
-        mMenuContainer.setBackgroundDrawable(menuBackground);
+        mMenuContainer.setBackgroundColor(getResources().getColor(android.R.color.transparent));
 
         mContentContainer = new NoClickThroughFrameLayout(context);
         mContentContainer.setId(R.id.md__content);
@@ -631,7 +631,7 @@ public abstract class ElasticDrawer extends ViewGroup {
             // Notify any attached listeners of the current open ratio
             final float openRatio = ((float) Math.abs(newOffset)) / mMenuSize;
             dispatchOnDrawerSlide(openRatio, newOffset);
-//            ((FlowingMenuLayout)mMenuView).setClipOffsetPixels(mOffsetPixels) ;
+            ((FlowingMenuLayout)mMenuView).setClipOffsetPixels(mOffsetPixels) ;
         }
     }
 

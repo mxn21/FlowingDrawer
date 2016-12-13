@@ -124,24 +124,24 @@ public class FlowingDrawer extends ElasticDrawer {
 
     @Override
     protected void updateDropShadowRect() {
-        final float openRatio = Math.abs(mOffsetPixels) / mMenuSize;
-        final int dropShadowSize = (int) (mShadowSize * openRatio);
-        switch (getPosition()) {
-            case Position.LEFT:
-                mDropShadowRect.top = 0;
-                mDropShadowRect.bottom = getHeight();
-                mDropShadowRect.left = ViewHelper.getRight(mMenuContainer);
-                mDropShadowRect.right = mDropShadowRect.left + dropShadowSize;
-                break;
-
-            case Position.RIGHT:
-                mDropShadowRect.top = 0;
-                mDropShadowRect.bottom = getHeight();
-                mDropShadowRect.right = ViewHelper.getLeft(mMenuContainer);
-                mDropShadowRect.left = mDropShadowRect.right - dropShadowSize;
-                break;
-
-        }
+//        final float openRatio = Math.abs(mOffsetPixels) / mMenuSize;
+//        final int dropShadowSize = (int) (mShadowSize * openRatio);
+//        switch (getPosition()) {
+//            case Position.LEFT:
+//                mDropShadowRect.top = 0;
+//                mDropShadowRect.bottom = getHeight();
+//                mDropShadowRect.left = ViewHelper.getRight(mMenuContainer);
+//                mDropShadowRect.right = mDropShadowRect.left + dropShadowSize;
+//                break;
+//
+//            case Position.RIGHT:
+//                mDropShadowRect.top = 0;
+//                mDropShadowRect.bottom = getHeight();
+//                mDropShadowRect.right = ViewHelper.getLeft(mMenuContainer);
+//                mDropShadowRect.left = mDropShadowRect.right - dropShadowSize;
+//                break;
+//
+//        }
     }
 
     @SuppressLint("NewApi")
@@ -278,7 +278,7 @@ public class FlowingDrawer extends ElasticDrawer {
     protected void onMoveEvent(float dx) {
         switch (getPosition()) {
             case Position.LEFT:
-                setOffsetPixels(Math.min(Math.max(mOffsetPixels + dx, 0), mMenuSize));
+                setOffsetPixels(Math.min(Math.max(mOffsetPixels + dx, 0), mMenuSize/2));
                 break;
 
             case Position.RIGHT:
@@ -497,29 +497,30 @@ public class FlowingDrawer extends ElasticDrawer {
                     return false;
                 }
 
-                if (!mIsDragging) {
-                    final float x = ev.getX(pointerIndex);
-                    final float dx = x - mLastMotionX;
-                    final float y = ev.getY(pointerIndex);
-                    final float dy = y - mLastMotionY;
-
-                    if (checkTouchSlop(dx, dy)) {
-                        final boolean allowDrag = onMoveAllowDrag((int) x, dx);
-
-                        if (allowDrag) {
-                            stopAnimation();
-                            setDrawerState(STATE_DRAGGING);
-                            mIsDragging = true;
-                            mLastMotionX = x;
-                            mLastMotionY = y;
-                        } else {
-                            mInitialMotionX = x;
-                            mInitialMotionY = y;
-                        }
-                    }
-                }
+//                if (!mIsDragging) {
+//                    final float x = ev.getX(pointerIndex);
+//                    final float dx = x - mLastMotionX;
+//                    final float y = ev.getY(pointerIndex);
+//                    final float dy = y - mLastMotionY;
+//
+//                    if (checkTouchSlop(dx, dy)) {
+//                        final boolean allowDrag = onMoveAllowDrag((int) x, dx);
+//
+//                        if (allowDrag) {
+//                            stopAnimation();
+//                            setDrawerState(STATE_DRAGGING);
+//                            mIsDragging = true;
+//                            mLastMotionX = x;
+//                            mLastMotionY = y;
+//                        } else {
+//                            mInitialMotionX = x;
+//                            mInitialMotionY = y;
+//                        }
+//                    }
+//                }
 
                 if (mIsDragging) {
+
                     startLayerTranslation();
 
                     final float x = ev.getX(pointerIndex);
@@ -528,7 +529,20 @@ public class FlowingDrawer extends ElasticDrawer {
 
                     mLastMotionX = x;
                     mLastMotionY = y;
-                    onMoveEvent(dx);
+
+                    if (mOffsetPixels + dx < mMenuSize/2) {
+
+                        onMoveEvent(dx);
+
+
+                    } else {
+                        mVelocityTracker.computeCurrentVelocity(1000, mMaxVelocity);
+                        final int initialVelocity = (int) getXVelocity(mVelocityTracker);
+                        mLastMotionX = x;
+                        animateOffsetTo(mMenuSize, initialVelocity, true);
+
+                        endDrag();
+                    }
                 }
                 break;
             }
