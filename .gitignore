@@ -34,3 +34,6 @@ proguard/
 .gradle
 .gradle/
 
+
+.idea/copyright/profiles_settings.xml
+.idea/misc.xml
