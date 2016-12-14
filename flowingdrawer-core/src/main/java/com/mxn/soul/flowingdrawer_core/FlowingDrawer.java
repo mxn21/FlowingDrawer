@@ -11,6 +11,8 @@ import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
 
+import static android.R.attr.y;
+
 /**
  * Created by mxn on 2016/10/17.
  * FlowingDrawer
@@ -275,26 +277,26 @@ public class FlowingDrawer extends ElasticDrawer {
 
         return false;
     }
-    protected void onMoveEvent(float dx) {
+    protected void onMoveEvent(float dx, float y , int type) {
         switch (getPosition()) {
             case Position.LEFT:
-                setOffsetPixels(Math.min(Math.max(mOffsetPixels + dx, 0), mMenuSize/2));
+                setOffsetPixels(Math.min(Math.max(mOffsetPixels + dx, 0), mMenuSize/2),y ,type);
                 break;
 
             case Position.RIGHT:
-                setOffsetPixels(Math.max(Math.min(mOffsetPixels + dx, 0), -mMenuSize));
+                setOffsetPixels(Math.max(Math.min(mOffsetPixels + dx, 0), -mMenuSize),y,type);
                 break;
         }
     }
 
-    protected void onUpEvent(int x) {
+    protected void onUpEvent(int x ,int y ) {
         switch (getPosition()) {
             case Position.LEFT: {
                 if (mIsDragging) {
                     mVelocityTracker.computeCurrentVelocity(1000, mMaxVelocity);
                     final int initialVelocity = (int) getXVelocity(mVelocityTracker);
                     mLastMotionX = x;
-                    animateOffsetTo(initialVelocity > 0 ? mMenuSize : 0, initialVelocity, true);
+                    animateOffsetTo(initialVelocity > 0 ? mMenuSize : 0, initialVelocity, true,y);
                     // Close the menu when content is clicked while the menu is visible.
                 } else if (mMenuVisible) {
                     closeMenu();
@@ -307,7 +309,7 @@ public class FlowingDrawer extends ElasticDrawer {
                     mVelocityTracker.computeCurrentVelocity(1000, mMaxVelocity);
                     final int initialVelocity = (int) getXVelocity(mVelocityTracker);
                     mLastMotionX = x;
-                    animateOffsetTo(initialVelocity > 0 ? 0 : -mMenuSize, initialVelocity, true);
+                    animateOffsetTo(initialVelocity > 0 ? 0 : -mMenuSize, initialVelocity, true,y);
                     // Close the menu when content is clicked while the menu is visible.
                 } else if (mMenuVisible) {
                     closeMenu();
@@ -364,7 +366,7 @@ public class FlowingDrawer extends ElasticDrawer {
         }
 
         if (action == MotionEvent.ACTION_DOWN && mMenuVisible && isCloseEnough()) {
-            setOffsetPixels(0);
+            setOffsetPixels(0,0,FlowingMenuLayout.TYPE_NONE);
             stopAnimation();
             setDrawerState(STATE_CLOSED);
             mIsDragging = false;
@@ -532,14 +534,14 @@ public class FlowingDrawer extends ElasticDrawer {
 
                     if (mOffsetPixels + dx < mMenuSize/2) {
 
-                        onMoveEvent(dx);
+                        onMoveEvent(dx,y,FlowingMenuLayout.TYPE_UP_MANUAL);
 
 
                     } else {
                         mVelocityTracker.computeCurrentVelocity(1000, mMaxVelocity);
                         final int initialVelocity = (int) getXVelocity(mVelocityTracker);
                         mLastMotionX = x;
-                        animateOffsetTo(mMenuSize, initialVelocity, true);
+                        animateOffsetTo(mMenuSize, initialVelocity, true,y);
 
                         endDrag();
                     }
@@ -552,7 +554,8 @@ public class FlowingDrawer extends ElasticDrawer {
                 int index = ev.findPointerIndex(mActivePointerId);
                 index = index == -1 ? 0 : index;
                 final int x = (int) ev.getX(index);
-                onUpEvent(x);
+                final int y = (int) ev.getY(index);
+                onUpEvent(x,y);
                 mActivePointerId = INVALID_POINTER;
                 mIsDragging = false;
                 break;

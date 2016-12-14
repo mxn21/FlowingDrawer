@@ -292,6 +292,9 @@ public abstract class ElasticDrawer extends ViewGroup {
      */
     protected static final int MAX_MENU_OVERLAY_ALPHA = 185;
 
+    // todo when set 0
+    private float eventY ;
+
     /**
      * Runnable used when animating the drawer open/closed.
      */
@@ -564,7 +567,7 @@ public abstract class ElasticDrawer extends ViewGroup {
     public void setMenuSize(final int size) {
         mMenuSize = size;
         if (mDrawerState == STATE_OPEN || mDrawerState == STATE_OPENING) {
-            setOffsetPixels(mMenuSize);
+            setOffsetPixels(mMenuSize,0,FlowingMenuLayout.TYPE_NONE);
         }
         requestLayout();
         invalidate();
@@ -577,12 +580,12 @@ public abstract class ElasticDrawer extends ViewGroup {
      * @param velocity Optional velocity if called by releasing a drag event.
      * @param animate  Whether the move is animated.
      */
-    protected void animateOffsetTo(int position, int velocity, boolean animate) {
+    protected void animateOffsetTo(int position, int velocity, boolean animate, float eventY) {
         endDrag();
         final int startX = (int) mOffsetPixels;
         final int dx = position - startX;
         if (dx == 0 || !animate) {
-            setOffsetPixels(position);
+            setOffsetPixels(position,0,FlowingMenuLayout.TYPE_NONE);
             setDrawerState(position == 0 ? STATE_CLOSED : STATE_OPEN);
             stopLayerTranslation();
             return;
@@ -595,10 +598,10 @@ public abstract class ElasticDrawer extends ViewGroup {
             duration = (int) (600.f * Math.abs((float) dx / mMenuSize));
         }
         duration = Math.min(duration, mMaxAnimationDuration);
-        animateOffsetTo(position, duration);
+        animateOffsetTo(position, duration,eventY);
     }
 
-    protected void animateOffsetTo(int position, int duration) {
+    protected void animateOffsetTo(int position, int duration,float eventY) {
         final int startX = (int) mOffsetPixels;
         final int dx = position - startX;
 
@@ -609,6 +612,7 @@ public abstract class ElasticDrawer extends ViewGroup {
             setDrawerState(STATE_CLOSING);
             mScroller.startScroll(startX, 0, dx, 0, duration);
         }
+        this.eventY = eventY ;
         startLayerTranslation();
         postAnimationInvalidate();
     }
@@ -618,7 +622,7 @@ public abstract class ElasticDrawer extends ViewGroup {
      *
      * @param offsetPixels The number of pixels to offset the content by.
      */
-    protected void setOffsetPixels(float offsetPixels) {
+    protected void setOffsetPixels(float offsetPixels,float eventY, int type) {
         final int oldOffset = (int) mOffsetPixels;
         final int newOffset = (int) offsetPixels;
 
@@ -631,7 +635,7 @@ public abstract class ElasticDrawer extends ViewGroup {
             // Notify any attached listeners of the current open ratio
             final float openRatio = ((float) Math.abs(newOffset)) / mMenuSize;
             dispatchOnDrawerSlide(openRatio, newOffset);
-            ((FlowingMenuLayout)mMenuView).setClipOffsetPixels(mOffsetPixels) ;
+            ((FlowingMenuLayout)mMenuView).setClipOffsetPixels(mOffsetPixels,eventY,type) ;
         }
     }
 
@@ -645,7 +649,7 @@ public abstract class ElasticDrawer extends ViewGroup {
 
         if (getPosition() != mResolvedPosition) {
             mResolvedPosition = getPosition();
-            setOffsetPixels(mOffsetPixels * -1);
+            setOffsetPixels(mOffsetPixels * -1,0,FlowingMenuLayout.TYPE_NONE);
         }
 
         requestLayout();
@@ -935,7 +939,7 @@ public abstract class ElasticDrawer extends ViewGroup {
         if (menuOpen) {
             openMenu(false);
         } else {
-            setOffsetPixels(0);
+            setOffsetPixels(0,0,FlowingMenuLayout.TYPE_NONE);
         }
         mDrawerState = menuOpen ? STATE_OPEN : STATE_CLOSED;
     }
@@ -1128,8 +1132,9 @@ public abstract class ElasticDrawer extends ViewGroup {
             final int oldX = (int) mOffsetPixels;
             final int x = mScroller.getCurrX();
 
+                // todo type change
             if (x != oldX) {
-                setOffsetPixels(x);
+                setOffsetPixels(x,eventY,FlowingMenuLayout.TYPE_UP_AUTO);
             }
             if (x != mScroller.getFinalX()) {
                 postOnAnimation(mDragRunnable);
@@ -1145,7 +1150,7 @@ public abstract class ElasticDrawer extends ViewGroup {
     private void completeAnimation() {
         mScroller.abortAnimation();
         final int finalX = mScroller.getFinalX();
-        setOffsetPixels(finalX);
+        setOffsetPixels(finalX,0,FlowingMenuLayout.TYPE_NONE);
         setDrawerState(finalX == 0 ? STATE_CLOSED : STATE_OPEN);
         stopLayerTranslation();
     }

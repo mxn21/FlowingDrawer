@@ -3,8 +3,6 @@ package com.mxn.soul.flowingdrawer_core;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Path;
-import android.graphics.Rect;
-import android.graphics.Region;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
@@ -18,6 +16,16 @@ public class FlowingMenuLayout extends FrameLayout {
 
     private Path mClipPath;
     private float mClipOffsetPixels = 0;
+
+    public final static int TYPE_NONE = 0 ;
+    public final static int TYPE_UP_MANUAL = 1 ;
+    public final static int TYPE_UP_AUTO = 2 ;
+    public final static int TYPE_UP1 = 3 ;
+    public final static int TYPE_UP2 = 4 ;
+    public final static int TYPE_UP3 = 5 ;
+    public final static int TYPE_UP4 = 6 ;
+
+    private int currentType = TYPE_NONE ;
 
     public FlowingMenuLayout(Context context) {
         this(context, null);
@@ -34,23 +42,20 @@ public class FlowingMenuLayout extends FrameLayout {
                 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         }
-        //        setWillNotCacheDrawing(false);
     }
 
     public float getClipOffsetPixels() {
         return mClipOffsetPixels;
     }
 
-    public void setClipOffsetPixels(float clipOffsetPixels) {
+    public void setClipOffsetPixels(float clipOffsetPixels, float eventY, int type) {
         mClipOffsetPixels = clipOffsetPixels;
+        currentType = type ;
         invalidate();
     }
 
     @Override
     protected void dispatchDraw(Canvas canvas) {
-        Rect newRect = canvas.getClipBounds();
-        newRect.inset(2000, 2000);//make the rect larger
-        canvas.clipRect(newRect, Region.Op.REPLACE);
 
         double ratio1 = 1;
         double ratio2 = 1;
@@ -74,13 +79,19 @@ public class FlowingMenuLayout extends FrameLayout {
 
         super.dispatchDraw(canvas);
         canvas.restore();
+
+        switch ( currentType) {
+            case TYPE_NONE :
+                // x == 0 或全部
+                break ;
+            case TYPE_UP_MANUAL :
+
+                break ;
+            case TYPE_UP_AUTO :
+
+                break ;
+        }
     }
 
-        @Override
-        protected void onDraw(Canvas canvas) {
-            Rect newRect = canvas.getClipBounds();
-            newRect.inset (2000, 2000)  ;//make the rect larger
-            canvas.clipRect (newRect, Region.Op.REPLACE);
-            super.onDraw(canvas);
-        }
+
 }
