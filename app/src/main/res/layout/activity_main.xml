@@ -39,6 +39,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:clipChildren="false"
+            android:background="#ffffff"
     >
     </com.mxn.soul.flowingdrawer_core.FlowingMenuLayout>
 

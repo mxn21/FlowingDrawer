@@ -3,6 +3,8 @@ package com.mxn.soul.flowingdrawer_core;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Path;
+import android.graphics.Rect;
+import android.graphics.Region;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
@@ -10,7 +12,6 @@ import android.widget.FrameLayout;
 
 /**
  * Created by mxn on 2016/12/13.
- *
  */
 
 public class FlowingMenuLayout extends FrameLayout {
@@ -33,6 +34,7 @@ public class FlowingMenuLayout extends FrameLayout {
                 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         }
+        //        setWillNotCacheDrawing(false);
     }
 
     public float getClipOffsetPixels() {
@@ -46,18 +48,21 @@ public class FlowingMenuLayout extends FrameLayout {
 
     @Override
     protected void dispatchDraw(Canvas canvas) {
-        double ratio1 =  1;
+        Rect newRect = canvas.getClipBounds();
+        newRect.inset(2000, 2000);//make the rect larger
+        canvas.clipRect(newRect, Region.Op.REPLACE);
+
+        double ratio1 = 1;
         double ratio2 = 1;
-        int currentPointY = getHeight()/2;
+        int currentPointY = getHeight() / 2;
         int currentPointX = (int) (getWidth() - mClipOffsetPixels);
-        int   bottomY = (int) (currentPointY + 0.7 * getHeight() / (ratio1 + 1) + currentPointX * 6 / (ratio2 + 1));
-        int   topY = (int) (currentPointY - 0.7 * getHeight() / (1 + 1 / ratio1) - currentPointX * 6 / (1 / ratio2 +
-                    1));
+        int bottomY = (int) (currentPointY + 0.7 * getHeight() / (ratio1 + 1) + currentPointX * 6 / (ratio2 + 1));
+        int topY = (int) (currentPointY - 0.7 * getHeight() / (1 + 1 / ratio1) - currentPointX * 6 / (1 / ratio2 +
+                                                                                                              1));
         int topControlY = -bottomY / 4 + 5 * currentPointY / 4;
         int bottomControlY = bottomY / 4 + 3 * currentPointY / 4;
 
         mClipPath.reset();
-//        mClipPath.addCircle(mClipCenterX, mClipCenterY, mClipRadius, Path.Direction.CW);
         mClipPath.moveTo(getWidth() - mClipOffsetPixels, topY);
         mClipPath.cubicTo(getWidth() - mClipOffsetPixels, topControlY, getWidth(),
                 topControlY, getWidth(), currentPointY);
@@ -66,8 +71,16 @@ public class FlowingMenuLayout extends FrameLayout {
         mClipPath.lineTo(getWidth() - mClipOffsetPixels, topY);
         canvas.save();
         canvas.clipPath(mClipPath);
+
         super.dispatchDraw(canvas);
         canvas.restore();
     }
 
+        @Override
+        protected void onDraw(Canvas canvas) {
+            Rect newRect = canvas.getClipBounds();
+            newRect.inset (2000, 2000)  ;//make the rect larger
+            canvas.clipRect (newRect, Region.Op.REPLACE);
+            super.onDraw(canvas);
+        }
 }
