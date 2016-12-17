@@ -94,4 +94,11 @@ public class FlowingMenuLayout extends FrameLayout {
     }
 
 
+//        @Override
+//        protected void onDraw(Canvas canvas) {
+//            Rect newRect = canvas.getClipBounds();
+//            newRect.inset (2000, 2000)  ;//make the rect larger
+//            canvas.clipRect (newRect, Region.Op.REPLACE);
+//            super.onDraw(canvas);
+//        }
 }
