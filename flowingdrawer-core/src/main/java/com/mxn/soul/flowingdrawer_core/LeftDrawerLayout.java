@@ -39,7 +39,7 @@ public class LeftDrawerLayout extends ViewGroup {
      */
     private float mLeftMenuOnScrren;
 
-    private FlowingView mFlowingView;
+    private FlowingView2 mFlowingView2;
 
     private float pointY;
     private float rightX;
@@ -51,9 +51,9 @@ public class LeftDrawerLayout extends ViewGroup {
     private int rightMargin;
 
 
-    public void setFluidView(FlowingView mFlowingView) {
-        this.mFlowingView = mFlowingView;
-        mFlowingView.setRightMargin(rightMargin);
+    public void setFluidView(FlowingView2 mFlowingView2) {
+        this.mFlowingView2 = mFlowingView2;
+        mFlowingView2.setRightMargin(rightMargin);
         ViewCompat.setLayerType(this, ViewCompat.LAYER_TYPE_NONE, null);
         final int childCount = getChildCount();
         for (int i = 0; i < childCount; i++) {
@@ -63,7 +63,7 @@ public class LeftDrawerLayout extends ViewGroup {
     }
 
     public void setMenuFragment(MenuFragment mMenuFragment) {
-        mFlowingView.setMenuFragment(mMenuFragment);
+        mFlowingView2.setMenuFragment(mMenuFragment);
     }
 
     public LeftDrawerLayout(Context context, AttributeSet attrs) {
@@ -99,7 +99,7 @@ public class LeftDrawerLayout extends ViewGroup {
                 mHelper.settleCapturedViewAt(openMark ? 0 : -childWidth, releasedChild.getTop());
                 if (!openMark) {
                     releasing = true;
-                    mFlowingView.resetContent();
+                    mFlowingView2.resetContent();
                 }
                 invalidate();
             }
@@ -114,28 +114,28 @@ public class LeftDrawerLayout extends ViewGroup {
                 showShadow(offset);
                 changedView.setVisibility(offset == 0 ? View.INVISIBLE : View.VISIBLE);
                 rightX = left + childWidth;
-                if (mFlowingView.isStartAuto(rightX)) {
-                    mFlowingView.autoUpping(rightX);
+                if (mFlowingView2.isStartAuto(rightX)) {
+                    mFlowingView2.autoUpping(rightX);
                     if (rightX == 0) {
-                        mFlowingView.resetStatus();
+                        mFlowingView2.resetStatus();
                         releasing = false;
                     }
                     return;
                 }
 
-                if (mFlowingView.isupping()) {
+                if (mFlowingView2.isupping()) {
                     if (rightX == 0) {
-                        mFlowingView.resetStatus();
+                        mFlowingView2.resetStatus();
                         releasing = false;
                     }
                     return;
                 }
                 if (!releasing) {
-                    mFlowingView.show(rightX, pointY, FlowingView.Status.STATUS_UP);
+                    mFlowingView2.show(rightX, pointY, FlowingView2.Status.STATUS_UP);
                 } else {
-                    mFlowingView.show(rightX, pointY, FlowingView.Status.STATUS_DOWN);
+                    mFlowingView2.show(rightX, pointY, FlowingView2.Status.STATUS_DOWN);
                     if (rightX == 0) {
-                        mFlowingView.resetStatus();
+                        mFlowingView2.resetStatus();
                         releasing = false;
                     }
                 }
@@ -187,8 +187,8 @@ public class LeftDrawerLayout extends ViewGroup {
         View fragmentLayout = mLeftView.getChildAt(1);
         MarginLayoutParams mlp = (MarginLayoutParams) fragmentLayout.getLayoutParams();
         rightMargin = mlp.rightMargin;
-        if (mFlowingView != null)
-            mFlowingView.setRightMargin(rightMargin);
+        if (mFlowingView2 != null)
+            mFlowingView2.setRightMargin(rightMargin);
     }
 
     @Override
@@ -262,7 +262,7 @@ public class LeftDrawerLayout extends ViewGroup {
         mLeftMenuOnScrren = 0.f;
         pointY = getHeight() / 2;
         releasing = true;
-        mFlowingView.resetContent();
+        mFlowingView2.resetContent();
         mHelper.smoothSlideViewTo(menuView, -menuView.getWidth(), menuView.getTop());
         postInvalidate();
     }

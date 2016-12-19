@@ -49,7 +49,7 @@ public class FlowingDrawerLayout extends ViewGroup {
 
     private float pointY;
     private float pointX;
-    private FlowingView mFlowingView;
+    private FlowingView2 mFlowingView2;
     //返回动画是否结束
     private boolean releasing = false;
 
@@ -84,7 +84,7 @@ public class FlowingDrawerLayout extends ViewGroup {
     }
 
     public void setMenuFragment(MenuFragment mMenuFragment) {
-        mFlowingView.setMenuFragment(mMenuFragment);
+        mFlowingView2.setMenuFragment(mMenuFragment);
     }
 
     @Override
@@ -220,7 +220,7 @@ public class FlowingDrawerLayout extends ViewGroup {
             changedView.setVisibility(offset == 0 ? View.INVISIBLE : View.VISIBLE);
 
             if(!isForbidManual()) {
-                mFlowingView.show(pointX, pointY, FlowingView.STATUS_OPEN_MANUAL);
+                mFlowingView2.show(pointX, pointY, FlowingView2.STATUS_OPEN_MANUAL);
             }
 //            rightX = left + childWidth;
 //            if (mFlowingView.isStartAuto(rightX)) {
@@ -368,11 +368,11 @@ public class FlowingDrawerLayout extends ViewGroup {
     @Override
     public boolean onTouchEvent(@NonNull MotionEvent event) {
         if (isForbidManual() ) {
-            if(mFlowingView.getCurrentStatus() == FlowingView.STATUS_OPEN_MANUAL){
+            if(mFlowingView2.getCurrentStatus() == FlowingView2.STATUS_OPEN_MANUAL){
                 /**
                  * 手动转自动
                  */
-                mFlowingView.show(pointX, pointY, FlowingView.STATUS_OPEN_AUTO);
+                mFlowingView2.show(pointX, pointY, FlowingView2.STATUS_OPEN_AUTO);
                 Log.e("======","=====false");
             }
             return false;
@@ -390,15 +390,15 @@ public class FlowingDrawerLayout extends ViewGroup {
         }
     }
 
-    public void setFluidView(FlowingView mFlowingView) {
-        this.mFlowingView = mFlowingView;
+    public void setFluidView(FlowingView2 mFlowingView2) {
+        this.mFlowingView2 = mFlowingView2;
         //        mFlowingView.setRightMargin(rightMargin);
         ViewCompat.setLayerType(this, ViewCompat.LAYER_TYPE_NONE, null);
-        final int childCount = getChildCount();
-        for (int i = 0; i < childCount; i++) {
-            ViewCompat.setLayerType(getChildAt(i), ViewCompat.LAYER_TYPE_NONE,
-                    null);
-        }
+                final int childCount = getChildCount();
+                for (int i = 0; i < childCount; i++) {
+                    ViewCompat.setLayerType(getChildAt(i), ViewCompat.LAYER_TYPE_NONE,
+                            null);
+                }
     }
 
 

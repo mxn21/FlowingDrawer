@@ -9,9 +9,6 @@ import android.os.Build;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
-import android.view.View;
-
-import static android.R.attr.y;
 
 /**
  * Created by mxn on 2016/10/17.
@@ -61,6 +58,11 @@ public class FlowingDrawer extends ElasticDrawer {
 
     @Override
     public void openMenu(boolean animate) {
+        openMenu(animate,getHeight()/2) ;
+    }
+
+    @Override
+    public void openMenu(boolean animate, float y) {
         int animateTo = 0;
         switch (getPosition()) {
             case Position.LEFT:
@@ -70,14 +72,18 @@ public class FlowingDrawer extends ElasticDrawer {
                 animateTo = -mMenuSize;
                 break;
         }
-        animateOffsetTo(animateTo, 0, animate);
+        animateOffsetTo(animateTo, 0, y);
     }
 
     @Override
     public void closeMenu(boolean animate) {
-        animateOffsetTo(0, 0, animate);
+        closeMenu(animate,getHeight()/2);
     }
 
+    @Override
+    public void closeMenu(boolean animate, float y) {
+        animateOffsetTo(0, 0, animate , y );
+    }
 
     @SuppressLint("NewApi")
     @Override
@@ -151,7 +157,7 @@ public class FlowingDrawer extends ElasticDrawer {
     protected void startLayerTranslation() {
         if (USE_TRANSLATIONS && mHardwareLayersEnabled && !mLayerTypeHardware) {
             mLayerTypeHardware = true;
-            mMenuContainer.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+//            mMenuContainer.setLayerType(View.LAYER_TYPE_HARDWARE, null);
         }
     }
 
@@ -160,7 +166,7 @@ public class FlowingDrawer extends ElasticDrawer {
     protected void stopLayerTranslation() {
         if (mLayerTypeHardware) {
             mLayerTypeHardware = false;
-            mMenuContainer.setLayerType(View.LAYER_TYPE_NONE, null);
+//            mMenuContainer.setLayerType(View.LAYER_TYPE_NONE, null);
         }
     }
 
@@ -299,7 +305,7 @@ public class FlowingDrawer extends ElasticDrawer {
                     animateOffsetTo(initialVelocity > 0 ? mMenuSize : 0, initialVelocity, true,y);
                     // Close the menu when content is clicked while the menu is visible.
                 } else if (mMenuVisible) {
-                    closeMenu();
+                    closeMenu(true ,  y);
                 }
                 break;
             }
@@ -312,7 +318,7 @@ public class FlowingDrawer extends ElasticDrawer {
                     animateOffsetTo(initialVelocity > 0 ? 0 : -mMenuSize, initialVelocity, true,y);
                     // Close the menu when content is clicked while the menu is visible.
                 } else if (mMenuVisible) {
-                    closeMenu();
+                    closeMenu(true , y );
                 }
                 break;
             }
@@ -357,16 +363,16 @@ public class FlowingDrawer extends ElasticDrawer {
             }
 
             if (Math.abs(mOffsetPixels) > mMenuSize / 2) {
-                openMenu();
+                openMenu(true , ev.getY());
             } else {
-                closeMenu();
+                closeMenu(true ,ev.getY() );
             }
 
             return false;
         }
 
         if (action == MotionEvent.ACTION_DOWN && mMenuVisible && isCloseEnough()) {
-            setOffsetPixels(0,0,FlowingMenuLayout.TYPE_NONE);
+            setOffsetPixels(0,0,FlowingView.TYPE_NONE);
             stopAnimation();
             setDrawerState(STATE_CLOSED);
             mIsDragging = false;
@@ -420,7 +426,7 @@ public class FlowingDrawer extends ElasticDrawer {
                     mIsDragging = false;
                     mActivePointerId = INVALID_POINTER;
                     endDrag();
-                    closeMenu(true);
+                    closeMenu(true,ev.getY());
                     return false;
                 }
 
@@ -495,7 +501,7 @@ public class FlowingDrawer extends ElasticDrawer {
                     mIsDragging = false;
                     mActivePointerId = INVALID_POINTER;
                     endDrag();
-                    closeMenu(true);
+                    closeMenu(true,ev.getY());
                     return false;
                 }
 
@@ -534,7 +540,7 @@ public class FlowingDrawer extends ElasticDrawer {
 
                     if (mOffsetPixels + dx < mMenuSize/2) {
 
-                        onMoveEvent(dx,y,FlowingMenuLayout.TYPE_UP_MANUAL);
+                        onMoveEvent(dx,y,FlowingView.TYPE_UP_MANUAL);
 
 
                     } else {
@@ -578,5 +584,20 @@ public class FlowingDrawer extends ElasticDrawer {
 
         return true;
     }
+
+//    @Override
+//    protected void dispatchDraw(@NonNull Canvas canvas) {
+//        PaintFlagsDrawFilter pfd = new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG | Paint
+//                .FILTER_BITMAP_FLAG);
+//        canvas.setDrawFilter(pfd);
+//        final int count = getChildCount();
+//        for (int i = 0; i < count; i++) {
+//            final View child = getChildAt(i);
+//            if (child == null) {
+//                return;
+//            }
+//        }
+//        super.dispatchDraw(canvas);
+//    }
 
 }

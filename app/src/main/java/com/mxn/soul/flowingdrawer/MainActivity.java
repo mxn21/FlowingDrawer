@@ -61,10 +61,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupMenu() {
         FragmentManager fm = getSupportFragmentManager();
-        MenuListFragment mMenuFragment = (MenuListFragment) fm.findFragmentById(R.id.menulayout);
+        MenuListFragment mMenuFragment = (MenuListFragment) fm.findFragmentById(R.id.id_container_menu);
         if (mMenuFragment == null) {
             mMenuFragment = new MenuListFragment() ;
-            fm.beginTransaction().add(R.id.menulayout,mMenuFragment).commit();
+            fm.beginTransaction().add(R.id.id_container_menu,mMenuFragment).commit();
         }
     }
 

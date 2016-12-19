@@ -2,10 +2,13 @@ package com.mxn.soul.flowingdrawer_core;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PaintFlagsDrawFilter;
 import android.graphics.Path;
-import android.os.Build;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
-import android.view.View;
 import android.widget.FrameLayout;
 
 /**
@@ -26,6 +29,14 @@ public class FlowingMenuLayout extends FrameLayout {
     public final static int TYPE_UP4 = 6 ;
 
     private int currentType = TYPE_NONE ;
+    private float eventY  = 0 ;
+    private int topControlY;
+    private int bottomControlY;
+    private int topY;
+    private int bottomY;
+
+    private Paint mPaint;
+    private PaintFlagsDrawFilter pfd ;
 
     public FlowingMenuLayout(Context context) {
         this(context, null);
@@ -38,10 +49,20 @@ public class FlowingMenuLayout extends FrameLayout {
     public FlowingMenuLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         mClipPath = new Path();
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2
-                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-        }
+//        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2
+//                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            mPaint = new Paint();
+            mPaint.setAntiAlias(true);
+           mPaint.setColor(getResources().getColor(R.color.paint_color2));
+            mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));
+        mPaint.setStrokeWidth(10);
+//            setLayerType(View.LAYER_TYPE_SOFTWARE, mPaint);
+        ViewCompat.setLayerType(this, ViewCompat.LAYER_TYPE_NONE,
+                null);
+            pfd = new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG | Paint
+                    .FILTER_BITMAP_FLAG);
+//        }
+
     }
 
     public float getClipOffsetPixels() {
@@ -51,41 +72,50 @@ public class FlowingMenuLayout extends FrameLayout {
     public void setClipOffsetPixels(float clipOffsetPixels, float eventY, int type) {
         mClipOffsetPixels = clipOffsetPixels;
         currentType = type ;
+        this.eventY = eventY ;
         invalidate();
     }
 
     @Override
     protected void dispatchDraw(Canvas canvas) {
 
-        double ratio1 = 1;
-        double ratio2 = 1;
-        int currentPointY = getHeight() / 2;
-        int currentPointX = (int) (getWidth() - mClipOffsetPixels);
-        int bottomY = (int) (currentPointY + 0.7 * getHeight() / (ratio1 + 1) + currentPointX * 6 / (ratio2 + 1));
-        int topY = (int) (currentPointY - 0.7 * getHeight() / (1 + 1 / ratio1) - currentPointX * 6 / (1 / ratio2 +
-                                                                                                              1));
-        int topControlY = -bottomY / 4 + 5 * currentPointY / 4;
-        int bottomControlY = bottomY / 4 + 3 * currentPointY / 4;
-
-        mClipPath.reset();
-        mClipPath.moveTo(getWidth() - mClipOffsetPixels, topY);
-        mClipPath.cubicTo(getWidth() - mClipOffsetPixels, topControlY, getWidth(),
-                topControlY, getWidth(), currentPointY);
-        mClipPath.cubicTo(getWidth(), bottomControlY, getWidth() - mClipOffsetPixels,
-                bottomControlY, getWidth() - mClipOffsetPixels, bottomY);
-        mClipPath.lineTo(getWidth() - mClipOffsetPixels, topY);
-        canvas.save();
-        canvas.clipPath(mClipPath);
-
-        super.dispatchDraw(canvas);
-        canvas.restore();
-
+        int width = getWidth();
+        int height = getHeight();
         switch ( currentType) {
             case TYPE_NONE :
                 // x == 0 或全部
                 break ;
             case TYPE_UP_MANUAL :
+                double verticalOffsetRatio = Math.abs((double) (2 * eventY - height) / height);
+                double ratio1 = verticalOffsetRatio * 3 + 1;
+                double ratio2 = verticalOffsetRatio * 5 + 1;
+                int currentPointX = (int) mClipOffsetPixels;
+                if (eventY - height / 2 >= 0) {
+                    bottomY = (int) (eventY + 0.7 *height/ (ratio1 + 1) + currentPointX * 6 / (ratio2 + 1));
+                    topY = (int) (eventY - 0.7 * height / (1 + 1 / ratio1) - currentPointX * 6 / (1 / ratio2 + 1));
+                    topControlY = (int) (-bottomY / 4 + 5 * eventY / 4);
+                    bottomControlY = (int) (bottomY / 4 + 3 * eventY / 4);
+                } else {
+                    bottomY = (int) (eventY + 0.7 * height / (1 / ratio1 + 1) + currentPointX * 6 / (1 / ratio2 + 1));
+                    topY = (int) (eventY - 0.7 * height / (1 + ratio1) - currentPointX * 6 / (ratio2 + 1));
+                    topControlY = (int) (topY / 4 + 3 * eventY / 4);
+                    bottomControlY = (int) (-topY / 4 + 5 * eventY / 4);
+                }
 
+                mClipPath.reset();
+                mClipPath.moveTo(width - mClipOffsetPixels, topY);
+                mClipPath.cubicTo(width - mClipOffsetPixels, topControlY, width,
+                        topControlY, width, eventY);
+                mClipPath.cubicTo(width, bottomControlY,width - mClipOffsetPixels,
+                        bottomControlY, width - mClipOffsetPixels, bottomY);
+                mClipPath.lineTo(width - mClipOffsetPixels, topY);
+                canvas.save();
+//                canvas.drawPath(mClipPath, mPaint);
+                canvas.clipPath(mClipPath);
+                canvas.drawPath(mClipPath, mPaint);
+//                canvas.setDrawFilter(pfd);
+                super.dispatchDraw(canvas);
+                canvas.restore();
                 break ;
             case TYPE_UP_AUTO :
 

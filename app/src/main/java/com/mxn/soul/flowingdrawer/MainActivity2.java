@@ -1,7 +1,7 @@
 package com.mxn.soul.flowingdrawer;
 
 import com.mxn.soul.flowingdrawer_core.FlowingDrawerLayout;
-import com.mxn.soul.flowingdrawer_core.FlowingView;
+import com.mxn.soul.flowingdrawer_core.FlowingView2;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -28,11 +28,11 @@ public class MainActivity2 extends AppCompatActivity {
 
         FragmentManager fm = getSupportFragmentManager();
         MyMenuFragment mMenuFragment = (MyMenuFragment) fm.findFragmentById(R.id.id_container_menu);
-        FlowingView mFlowingView = (FlowingView) findViewById(R.id.sv);
+        FlowingView2 mFlowingView2 = (FlowingView2) findViewById(R.id.sv);
         if (mMenuFragment == null) {
             fm.beginTransaction().add(R.id.id_container_menu, mMenuFragment = new MyMenuFragment()).commit();
         }
-        mLeftDrawerLayout.setFluidView(mFlowingView);
+        mLeftDrawerLayout.setFluidView(mFlowingView2);
         mLeftDrawerLayout.setMenuFragment(mMenuFragment);
         setupFeed();
 
