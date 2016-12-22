@@ -8,6 +8,7 @@ import android.graphics.Path;
 import android.graphics.Region;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.FrameLayout;
 
 /**
@@ -33,6 +34,17 @@ public class FlowingMenuLayout extends FrameLayout {
     private int bottomControlY;
     private int topY;
     private int bottomY;
+    private int width;
+    private int height;
+    private double verticalOffsetRatio;
+    private double ratio1;
+    private double ratio2;
+    private float fraction;
+    private float fractionEdge;
+    private float fractionCenter;
+
+    private int centerXOffset;
+    private int edgeXOffset;
 
     private Paint mPaint;
     private PaintFlagsDrawFilter pfd;
@@ -53,7 +65,7 @@ public class FlowingMenuLayout extends FrameLayout {
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
         mPaint.setColor(getResources().getColor(R.color.paint_color2));
-//        mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));
+        //        mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));
         mPaint.setStyle(Paint.Style.FILL);
         mPaint.setStrokeWidth(5);
         //            setLayerType(View.LAYER_TYPE_SOFTWARE, mPaint);
@@ -79,25 +91,25 @@ public class FlowingMenuLayout extends FrameLayout {
     @Override
     protected void dispatchDraw(Canvas canvas) {
 
-        int width = getWidth();
-        int height = getHeight();
+        width = getWidth();
+        height = getHeight();
         switch (currentType) {
             case TYPE_NONE:
                 // x == 0 或全部
                 break;
             case TYPE_UP_MANUAL:
-                double verticalOffsetRatio = Math.abs((double) (2 * eventY - height) / height);
-                double ratio1 = verticalOffsetRatio * 3 + 1;
-                double ratio2 = verticalOffsetRatio * 5 + 1;
-                int currentPointX = (int) mClipOffsetPixels;
+                verticalOffsetRatio = Math.abs((double) (2 * eventY - height) / height);
+                ratio1 = verticalOffsetRatio * 3 + 1;
+                ratio2 = verticalOffsetRatio * 5 + 1;
                 if (eventY - height / 2 >= 0) {
-                    bottomY = (int) (eventY + 0.7 * height / (ratio1 + 1) + currentPointX * 6 / (ratio2 + 1));
-                    topY = (int) (eventY - 0.7 * height / (1 + 1 / ratio1) - currentPointX * 6 / (1 / ratio2 + 1));
+                    bottomY = (int) (eventY + 0.7 * height / (ratio1 + 1) + mClipOffsetPixels * 6 / (ratio2 + 1));
+                    topY = (int) (eventY - 0.7 * height / (1 + 1 / ratio1) - mClipOffsetPixels * 6 / (1 / ratio2 + 1));
                     topControlY = (int) (-bottomY / 4 + 5 * eventY / 4);
                     bottomControlY = (int) (bottomY / 4 + 3 * eventY / 4);
                 } else {
-                    bottomY = (int) (eventY + 0.7 * height / (1 / ratio1 + 1) + currentPointX * 6 / (1 / ratio2 + 1));
-                    topY = (int) (eventY - 0.7 * height / (1 + ratio1) - currentPointX * 6 / (ratio2 + 1));
+                    bottomY =
+                            (int) (eventY + 0.7 * height / (1 / ratio1 + 1) + mClipOffsetPixels * 6 / (1 / ratio2 + 1));
+                    topY = (int) (eventY - 0.7 * height / (1 + ratio1) - mClipOffsetPixels * 6 / (ratio2 + 1));
                     topControlY = (int) (topY / 4 + 3 * eventY / 4);
                     bottomControlY = (int) (-topY / 4 + 5 * eventY / 4);
                 }
@@ -117,30 +129,51 @@ public class FlowingMenuLayout extends FrameLayout {
                 canvas.restore();
                 break;
             case TYPE_UP_AUTO: {
-                currentPointX = (int) mClipOffsetPixels;
                 mClipPath.reset();
-                if (eventY - getHeight() / 2 >= 0) {
-                    topY = (int) (eventY - 1.5 * currentPointX * height / width -
-                                          eventY / 2 + height / 4);
-                    bottomY = (int) (eventY + 1.5 * currentPointX * getHeight() / getWidth());
-                } else {
-                    topY = (int) (eventY - 1.5 * currentPointX * getHeight() / getWidth());
-                    bottomY = (int) (eventY + 1.5 * currentPointX * getHeight() / getWidth() -
-                                             eventY / 2 + getHeight() / 4);
-                }
-                mClipPath.moveTo(getWidth() - currentPointX, topY);
-                mClipPath.cubicTo(getWidth() - currentPointX, eventY / 4 + 3 * topY / 4, getWidth(), 3 *
-                                eventY / 4
-                                + topY / 4,
-                        getWidth()
-                        , eventY);
-                mClipPath.cubicTo(getWidth(), 5 * eventY / 4 - topY / 4, getWidth() - currentPointX,
-                        7 * eventY / 4 - 3 * topY / 4, getWidth() - currentPointX, bottomY);
-                mClipPath.lineTo(getWidth() - currentPointX, topY);
+
+                fraction = (mClipOffsetPixels - width / 2) / (width / 2);
+                //                if (fraction < 0.7) {
+                ////                    fractionCenter = (float) (2 * Math.pow(fraction, 3));
+                //                    fractionCenter = (float) (10 * Math.pow(fraction, 2) /7);
+                ////                    fractionEdge = (float) Math.pow(fraction/2, 1/3);
+                //                    fractionEdge = (float) Math.sqrt(7 * fraction/10);
+                //                    centerXOffset = (int) (width /2 +  fractionCenter *(width/2  + 150));
+                //                    edgeXOffset = (int) (width * 0.75 +  fractionEdge *(width/4  + 100));
+                //
+                //                    mClipPath.moveTo(width - mClipOffsetPixels, 0);
+                //                    mClipPath.lineTo(edgeXOffset, 0);
+                //                    mClipPath.quadTo(centerXOffset,eventY , edgeXOffset ,height);
+                //                    mClipPath.lineTo(width - mClipOffsetPixels, height);
+                //                    mClipPath.lineTo(width - mClipOffsetPixels, 0);
+                //                } else {
+                //                    centerXOffset = (int) (-500 * fraction  + width + 500);
+                //                    edgeXOffset = (int) ( -1000 /3  * fraction  + width + 1000 /3);
+                //
+                //                    mClipPath.moveTo(width - mClipOffsetPixels, 0);
+                //                    mClipPath.lineTo(edgeXOffset, 0);
+                //                    mClipPath.quadTo(centerXOffset,eventY , edgeXOffset ,height);
+                //                    mClipPath.lineTo(width - mClipOffsetPixels, height);
+                //                    mClipPath.lineTo(width - mClipOffsetPixels, 0);
+                //                    Log.e("=====",fraction  + "====" +centerXOffset + "===="+edgeXOffset +" ") ;
+                //                }
+
+                fractionCenter = (float) Math.pow(fraction, 2);
+                fractionEdge = (float) Math.sqrt( fraction);
+                centerXOffset = (int) (width / 2 + fractionCenter * (width / 2 + 150));
+                edgeXOffset = (int) (width * 0.75 + fractionEdge * (width / 4 + 100));
+                mClipPath.moveTo(width - mClipOffsetPixels, 0);
+                mClipPath.lineTo(edgeXOffset, 0);
+                mClipPath.quadTo(centerXOffset, eventY, edgeXOffset, height);
+                mClipPath.lineTo(width - mClipOffsetPixels, height);
+                mClipPath.lineTo(width - mClipOffsetPixels, 0);
+
+                Log.e("=====" , width + "====" + edgeXOffset + "=====" +  centerXOffset) ;
                 canvas.save();
-                canvas.clipPath(mClipPath);
+                canvas.drawPath(mClipPath, mPaint);
+                canvas.clipPath(mClipPath, Region.Op.REPLACE);
                 super.dispatchDraw(canvas);
                 canvas.restore();
+
                 break;
             }
         }
@@ -153,4 +186,5 @@ public class FlowingMenuLayout extends FrameLayout {
     //            canvas.clipRect (newRect, Region.Op.REPLACE);
     //            super.onDraw(canvas);
     //        }
+
 }

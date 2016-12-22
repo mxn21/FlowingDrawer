@@ -539,10 +539,7 @@ public class FlowingDrawer extends ElasticDrawer {
                     mLastMotionY = y;
 
                     if (mOffsetPixels + dx < mMenuSize/2) {
-
                         onMoveEvent(dx,y,FlowingView.TYPE_UP_MANUAL);
-
-
                     } else {
                         mVelocityTracker.computeCurrentVelocity(1000, mMaxVelocity);
                         final int initialVelocity = (int) getXVelocity(mVelocityTracker);

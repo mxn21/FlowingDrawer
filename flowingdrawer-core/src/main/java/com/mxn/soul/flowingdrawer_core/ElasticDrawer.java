@@ -616,6 +616,7 @@ public abstract class ElasticDrawer extends ViewGroup {
             duration = (int) (600.f * Math.abs((float) dx / mMenuSize));
         }
         duration = Math.min(duration, mMaxAnimationDuration);
+        duration = 6000 ;
         animateOffsetTo(position, duration, eventY);
     }
 
