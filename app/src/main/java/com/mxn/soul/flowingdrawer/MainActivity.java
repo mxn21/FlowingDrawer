@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //  mLeftDrawerLayout.toggle();
+                mDrawer.toggleMenu();
             }
         });
     }

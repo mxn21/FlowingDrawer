@@ -72,7 +72,7 @@ public class FlowingDrawer extends ElasticDrawer {
                 animateTo = -mMenuSize;
                 break;
         }
-        animateOffsetTo(animateTo, 0, y);
+        animateOffsetTo(animateTo, 0,animate, y);
     }
 
     @Override
@@ -303,8 +303,13 @@ public class FlowingDrawer extends ElasticDrawer {
                     final int initialVelocity = (int) getXVelocity(mVelocityTracker);
                     mLastMotionX = x;
                     animateOffsetTo(initialVelocity > 0 ? mMenuSize : 0, initialVelocity, true,y);
-                    // Close the menu when content is clicked while the menu is visible.
-                } else if (mMenuVisible) {
+                }
+                else if (isFirstPointUp) {
+                    isFirstPointUp = false ;
+                    return ;
+                }
+                // Close the menu when content is clicked while the menu is visible.
+                else if (mMenuVisible) {
                     closeMenu(true ,  y);
                 }
                 break;
@@ -316,8 +321,13 @@ public class FlowingDrawer extends ElasticDrawer {
                     final int initialVelocity = (int) getXVelocity(mVelocityTracker);
                     mLastMotionX = x;
                     animateOffsetTo(initialVelocity > 0 ? 0 : -mMenuSize, initialVelocity, true,y);
-                    // Close the menu when content is clicked while the menu is visible.
-                } else if (mMenuVisible) {
+                }
+                else if (isFirstPointUp) {
+                    isFirstPointUp = false ;
+                    return ;
+                }
+                // Close the menu when content is clicked while the menu is visible.
+                else if (mMenuVisible) {
                     closeMenu(true , y );
                 }
                 break;
@@ -545,7 +555,7 @@ public class FlowingDrawer extends ElasticDrawer {
                         final int initialVelocity = (int) getXVelocity(mVelocityTracker);
                         mLastMotionX = x;
                         animateOffsetTo(mMenuSize, initialVelocity, true,y);
-
+                        isFirstPointUp = true ;
                         endDrag();
                     }
                 }

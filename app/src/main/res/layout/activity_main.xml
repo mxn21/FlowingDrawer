@@ -5,6 +5,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipChildren="false"
+        android:clipToPadding="false"
         app:edPosition="1"
         app:edMenuSize="260dp"
 >

@@ -3,6 +3,9 @@ package com.mxn.soul.flowingdrawer_core;
 
 import static com.mxn.soul.flowingdrawer_core.FlowingDrawer.USE_TRANSLATIONS;
 
+import com.nineoldandroids.animation.Animator;
+import com.nineoldandroids.animation.ValueAnimator;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -26,6 +29,7 @@ import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.animation.Interpolator;
+import android.view.animation.OvershootInterpolator;
 import android.widget.Scroller;
 
 /**
@@ -54,6 +58,7 @@ public abstract class ElasticDrawer extends ViewGroup {
     /**
      * The size of the menu (width or height depending on the gravity).
      */
+    // todo 重复?
     protected int mMenuSize;
     /**
      * Defines whether the drop shadow is enabled.
@@ -176,7 +181,7 @@ public abstract class ElasticDrawer extends ViewGroup {
     /**
      * The custom menu view set by the user.
      */
-    private ViewGroup mMenuView;
+    private FlowingMenuLayout mMenuView;
     protected FlowingView mFlowingView;
     /**
      * Current offset.
@@ -295,6 +300,8 @@ public abstract class ElasticDrawer extends ViewGroup {
 
     // todo when set 0
     private float eventY;
+
+    protected boolean isFirstPointUp ;
 
     /**
      * Runnable used when animating the drawer open/closed.
@@ -497,7 +504,7 @@ public abstract class ElasticDrawer extends ViewGroup {
         View menu = getChildAt(0);
         if (menu != null) {
             removeView(menu);
-            mMenuView = (ViewGroup) menu;
+            mMenuView = (FlowingMenuLayout) menu;
 //            mFlowingView = (FlowingView) mMenuView.getChildAt(0);
             mMenuContainer.removeAllViews();
             mMenuContainer.addView(menu, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
@@ -616,7 +623,6 @@ public abstract class ElasticDrawer extends ViewGroup {
             duration = (int) (600.f * Math.abs((float) dx / mMenuSize));
         }
         duration = Math.min(duration, mMaxAnimationDuration);
-        duration = 6000 ;
         animateOffsetTo(position, duration, eventY);
     }
 
@@ -647,8 +653,7 @@ public abstract class ElasticDrawer extends ViewGroup {
 
         mOffsetPixels = offsetPixels;
 //        mFlowingView.setClipOffsetPixels(mOffsetPixels, eventY, type);
-        FlowingMenuLayout m = (FlowingMenuLayout) mMenuView;
-        m.setClipOffsetPixels(mOffsetPixels, eventY, type) ;
+        mMenuView.setClipOffsetPixels(mOffsetPixels, eventY, type) ;
         if (newOffset != oldOffset) {
             onOffsetPixelsChanged(newOffset);
             mMenuVisible = newOffset != 0;
@@ -867,15 +872,15 @@ public abstract class ElasticDrawer extends ViewGroup {
     protected void dispatchDraw(Canvas canvas) {
 
         super.dispatchDraw(canvas);
-        final int offsetPixels = (int) mOffsetPixels;
-
-        if (mDrawOverlay && offsetPixels != 0) {
-            drawOverlay(canvas);
-        }
-        // todo 删
-        if (mDropShadowEnabled && offsetPixels != 0) {
-            drawDropShadow(canvas);
-        }
+//        final int offsetPixels = (int) mOffsetPixels;
+//
+//        if (mDrawOverlay && offsetPixels != 0) {
+//            drawOverlay(canvas);
+//        }
+//        // todo 删
+//        if (mDropShadowEnabled && offsetPixels != 0) {
+//            drawDropShadow(canvas);
+//        }
     }
 
     protected abstract void drawOverlay(Canvas canvas);
@@ -1153,16 +1158,29 @@ public abstract class ElasticDrawer extends ViewGroup {
             final int oldX = (int) mOffsetPixels;
             final int x = mScroller.getCurrX();
 
-            // todo type change
             if (x != oldX) {
-                setOffsetPixels(x, eventY, FlowingView.TYPE_UP_AUTO);
+                if (mDrawerState == STATE_OPENING) {
+                    setOffsetPixels(x, eventY, FlowingMenuLayout.TYPE_UP_AUTO);
+                } else if (mDrawerState == STATE_CLOSING) {
+                    setOffsetPixels(x, eventY, FlowingMenuLayout.TYPE_DOWN_AUTO);
+                }
             }
             if (x != mScroller.getFinalX()) {
                 postOnAnimation(mDragRunnable);
                 return;
             }
         }
-        completeAnimation();
+        if (mDrawerState == STATE_OPENING) {
+            completeAnimation();
+        } else if (mDrawerState == STATE_CLOSING) {
+            mScroller.abortAnimation();
+            final int finalX = mScroller.getFinalX();
+            mMenuVisible = finalX != 0 ;
+            setOffsetPixels(finalX, 0, FlowingView.TYPE_NONE);
+            setDrawerState(finalX == 0 ? STATE_CLOSED : STATE_OPEN);
+            stopLayerTranslation();
+        }
+
     }
 
     /**
@@ -1171,9 +1189,35 @@ public abstract class ElasticDrawer extends ViewGroup {
     private void completeAnimation() {
         mScroller.abortAnimation();
         final int finalX = mScroller.getFinalX();
-        setOffsetPixels(finalX, 0, FlowingView.TYPE_NONE);
-        setDrawerState(finalX == 0 ? STATE_CLOSED : STATE_OPEN);
-        stopLayerTranslation();
+//        setOffsetPixels(finalX, 0, FlowingView.TYPE_NONE);
+//        setDrawerState(finalX == 0 ? STATE_CLOSED : STATE_OPEN);
+//        stopLayerTranslation();
+        // TODO
+        // TODO
+        // TODO
+        flowDown(finalX)  ;
+    }
+
+    private void flowDown(final int finalX){
+        ValueAnimator valueAnimator = ValueAnimator.ofFloat(0, 1);
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                mMenuView.setUpDownFraction(animation.getAnimatedFraction()) ;
+            }
+        });
+        valueAnimator.addListener(new FlowingAnimationListener() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mMenuVisible = finalX != 0 ;
+                setOffsetPixels(finalX, 0, FlowingView.TYPE_NONE);
+                setDrawerState(finalX == 0 ? STATE_CLOSED : STATE_OPEN);
+                stopLayerTranslation();
+            }
+        });
+        valueAnimator.setDuration(300);
+        valueAnimator.setInterpolator(new OvershootInterpolator(4f));
+        valueAnimator.start();
     }
 
     protected void cancelContentTouch() {

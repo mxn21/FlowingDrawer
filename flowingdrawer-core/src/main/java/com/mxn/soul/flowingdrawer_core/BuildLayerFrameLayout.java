@@ -26,6 +26,7 @@ public class BuildLayerFrameLayout extends FrameLayout {
 
     public BuildLayerFrameLayout(Context context) {
         super(context);
+        setClipChildren(false);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
 //            setLayerType(LAYER_TYPE_HARDWARE, null);
         }
