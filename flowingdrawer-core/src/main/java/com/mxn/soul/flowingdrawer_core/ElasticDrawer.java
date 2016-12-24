@@ -2,6 +2,7 @@
 package com.mxn.soul.flowingdrawer_core;
 
 import static com.mxn.soul.flowingdrawer_core.FlowingDrawer.USE_TRANSLATIONS;
+import static com.mxn.soul.flowingdrawer_core.FlowingMenuLayout.TYPE_DOWN_SMOOTH;
 
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.ValueAnimator;
@@ -28,6 +29,7 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.view.animation.OvershootInterpolator;
 import android.widget.Scroller;
@@ -250,12 +252,14 @@ public abstract class ElasticDrawer extends ViewGroup {
     /**
      * Indicates that the drawer is currently being dragged by the user.
      */
-    public static final int STATE_DRAGGING = 2;
+    public static final int STATE_DRAGGING_OPEN = 2;
+
+    public static final int STATE_DRAGGING_CLOSE = 4;
 
     /**
      * Indicates that the drawer is currently opening.
      */
-    public static final int STATE_OPENING = 4;
+    public static final int STATE_OPENING = 6;
 
     /**
      * Indicates that the drawer is currently open.
@@ -267,7 +271,8 @@ public abstract class ElasticDrawer extends ViewGroup {
      *
      * @see #STATE_CLOSED
      * @see #STATE_CLOSING
-     * @see #STATE_DRAGGING
+     * @see #STATE_DRAGGING_OPEN
+     * @see #STATE_DRAGGING_CLOSE
      * @see #STATE_OPENING
      * @see #STATE_OPEN
      */
@@ -598,6 +603,31 @@ public abstract class ElasticDrawer extends ViewGroup {
         invalidate();
     }
 
+    protected void smoothClose(final int eventY) {
+        endDrag();
+        setDrawerState(STATE_CLOSING) ;
+
+        ValueAnimator valueAnimator = ValueAnimator.ofFloat(mOffsetPixels, 0);
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                setOffsetPixels((Float) animation.getAnimatedValue(),eventY,TYPE_DOWN_SMOOTH) ;
+            }
+        });
+        valueAnimator.addListener(new FlowingAnimationListener() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mMenuVisible = false ;
+                setOffsetPixels(0, 0, FlowingView.TYPE_NONE);
+                setDrawerState(STATE_CLOSED);
+                stopLayerTranslation();
+            }
+        });
+        valueAnimator.setDuration(500);
+        valueAnimator.setInterpolator(new DecelerateInterpolator(4f));
+        valueAnimator.start();
+    }
+
     /**
      * Moves the drawer to the position passed.
      *
@@ -652,7 +682,6 @@ public abstract class ElasticDrawer extends ViewGroup {
         final int newOffset = (int) offsetPixels;
 
         mOffsetPixels = offsetPixels;
-//        mFlowingView.setClipOffsetPixels(mOffsetPixels, eventY, type);
         mMenuView.setClipOffsetPixels(mOffsetPixels, eventY, type) ;
         if (newOffset != oldOffset) {
             onOffsetPixelsChanged(newOffset);
@@ -820,8 +849,11 @@ public abstract class ElasticDrawer extends ViewGroup {
                 Log.d(TAG, "[DrawerState] STATE_CLOSING");
                 break;
 
-            case STATE_DRAGGING:
-                Log.d(TAG, "[DrawerState] STATE_DRAGGING");
+            case STATE_DRAGGING_CLOSE:
+                Log.d(TAG, "[DrawerState] STATE_DRAGGING_CLOSE");
+                break;
+            case STATE_DRAGGING_OPEN:
+                Log.d(TAG, "[DrawerState] STATE_DRAGGING_OPEN");
                 break;
 
             case STATE_OPENING:
