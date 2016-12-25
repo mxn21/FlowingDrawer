@@ -47,7 +47,7 @@ public abstract class ElasticDrawer extends ViewGroup {
     /**
      * Indicates whether debug code should be enabled.
      */
-    private static final boolean DEBUG = false;
+    private static final boolean DEBUG = true;
     /**
      * The time between each frame when animating the drawer.
      */
@@ -1241,10 +1241,12 @@ public abstract class ElasticDrawer extends ViewGroup {
         valueAnimator.addListener(new FlowingAnimationListener() {
             @Override
             public void onAnimationEnd(Animator animation) {
-                mMenuVisible = finalX != 0 ;
-                setOffsetPixels(finalX, 0, FlowingView.TYPE_NONE);
-                setDrawerState(finalX == 0 ? STATE_CLOSED : STATE_OPEN);
-                stopLayerTranslation();
+                if (mDrawerState == STATE_OPENING) {
+                    mMenuVisible = finalX != 0;
+                    setOffsetPixels(finalX, 0, FlowingView.TYPE_NONE);
+                    setDrawerState(finalX == 0 ? STATE_CLOSED : STATE_OPEN);
+                    stopLayerTranslation();
+                }
             }
         });
         valueAnimator.setDuration(300);
