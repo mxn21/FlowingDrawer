@@ -13,6 +13,7 @@ import android.widget.FrameLayout;
 
 /**
  * Created by mxn on 2016/10/17.
+ * BuildLayerFrameLayout
  */
 public class BuildLayerFrameLayout extends FrameLayout {
 

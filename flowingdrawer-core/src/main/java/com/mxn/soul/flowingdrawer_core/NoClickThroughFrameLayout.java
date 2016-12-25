@@ -7,6 +7,7 @@ import android.view.MotionEvent;
 
 /**
  * Created by mxn on 2016/10/18.
+ * BuildLayerFrameLayout
  */
 public class NoClickThroughFrameLayout  extends BuildLayerFrameLayout {
 

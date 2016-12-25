@@ -184,7 +184,6 @@ public abstract class ElasticDrawer extends ViewGroup {
      * The custom menu view set by the user.
      */
     private FlowingMenuLayout mMenuView;
-    protected FlowingView mFlowingView;
     /**
      * Current offset.
      */
@@ -510,12 +509,11 @@ public abstract class ElasticDrawer extends ViewGroup {
         if (menu != null) {
             removeView(menu);
             mMenuView = (FlowingMenuLayout) menu;
-//            mFlowingView = (FlowingView) mMenuView.getChildAt(0);
             mMenuContainer.removeAllViews();
             mMenuContainer.addView(menu, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
         } else {
             throw new IllegalStateException(
-                    "menu view must be added in xml .FlowingView shuld be first child of menu view");
+                    "menu view must be added in xml .");
         }
         addView(mContentContainer, -1, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
         addView(mMenuContainer, -1, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
@@ -597,7 +595,7 @@ public abstract class ElasticDrawer extends ViewGroup {
     public void setMenuSize(final int size) {
         mMenuSize = size;
         if (mDrawerState == STATE_OPEN || mDrawerState == STATE_OPENING) {
-            setOffsetPixels(mMenuSize, 0, FlowingView.TYPE_NONE);
+            setOffsetPixels(mMenuSize, 0, FlowingMenuLayout.TYPE_NONE);
         }
         requestLayout();
         invalidate();
@@ -618,7 +616,7 @@ public abstract class ElasticDrawer extends ViewGroup {
             @Override
             public void onAnimationEnd(Animator animation) {
                 mMenuVisible = false ;
-                setOffsetPixels(0, 0, FlowingView.TYPE_NONE);
+                setOffsetPixels(0, 0, FlowingMenuLayout.TYPE_NONE);
                 setDrawerState(STATE_CLOSED);
                 stopLayerTranslation();
             }
@@ -640,7 +638,7 @@ public abstract class ElasticDrawer extends ViewGroup {
         final int startX = (int) mOffsetPixels;
         final int dx = position - startX;
         if (dx == 0 || !animate) {
-            setOffsetPixels(position, 0, FlowingView.TYPE_NONE);
+            setOffsetPixels(position, 0, FlowingMenuLayout.TYPE_NONE);
             setDrawerState(position == 0 ? STATE_CLOSED : STATE_OPEN);
             stopLayerTranslation();
             return;
@@ -703,7 +701,7 @@ public abstract class ElasticDrawer extends ViewGroup {
 
         if (getPosition() != mResolvedPosition) {
             mResolvedPosition = getPosition();
-            setOffsetPixels(mOffsetPixels * -1, 0, FlowingView.TYPE_NONE);
+            setOffsetPixels(mOffsetPixels * -1, 0, FlowingMenuLayout.TYPE_NONE);
         }
 
         requestLayout();
@@ -997,7 +995,7 @@ public abstract class ElasticDrawer extends ViewGroup {
         if (menuOpen) {
             openMenu(false);
         } else {
-            setOffsetPixels(0, 0, FlowingView.TYPE_NONE);
+            setOffsetPixels(0, 0, FlowingMenuLayout.TYPE_NONE);
         }
         mDrawerState = menuOpen ? STATE_OPEN : STATE_CLOSED;
     }
@@ -1208,7 +1206,7 @@ public abstract class ElasticDrawer extends ViewGroup {
             mScroller.abortAnimation();
             final int finalX = mScroller.getFinalX();
             mMenuVisible = finalX != 0 ;
-            setOffsetPixels(finalX, 0, FlowingView.TYPE_NONE);
+            setOffsetPixels(finalX, 0, FlowingMenuLayout.TYPE_NONE);
             setDrawerState(finalX == 0 ? STATE_CLOSED : STATE_OPEN);
             stopLayerTranslation();
         }
@@ -1221,12 +1219,6 @@ public abstract class ElasticDrawer extends ViewGroup {
     private void completeAnimation() {
         mScroller.abortAnimation();
         final int finalX = mScroller.getFinalX();
-//        setOffsetPixels(finalX, 0, FlowingView.TYPE_NONE);
-//        setDrawerState(finalX == 0 ? STATE_CLOSED : STATE_OPEN);
-//        stopLayerTranslation();
-        // TODO
-        // TODO
-        // TODO
         flowDown(finalX)  ;
     }
 
@@ -1243,7 +1235,7 @@ public abstract class ElasticDrawer extends ViewGroup {
             public void onAnimationEnd(Animator animation) {
                 if (mDrawerState == STATE_OPENING) {
                     mMenuVisible = finalX != 0;
-                    setOffsetPixels(finalX, 0, FlowingView.TYPE_NONE);
+                    setOffsetPixels(finalX, 0, FlowingMenuLayout.TYPE_NONE);
                     setDrawerState(finalX == 0 ? STATE_CLOSED : STATE_OPEN);
                     stopLayerTranslation();
                 }

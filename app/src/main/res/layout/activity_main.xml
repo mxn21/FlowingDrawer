@@ -40,12 +40,6 @@
             android:layout_height="match_parent"
             android:layout_gravity="start"
     >
-
-        <!--<com.mxn.soul.flowingdrawer_core.FlowingView2-->
-                <!--android:id="@+id/fv"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent"/>-->
-
         <FrameLayout
                 android:id="@+id/id_container_menu"
                 android:layout_width="match_parent"

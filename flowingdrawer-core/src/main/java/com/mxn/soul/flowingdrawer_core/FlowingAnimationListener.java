@@ -3,7 +3,7 @@ package com.mxn.soul.flowingdrawer_core;
 
 import com.nineoldandroids.animation.Animator;
 
-public class FlowingAnimationListener implements Animator.AnimatorListener {
+class FlowingAnimationListener implements Animator.AnimatorListener {
 
     public void onAnimationStart(Animator animation) {
 

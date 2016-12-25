@@ -5,8 +5,9 @@ import android.view.animation.Interpolator;
 
 /**
  * Created by mxn on 2016/10/17.
+ * SmoothInterpolator
  */
-public class SmoothInterpolator implements Interpolator {
+class SmoothInterpolator implements Interpolator {
 
     @Override
     public float getInterpolation(float t) {
