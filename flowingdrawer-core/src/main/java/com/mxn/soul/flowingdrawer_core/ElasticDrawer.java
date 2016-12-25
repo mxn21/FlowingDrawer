@@ -284,8 +284,7 @@ public abstract class ElasticDrawer extends ViewGroup {
         setWillNotDraw(false);
         setFocusable(false);
 
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ElasticDrawer, R.attr.elasticDrawerStyle,
-                R.style.MenuDrawerStyle);
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ElasticDrawer);
 
         mMenuSize = a.getDimensionPixelSize(R.styleable.ElasticDrawer_edMenuSize, dpToPx(240));
 
@@ -299,11 +298,9 @@ public abstract class ElasticDrawer extends ViewGroup {
         a.recycle();
 
         mMenuContainer = new NoClickThroughFrameLayout(context);
-        mMenuContainer.setId(R.id.md__menu);
         mMenuContainer.setBackgroundColor(getResources().getColor(android.R.color.transparent));
 
         mContentContainer = new NoClickThroughFrameLayout(context);
-        mContentContainer.setId(R.id.md__content);
 
         final ViewConfiguration configuration = ViewConfiguration.get(context);
         mTouchSlop = configuration.getScaledTouchSlop();

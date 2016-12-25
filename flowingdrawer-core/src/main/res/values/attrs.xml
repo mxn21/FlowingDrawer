@@ -7,35 +7,17 @@
     <!-- Styleables used for styling the menu drawer. -->
     <declare-styleable name="ElasticDrawer">
 
-        <!-- Drawable to use for the background of the content. -->
-        <attr name="edContentBackground" format="reference" />
-
         <!-- Drawable to use for the background of the menu. -->
         <attr name="edMenuBackground" format="reference" />
 
         <!-- The size of the menu. -->
         <attr name="edMenuSize" format="dimension" />
 
-        <!-- Defines whether the content will have a dropshadow onto the menu. Default is true. -->
-        <attr name="edShadowEnabled" format="boolean" />
-
-        <!-- The size of the drop shadow. Default is 6dp -->
-        <attr name="edShadowSize" format="dimension" />
-
-        <!-- The color of the drop shadow. Default is #FF000000. -->
-        <attr name="edShadowColor" format="color" />
-
-        <!-- Drawable used for the drop shadow. -->
-        <attr name="edShadowDrawable" format="reference" />
-
         <!-- The touch bezel size. -->
         <attr name="edTouchBezelSize" format="dimension" />
 
         <!-- The maximum animation duration -->
         <attr name="edMaxAnimationDuration" format="integer" />
-
-        <!-- Whether an overlay should be drawn as the drawer is opened and closed -->
-        <attr name="edDrawOverlay" format="boolean" />
 
         <!-- The position of the drawer -->
         <attr name="edPosition" format="integer"/>
