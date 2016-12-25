@@ -3,7 +3,6 @@ package com.mxn.soul.flowingdrawer_core;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.os.Build;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
@@ -14,8 +13,6 @@ import android.view.View;
  * FlowingDrawer
  */
 public class FlowingDrawer extends ElasticDrawer {
-
-    static final boolean USE_TRANSLATIONS = Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH;
 
     public FlowingDrawer(Context context) {
         super(context);
@@ -35,10 +32,9 @@ public class FlowingDrawer extends ElasticDrawer {
         super.initDrawer(context, attrs, defStyle);
     }
 
-
     @Override
     public void openMenu(boolean animate) {
-        openMenu(animate,getHeight()/2) ;
+        openMenu(animate, getHeight() / 2);
     }
 
     @Override
@@ -52,42 +48,29 @@ public class FlowingDrawer extends ElasticDrawer {
                 animateTo = -mMenuSize;
                 break;
         }
-        animateOffsetTo(animateTo, 0,animate, y);
+        animateOffsetTo(animateTo, 0, animate, y);
     }
 
     @Override
     public void closeMenu(boolean animate) {
-        closeMenu(animate,getHeight()/2);
+        closeMenu(animate, getHeight() / 2);
     }
 
     @Override
     public void closeMenu(boolean animate, float y) {
-        animateOffsetTo(0, 0, animate , y );
+        animateOffsetTo(0, 0, animate, y);
     }
 
     @SuppressLint("NewApi")
     @Override
     protected void onOffsetPixelsChanged(int offsetPixels) {
-        if (USE_TRANSLATIONS) {
-            switch (getPosition()) {
-                case Position.LEFT:
-                    mMenuContainer.setTranslationX(offsetPixels - mMenuSize);
-                    break;
-                case Position.RIGHT:
-                    mMenuContainer.setTranslationX(offsetPixels + mMenuSize);
-                    break;
-
-            }
-        } else {
-            switch (getPosition()) {
-                case Position.LEFT:
-                    mMenuContainer.offsetLeftAndRight(offsetPixels - mMenuContainer.getRight());
-                    break;
-
-                case Position.RIGHT:
-                    mMenuContainer.offsetLeftAndRight(offsetPixels - (mMenuContainer.getLeft() - getWidth()));
-                    break;
-            }
+        switch (getPosition()) {
+            case Position.LEFT:
+                mMenuContainer.setTranslationX(offsetPixels - mMenuSize);
+                break;
+            case Position.RIGHT:
+                mMenuContainer.setTranslationX(offsetPixels + mMenuSize);
+                break;
         }
         invalidate();
     }
@@ -98,11 +81,10 @@ public class FlowingDrawer extends ElasticDrawer {
         onOffsetPixelsChanged((int) mOffsetPixels);
     }
 
-
     @SuppressLint("NewApi")
     @Override
     protected void startLayerTranslation() {
-        if (USE_TRANSLATIONS && mHardwareLayersEnabled && !mLayerTypeHardware) {
+        if (mHardwareLayersEnabled && !mLayerTypeHardware) {
             mLayerTypeHardware = true;
             mMenuContainer.setLayerType(View.LAYER_TYPE_HARDWARE, null);
         }
@@ -129,7 +111,9 @@ public class FlowingDrawer extends ElasticDrawer {
         final int width = MeasureSpec.getSize(widthMeasureSpec);
         final int height = MeasureSpec.getSize(heightMeasureSpec);
 
-        if (mOffsetPixels == -1) openMenu(false);
+        if (mOffsetPixels == -1) {
+            openMenu(false);
+        }
 
         int menuWidthMeasureSpec;
         int menuHeightMeasureSpec;
@@ -146,7 +130,6 @@ public class FlowingDrawer extends ElasticDrawer {
         updateTouchAreaSize();
     }
 
-
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         final int width = r - l;
@@ -154,32 +137,16 @@ public class FlowingDrawer extends ElasticDrawer {
 
         mContentContainer.layout(0, 0, width, height);
 
-        if (USE_TRANSLATIONS) {
-            switch (getPosition()) {
-                case Position.LEFT:
-                    mMenuContainer.layout(0, 0, mMenuSize, height);
-                    break;
+        switch (getPosition()) {
+            case Position.LEFT:
+                mMenuContainer.layout(0, 0, mMenuSize, height);
+                break;
 
-                case Position.RIGHT:
-                    mMenuContainer.layout(width - mMenuSize, 0, width, height);
-                    break;
-            }
-
-        } else {
-            final int offsetPixels = (int) mOffsetPixels;
-            final int menuSize = mMenuSize;
-
-            switch (getPosition()) {
-                case Position.LEFT:
-                    mMenuContainer.layout(-menuSize + offsetPixels, 0, offsetPixels, height);
-                    break;
-                case Position.RIGHT:
-                    mMenuContainer.layout(width + offsetPixels, 0, width + menuSize + offsetPixels, height);
-                    break;
-            }
+            case Position.RIGHT:
+                mMenuContainer.layout(width - mMenuSize, 0, width, height);
+                break;
         }
     }
-
 
     private boolean isContentTouch(int x) {
         boolean contentTouch = false;
@@ -195,16 +162,15 @@ public class FlowingDrawer extends ElasticDrawer {
         return contentTouch;
     }
 
-
     private boolean willCloseEnough(int x) {
         boolean closeEnough = false;
 
         switch (getPosition()) {
             case Position.LEFT:
-                closeEnough = x < getWidth()/2;
+                closeEnough = x < getWidth() / 2;
                 break;
             case Position.RIGHT:
-                closeEnough = x > getWidth()/2;
+                closeEnough = x > getWidth() / 2;
                 break;
         }
         return closeEnough;
@@ -227,7 +193,7 @@ public class FlowingDrawer extends ElasticDrawer {
         return false;
     }
 
-    protected boolean onMoveAllowDrag(int x, float dx ) {
+    protected boolean onMoveAllowDrag(int x, float dx) {
         if (mMenuVisible && mTouchMode == TOUCH_MODE_FULLSCREEN) {
             return true;
         }
@@ -235,52 +201,52 @@ public class FlowingDrawer extends ElasticDrawer {
         switch (getPosition()) {
             case Position.LEFT:
                 return (!mMenuVisible && mInitialMotionX <= mTouchSize && (dx > 0)) // Drawer closed
-                        || (mMenuVisible && x <= mOffsetPixels) ;// Drawer open
+                        || (mMenuVisible && x <= mOffsetPixels);// Drawer open
             case Position.RIGHT:
                 final int width = getWidth();
                 return (!mMenuVisible && mInitialMotionX >= width - mTouchSize && (dx < 0))
-                        || (mMenuVisible && x >= width - mOffsetPixels) ;
+                        || (mMenuVisible && x >= width - mOffsetPixels);
 
         }
 
         return false;
     }
-    protected void onMoveEvent(float dx, float y , int type) {
+
+    protected void onMoveEvent(float dx, float y, int type) {
         switch (getPosition()) {
             case Position.LEFT:
-                setOffsetPixels(Math.min(Math.max(mOffsetPixels + dx, 0), mMenuSize),y ,type);
+                setOffsetPixels(Math.min(Math.max(mOffsetPixels + dx, 0), mMenuSize), y, type);
                 break;
 
             case Position.RIGHT:
-                setOffsetPixels(Math.max(Math.min(mOffsetPixels + dx, 0), -mMenuSize),y,type);
+                setOffsetPixels(Math.max(Math.min(mOffsetPixels + dx, 0), -mMenuSize), y, type);
                 break;
         }
     }
 
-    protected void onUpEvent(int x ,int y ) {
+    protected void onUpEvent(int x, int y) {
         switch (getPosition()) {
             case Position.LEFT: {
                 if (mIsDragging) {
                     if (mDrawerState == STATE_DRAGGING_CLOSE) {
-                        closeMenu(true ,y);
-                        return ;
+                        closeMenu(true, y);
+                        return;
                     }
                     if (mDrawerState == STATE_DRAGGING_OPEN && willCloseEnough(x)) {
-                        smoothClose(y) ;
-                        return ;
+                        smoothClose(y);
+                        return;
                     }
                     mVelocityTracker.computeCurrentVelocity(1000, mMaxVelocity);
                     final int initialVelocity = (int) getXVelocity(mVelocityTracker);
                     mLastMotionX = x;
-                    animateOffsetTo(initialVelocity > 0 ? mMenuSize : 0, initialVelocity, true,y);
-                }
-                else if (isFirstPointUp) {
-                    isFirstPointUp = false ;
-                    return ;
+                    animateOffsetTo(initialVelocity > 0 ? mMenuSize : 0, initialVelocity, true, y);
+                } else if (isFirstPointUp) {
+                    isFirstPointUp = false;
+                    return;
                 }
                 // Close the menu when content is clicked while the menu is visible.
                 else if (mMenuVisible) {
-                    closeMenu(true ,  y);
+                    closeMenu(true, y);
                 }
                 break;
             }
@@ -289,15 +255,14 @@ public class FlowingDrawer extends ElasticDrawer {
                     mVelocityTracker.computeCurrentVelocity(1000, mMaxVelocity);
                     final int initialVelocity = (int) getXVelocity(mVelocityTracker);
                     mLastMotionX = x;
-                    animateOffsetTo(initialVelocity > 0 ? 0 : -mMenuSize, initialVelocity, true,y);
-                }
-                else if (isFirstPointUp) {
-                    isFirstPointUp = false ;
-                    return ;
+                    animateOffsetTo(initialVelocity > 0 ? 0 : -mMenuSize, initialVelocity, true, y);
+                } else if (isFirstPointUp) {
+                    isFirstPointUp = false;
+                    return;
                 }
                 // Close the menu when content is clicked while the menu is visible.
                 else if (mMenuVisible) {
-                    closeMenu(true , y );
+                    closeMenu(true, y);
                 }
                 break;
             }
@@ -317,6 +282,7 @@ public class FlowingDrawer extends ElasticDrawer {
     public void requestDisallowInterceptTouchEvent(boolean disallowIntercept) {
         super.requestDisallowInterceptTouchEvent(disallowIntercept);
     }
+
     private void onPointerUp(MotionEvent ev) {
         final int pointerIndex = ev.getActionIndex();
         final int pointerId = ev.getPointerId(pointerIndex);
@@ -340,14 +306,14 @@ public class FlowingDrawer extends ElasticDrawer {
                 mVelocityTracker = null;
             }
             if (Math.abs(mOffsetPixels) > mMenuSize / 2) {
-                openMenu(true , ev.getY());
+                openMenu(true, ev.getY());
             } else {
-                closeMenu(true ,ev.getY() );
+                closeMenu(true, ev.getY());
             }
             return false;
         }
         if (action == MotionEvent.ACTION_DOWN && mMenuVisible && isCloseEnough()) {
-            setOffsetPixels(0,0,FlowingMenuLayout.TYPE_NONE);
+            setOffsetPixels(0, 0, FlowingMenuLayout.TYPE_NONE);
             stopAnimation();
             setDrawerState(STATE_CLOSED);
             mIsDragging = false;
@@ -400,7 +366,7 @@ public class FlowingDrawer extends ElasticDrawer {
                     mIsDragging = false;
                     mActivePointerId = INVALID_POINTER;
                     endDrag();
-                    closeMenu(true,ev.getY());
+                    closeMenu(true, ev.getY());
                     return false;
                 }
 
@@ -420,9 +386,9 @@ public class FlowingDrawer extends ElasticDrawer {
                     final boolean allowDrag = onMoveAllowDrag((int) x, dx);
                     if (allowDrag) {
                         stopAnimation();
-                        if (mDrawerState == STATE_OPEN || mDrawerState == STATE_OPENING){
+                        if (mDrawerState == STATE_OPEN || mDrawerState == STATE_OPENING) {
                             setDrawerState(STATE_DRAGGING_CLOSE);
-                        }else {
+                        } else {
                             setDrawerState(STATE_DRAGGING_OPEN);
                         }
                         mIsDragging = true;
@@ -438,11 +404,12 @@ public class FlowingDrawer extends ElasticDrawer {
                 mLastMotionY = ev.getY(ev.findPointerIndex(mActivePointerId));
                 break;
         }
-        if (mVelocityTracker == null) mVelocityTracker = VelocityTracker.obtain();
+        if (mVelocityTracker == null) {
+            mVelocityTracker = VelocityTracker.obtain();
+        }
         mVelocityTracker.addMovement(ev);
         return mIsDragging;
     }
-
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
@@ -450,7 +417,9 @@ public class FlowingDrawer extends ElasticDrawer {
             return false;
         }
         final int action = ev.getAction() & MotionEvent.ACTION_MASK;
-        if (mVelocityTracker == null) mVelocityTracker = VelocityTracker.obtain();
+        if (mVelocityTracker == null) {
+            mVelocityTracker = VelocityTracker.obtain();
+        }
         mVelocityTracker.addMovement(ev);
         switch (action) {
             case MotionEvent.ACTION_DOWN: {
@@ -470,7 +439,7 @@ public class FlowingDrawer extends ElasticDrawer {
                     mIsDragging = false;
                     mActivePointerId = INVALID_POINTER;
                     endDrag();
-                    closeMenu(true,ev.getY());
+                    closeMenu(true, ev.getY());
                     return false;
                 }
                 if (mIsDragging) {
@@ -503,7 +472,7 @@ public class FlowingDrawer extends ElasticDrawer {
                 index = index == -1 ? 0 : index;
                 final int x = (int) ev.getX(index);
                 final int y = (int) ev.getY(index);
-                onUpEvent(x,y);
+                onUpEvent(x, y);
                 mActivePointerId = INVALID_POINTER;
                 mIsDragging = false;
                 break;

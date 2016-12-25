@@ -1,9 +1,6 @@
 
 package com.mxn.soul.flowingdrawer_core;
 
-import static com.mxn.soul.flowingdrawer_core.FlowingDrawer.USE_TRANSLATIONS;
-import static com.mxn.soul.flowingdrawer_core.FlowingMenuLayout.TYPE_DOWN_SMOOTH;
-
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.ValueAnimator;
 
@@ -259,7 +256,7 @@ public abstract class ElasticDrawer extends ViewGroup {
 
     private float eventY;
 
-    protected boolean isFirstPointUp ;
+    protected boolean isFirstPointUp;
 
     /**
      * Runnable used when animating the drawer open/closed.
@@ -315,9 +312,7 @@ public abstract class ElasticDrawer extends ViewGroup {
         mScroller = new Scroller(context, SMOOTH_INTERPOLATOR);
         mCloseEnough = dpToPx(CLOSE_ENOUGH);
 
-        if (USE_TRANSLATIONS) {
-            mContentContainer.setLayerType(View.LAYER_TYPE_NONE, null);
-        }
+        mContentContainer.setLayerType(View.LAYER_TYPE_NONE, null);
         mContentContainer.setHardwareLayersEnabled(false);
     }
 
@@ -419,7 +414,8 @@ public abstract class ElasticDrawer extends ViewGroup {
             removeView(menu);
             mMenuView = (FlowingMenuLayout) menu;
             mMenuView.setBackgroundColor(getResources().getColor(android.R.color.transparent));
-            mMenuView.setPaintColor(mMenuBackground) ;
+            mMenuView.setPaintColor(mMenuBackground);
+            mMenuView.setMenuPosition(getPosition());
             mMenuContainer.removeAllViews();
             mMenuContainer.addView(menu, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
         } else {
@@ -481,6 +477,7 @@ public abstract class ElasticDrawer extends ViewGroup {
     public void closeMenu() {
         closeMenu(true);
     }
+
     /**
      * Closes the menu.
      *
@@ -516,19 +513,20 @@ public abstract class ElasticDrawer extends ViewGroup {
 
     protected void smoothClose(final int eventY) {
         endDrag();
-        setDrawerState(STATE_CLOSING) ;
+        setDrawerState(STATE_CLOSING);
 
         ValueAnimator valueAnimator = ValueAnimator.ofFloat(mOffsetPixels, 0);
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                setOffsetPixels((Float) animation.getAnimatedValue(),eventY,TYPE_DOWN_SMOOTH) ;
+                setOffsetPixels((Float) animation.getAnimatedValue(), eventY,
+                        FlowingMenuLayout.TYPE_DOWN_SMOOTH);
             }
         });
         valueAnimator.addListener(new FlowingAnimationListener() {
             @Override
             public void onAnimationEnd(Animator animation) {
-                mMenuVisible = false ;
+                mMenuVisible = false;
                 setOffsetPixels(0, 0, FlowingMenuLayout.TYPE_NONE);
                 setDrawerState(STATE_CLOSED);
                 stopLayerTranslation();
@@ -593,7 +591,7 @@ public abstract class ElasticDrawer extends ViewGroup {
         final int newOffset = (int) offsetPixels;
 
         mOffsetPixels = offsetPixels;
-        mMenuView.setClipOffsetPixels(mOffsetPixels, eventY, type) ;
+        mMenuView.setClipOffsetPixels(mOffsetPixels, eventY, type);
         if (newOffset != oldOffset) {
             onOffsetPixelsChanged(newOffset);
             mMenuVisible = newOffset != 0;
@@ -624,7 +622,6 @@ public abstract class ElasticDrawer extends ViewGroup {
 
     protected int getPosition() {
         final int layoutDirection = ViewHelper.getLayoutDirection(this);
-
         switch (mPosition) {
             case Position.START:
                 if (layoutDirection == LAYOUT_DIRECTION_RTL) {
@@ -632,7 +629,6 @@ public abstract class ElasticDrawer extends ViewGroup {
                 } else {
                     return Position.LEFT;
                 }
-
             case Position.END:
                 if (layoutDirection == LAYOUT_DIRECTION_RTL) {
                     return Position.LEFT;
@@ -640,7 +636,6 @@ public abstract class ElasticDrawer extends ViewGroup {
                     return Position.RIGHT;
                 }
         }
-
         return mPosition;
     }
 
@@ -673,7 +668,6 @@ public abstract class ElasticDrawer extends ViewGroup {
     public void setMaxAnimationDuration(int duration) {
         mMaxAnimationDuration = duration;
     }
-
 
     @SuppressWarnings("unused")
     public ViewGroup getMenuContainer() {
@@ -779,6 +773,7 @@ public abstract class ElasticDrawer extends ViewGroup {
         final boolean menuVisible = mDrawerState == STATE_OPEN || mDrawerState == STATE_OPENING;
         state.putBoolean(STATE_MENU_VISIBLE, menuVisible);
     }
+
     /**
      * Restores the state of the drawer.
      *
@@ -859,7 +854,6 @@ public abstract class ElasticDrawer extends ViewGroup {
         return velocityTracker.getXVelocity();
     }
 
-
     protected boolean canChildrenScroll(int dx, int x, int y) {
         boolean canScroll = false;
 
@@ -914,7 +908,6 @@ public abstract class ElasticDrawer extends ViewGroup {
         return checkV && mOnInterceptMoveEventListener.isViewDraggable(v, dx, x, y);
     }
 
-
     private int supportGetTranslationY(View v) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             return (int) v.getTranslationY();
@@ -960,7 +953,7 @@ public abstract class ElasticDrawer extends ViewGroup {
         } else if (mDrawerState == STATE_CLOSING) {
             mScroller.abortAnimation();
             final int finalX = mScroller.getFinalX();
-            mMenuVisible = finalX != 0 ;
+            mMenuVisible = finalX != 0;
             setOffsetPixels(finalX, 0, FlowingMenuLayout.TYPE_NONE);
             setDrawerState(finalX == 0 ? STATE_CLOSED : STATE_OPEN);
             stopLayerTranslation();
@@ -974,15 +967,15 @@ public abstract class ElasticDrawer extends ViewGroup {
     private void completeAnimation() {
         mScroller.abortAnimation();
         final int finalX = mScroller.getFinalX();
-        flowDown(finalX)  ;
+        flowDown(finalX);
     }
 
-    private void flowDown(final int finalX){
+    private void flowDown(final int finalX) {
         ValueAnimator valueAnimator = ValueAnimator.ofFloat(0, 1);
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                mMenuView.setUpDownFraction(animation.getAnimatedFraction()) ;
+                mMenuView.setUpDownFraction(animation.getAnimatedFraction());
             }
         });
         valueAnimator.addListener(new FlowingAnimationListener() {
@@ -1026,10 +1019,10 @@ public abstract class ElasticDrawer extends ViewGroup {
      */
     @SuppressLint("NewApi")
     protected void startLayerTranslation() {
-        if (USE_TRANSLATIONS && mHardwareLayersEnabled && !mLayerTypeHardware) {
+        if (mHardwareLayersEnabled && !mLayerTypeHardware) {
             mLayerTypeHardware = true;
-                        mContentContainer.setLayerType(View.LAYER_TYPE_HARDWARE, null);
-                        mMenuContainer.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+            mContentContainer.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+            mMenuContainer.setLayerType(View.LAYER_TYPE_HARDWARE, null);
         }
     }
 
@@ -1041,8 +1034,8 @@ public abstract class ElasticDrawer extends ViewGroup {
     protected void stopLayerTranslation() {
         if (mLayerTypeHardware) {
             mLayerTypeHardware = false;
-                        mContentContainer.setLayerType(View.LAYER_TYPE_NONE, null);
-                        mMenuContainer.setLayerType(View.LAYER_TYPE_NONE, null);
+            mContentContainer.setLayerType(View.LAYER_TYPE_NONE, null);
+            mMenuContainer.setLayerType(View.LAYER_TYPE_NONE, null);
         }
     }
 
@@ -1050,6 +1043,7 @@ public abstract class ElasticDrawer extends ViewGroup {
     public void setTouchBezelSize(int size) {
         mTouchBezelSize = size;
     }
+
     @SuppressWarnings("unused")
     public int getTouchBezelSize() {
         return mTouchBezelSize;

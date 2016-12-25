@@ -16,29 +16,17 @@ final class ViewHelper {
 
     @SuppressLint("NewApi")
     static int getLeft(View v) {
-        if (FlowingDrawer.USE_TRANSLATIONS) {
-            return (int) (v.getLeft() + v.getTranslationX());
-        }
-
-        return v.getLeft();
+        return (int) (v.getLeft() + v.getTranslationX());
     }
 
     @SuppressLint("NewApi")
     static int getTop(View v) {
-        if (FlowingDrawer.USE_TRANSLATIONS) {
-            return (int) (v.getTop() + v.getTranslationY());
-        }
-
-        return v.getTop();
+        return (int) (v.getTop() + v.getTranslationY());
     }
 
     @SuppressLint("NewApi")
     static int getRight(View v) {
-        if (FlowingDrawer.USE_TRANSLATIONS) {
-            return (int) (v.getRight() + v.getTranslationX());
-        }
-
-        return v.getRight();
+        return (int) (v.getRight() + v.getTranslationX());
     }
 
     @SuppressLint("NewApi")
