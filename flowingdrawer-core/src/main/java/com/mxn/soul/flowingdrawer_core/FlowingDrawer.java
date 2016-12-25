@@ -109,7 +109,6 @@ public class FlowingDrawer extends ElasticDrawer {
                     break;
             }
         }
-
         invalidate();
     }
 
@@ -128,28 +127,6 @@ public class FlowingDrawer extends ElasticDrawer {
             default:
                 return GradientDrawable.Orientation.LEFT_RIGHT;
         }
-    }
-
-    @Override
-    protected void updateDropShadowRect() {
-//        final float openRatio = Math.abs(mOffsetPixels) / mMenuSize;
-//        final int dropShadowSize = (int) (mShadowSize * openRatio);
-//        switch (getPosition()) {
-//            case Position.LEFT:
-//                mDropShadowRect.top = 0;
-//                mDropShadowRect.bottom = getHeight();
-//                mDropShadowRect.left = ViewHelper.getRight(mMenuContainer);
-//                mDropShadowRect.right = mDropShadowRect.left + dropShadowSize;
-//                break;
-//
-//            case Position.RIGHT:
-//                mDropShadowRect.top = 0;
-//                mDropShadowRect.bottom = getHeight();
-//                mDropShadowRect.right = ViewHelper.getLeft(mMenuContainer);
-//                mDropShadowRect.left = mDropShadowRect.right - dropShadowSize;
-//                break;
-//
-//        }
     }
 
     @SuppressLint("NewApi")
@@ -318,7 +295,6 @@ public class FlowingDrawer extends ElasticDrawer {
                         closeMenu(true ,y);
                         return ;
                     }
-
                     if (mDrawerState == STATE_DRAGGING_OPEN && willCloseEnough(x)) {
                         smoothClose(y) ;
                         return ;
@@ -338,7 +314,6 @@ public class FlowingDrawer extends ElasticDrawer {
                 }
                 break;
             }
-
             case Position.RIGHT: {
                 if (mIsDragging) {
                     mVelocityTracker.computeCurrentVelocity(1000, mMaxVelocity);
@@ -387,7 +362,6 @@ public class FlowingDrawer extends ElasticDrawer {
 
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         final int action = ev.getAction() & MotionEvent.ACTION_MASK;
-
         if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL) {
             mActivePointerId = INVALID_POINTER;
             mIsDragging = false;
@@ -395,23 +369,19 @@ public class FlowingDrawer extends ElasticDrawer {
                 mVelocityTracker.recycle();
                 mVelocityTracker = null;
             }
-
             if (Math.abs(mOffsetPixels) > mMenuSize / 2) {
                 openMenu(true , ev.getY());
             } else {
                 closeMenu(true ,ev.getY() );
             }
-
             return false;
         }
-
         if (action == MotionEvent.ACTION_DOWN && mMenuVisible && isCloseEnough()) {
             setOffsetPixels(0,0,FlowingMenuLayout.TYPE_NONE);
             stopAnimation();
             setDrawerState(STATE_CLOSED);
             mIsDragging = false;
         }
-
         // Always intercept events over the content while menu is visible.
         if (mMenuVisible) {
             int index = 0;
@@ -469,17 +439,15 @@ public class FlowingDrawer extends ElasticDrawer {
                 final float y = ev.getY(pointerIndex);
                 final float dy = y - mLastMotionY;
 
-
                 if (checkTouchSlop(dx, dy)) {
                     if (mOnInterceptMoveEventListener != null && (mTouchMode == TOUCH_MODE_FULLSCREEN || mMenuVisible)
                             && canChildrenScroll((int) dx, (int) dy, (int) x, (int) y)) {
-                        endDrag(); // Release the velocity tracker
+                        endDrag();
+                        // Release the velocity tracker
                         requestDisallowInterceptTouchEvent(true);
                         return false;
                     }
-
                     final boolean allowDrag = onMoveAllowDrag((int) x, dx);
-
                     if (allowDrag) {
                         stopAnimation();
                         if (mDrawerState == STATE_OPEN || mDrawerState == STATE_OPENING){
@@ -494,14 +462,12 @@ public class FlowingDrawer extends ElasticDrawer {
                 }
                 break;
             }
-
             case MotionEvent.ACTION_POINTER_UP:
                 onPointerUp(ev);
                 mLastMotionX = ev.getX(ev.findPointerIndex(mActivePointerId));
                 mLastMotionY = ev.getY(ev.findPointerIndex(mActivePointerId));
                 break;
         }
-
         if (mVelocityTracker == null) mVelocityTracker = VelocityTracker.obtain();
         mVelocityTracker.addMovement(ev);
         return mIsDragging;
@@ -514,25 +480,20 @@ public class FlowingDrawer extends ElasticDrawer {
             return false;
         }
         final int action = ev.getAction() & MotionEvent.ACTION_MASK;
-
         if (mVelocityTracker == null) mVelocityTracker = VelocityTracker.obtain();
         mVelocityTracker.addMovement(ev);
-
         switch (action) {
             case MotionEvent.ACTION_DOWN: {
                 mLastMotionX = mInitialMotionX = ev.getX();
                 mLastMotionY = mInitialMotionY = ev.getY();
                 final boolean allowDrag = onDownAllowDrag();
-
                 mActivePointerId = ev.getPointerId(0);
-
                 if (allowDrag) {
                     stopAnimation();
                     startLayerTranslation();
                 }
                 break;
             }
-
             case MotionEvent.ACTION_MOVE: {
                 final int pointerIndex = ev.findPointerIndex(mActivePointerId);
                 if (pointerIndex == -1) {
@@ -542,40 +503,13 @@ public class FlowingDrawer extends ElasticDrawer {
                     closeMenu(true,ev.getY());
                     return false;
                 }
-
-//                if (!mIsDragging) {
-//                    final float x = ev.getX(pointerIndex);
-//                    final float dx = x - mLastMotionX;
-//                    final float y = ev.getY(pointerIndex);
-//                    final float dy = y - mLastMotionY;
-//
-//                    if (checkTouchSlop(dx, dy)) {
-//                        final boolean allowDrag = onMoveAllowDrag((int) x, dx);
-//
-//                        if (allowDrag) {
-//                            stopAnimation();
-//                            setDrawerState(STATE_DRAGGING);
-//                            mIsDragging = true;
-//                            mLastMotionX = x;
-//                            mLastMotionY = y;
-//                        } else {
-//                            mInitialMotionX = x;
-//                            mInitialMotionY = y;
-//                        }
-//                    }
-//                }
-
                 if (mIsDragging) {
-
                     startLayerTranslation();
-
                     final float x = ev.getX(pointerIndex);
                     final float dx = x - mLastMotionX;
                     final float y = ev.getY(pointerIndex);
-
                     mLastMotionX = x;
                     mLastMotionY = y;
-
                     if (mDrawerState == STATE_DRAGGING_OPEN) {
                         if (mOffsetPixels + dx < mMenuSize / 2) {
                             onMoveEvent(dx, y, FlowingMenuLayout.TYPE_UP_MANUAL);
@@ -593,7 +527,6 @@ public class FlowingDrawer extends ElasticDrawer {
                 }
                 break;
             }
-
             case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_UP: {
                 int index = ev.findPointerIndex(mActivePointerId);
@@ -605,7 +538,6 @@ public class FlowingDrawer extends ElasticDrawer {
                 mIsDragging = false;
                 break;
             }
-
             case MotionEvent.ACTION_POINTER_DOWN:
                 final int index = (ev.getAction() & MotionEvent.ACTION_POINTER_INDEX_MASK)
                         >> MotionEvent.ACTION_POINTER_INDEX_SHIFT;
@@ -613,30 +545,12 @@ public class FlowingDrawer extends ElasticDrawer {
                 mLastMotionY = ev.getY(index);
                 mActivePointerId = ev.getPointerId(index);
                 break;
-
             case MotionEvent.ACTION_POINTER_UP:
                 onPointerUp(ev);
                 mLastMotionX = ev.getX(ev.findPointerIndex(mActivePointerId));
                 mLastMotionY = ev.getY(ev.findPointerIndex(mActivePointerId));
                 break;
         }
-
         return true;
     }
-
-//    @Override
-//    protected void dispatchDraw(@NonNull Canvas canvas) {
-//        PaintFlagsDrawFilter pfd = new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG | Paint
-//                .FILTER_BITMAP_FLAG);
-//        canvas.setDrawFilter(pfd);
-//        final int count = getChildCount();
-//        for (int i = 0; i < count; i++) {
-//            final View child = getChildAt(i);
-//            if (child == null) {
-//                return;
-//            }
-//        }
-//        super.dispatchDraw(canvas);
-//    }
-
 }

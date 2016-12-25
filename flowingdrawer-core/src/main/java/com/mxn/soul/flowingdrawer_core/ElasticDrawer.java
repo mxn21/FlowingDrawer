@@ -36,6 +36,7 @@ import android.widget.Scroller;
 
 /**
  * Created by mxn on 2016/10/15.
+ * ElasticDrawer
  */
 public abstract class ElasticDrawer extends ViewGroup {
 
@@ -919,7 +920,6 @@ public abstract class ElasticDrawer extends ViewGroup {
         if (mDropShadowDrawable == null) {
             setDropShadowColor(mShadowColor);
         }
-        updateDropShadowRect();
         mDropShadowDrawable.setBounds(mDropShadowRect);
         mDropShadowDrawable.draw(canvas);
     }
@@ -962,7 +962,6 @@ public abstract class ElasticDrawer extends ViewGroup {
         invalidate();
     }
 
-    protected abstract void updateDropShadowRect();
 
     protected abstract GradientDrawable.Orientation getDropShadowOrientation();
 
