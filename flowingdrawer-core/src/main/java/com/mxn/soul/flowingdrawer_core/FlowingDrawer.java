@@ -3,12 +3,11 @@ package com.mxn.soul.flowingdrawer_core;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
+import android.view.View;
 
 /**
  * Created by mxn on 2016/10/17.
@@ -36,25 +35,6 @@ public class FlowingDrawer extends ElasticDrawer {
         super.initDrawer(context, attrs, defStyle);
     }
 
-    @Override
-    protected void drawOverlay(Canvas canvas) {
-        final int width = getWidth();
-        final int height = getHeight();
-        final int offsetPixels = (int) mOffsetPixels;
-        final float openRatio = Math.abs(mOffsetPixels) / mMenuSize;
-
-        switch (getPosition()) {
-            case Position.LEFT:
-                mMenuOverlay.setBounds(offsetPixels, 0, width, height);
-                break;
-
-            case Position.RIGHT:
-                mMenuOverlay.setBounds(0, 0, width + offsetPixels, height);
-                break;
-        }
-        mMenuOverlay.setAlpha((int) (MAX_MENU_OVERLAY_ALPHA * openRatio));
-        mMenuOverlay.draw(canvas);
-    }
 
     @Override
     public void openMenu(boolean animate) {
@@ -119,22 +99,12 @@ public class FlowingDrawer extends ElasticDrawer {
     }
 
 
-    @Override
-    protected GradientDrawable.Orientation getDropShadowOrientation() {
-        switch (getPosition()) {
-            case Position.RIGHT:
-                return GradientDrawable.Orientation.RIGHT_LEFT;
-            default:
-                return GradientDrawable.Orientation.LEFT_RIGHT;
-        }
-    }
-
     @SuppressLint("NewApi")
     @Override
     protected void startLayerTranslation() {
         if (USE_TRANSLATIONS && mHardwareLayersEnabled && !mLayerTypeHardware) {
             mLayerTypeHardware = true;
-//            mMenuContainer.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+            mMenuContainer.setLayerType(View.LAYER_TYPE_HARDWARE, null);
         }
     }
 
@@ -143,7 +113,7 @@ public class FlowingDrawer extends ElasticDrawer {
     protected void stopLayerTranslation() {
         if (mLayerTypeHardware) {
             mLayerTypeHardware = false;
-//            mMenuContainer.setLayerType(View.LAYER_TYPE_NONE, null);
+            mMenuContainer.setLayerType(View.LAYER_TYPE_NONE, null);
         }
     }
 
@@ -441,7 +411,7 @@ public class FlowingDrawer extends ElasticDrawer {
 
                 if (checkTouchSlop(dx, dy)) {
                     if (mOnInterceptMoveEventListener != null && (mTouchMode == TOUCH_MODE_FULLSCREEN || mMenuVisible)
-                            && canChildrenScroll((int) dx, (int) dy, (int) x, (int) y)) {
+                            && canChildrenScroll((int) dx, (int) x, (int) y)) {
                         endDrag();
                         // Release the velocity tracker
                         requestDisallowInterceptTouchEvent(true);

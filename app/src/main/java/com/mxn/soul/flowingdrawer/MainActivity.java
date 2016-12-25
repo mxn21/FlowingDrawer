@@ -27,7 +27,6 @@ public class MainActivity extends AppCompatActivity {
         rvFeed = (RecyclerView) findViewById(R.id.rvFeed);
         mDrawer = (FlowingDrawer) findViewById(R.id.drawerlayout);
         mDrawer.setTouchMode(ElasticDrawer.TOUCH_MODE_BEZEL);
-
         setupToolbar();
         setupFeed();
         setupMenu();
@@ -63,15 +62,29 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager fm = getSupportFragmentManager();
         MenuListFragment mMenuFragment = (MenuListFragment) fm.findFragmentById(R.id.id_container_menu);
         if (mMenuFragment == null) {
-            mMenuFragment = new MenuListFragment() ;
-            fm.beginTransaction().add(R.id.id_container_menu,mMenuFragment).commit();
+            mMenuFragment = new MenuListFragment();
+            fm.beginTransaction().add(R.id.id_container_menu, mMenuFragment).commit();
         }
+
+        mDrawer.setOnDrawerStateChangeListener(new ElasticDrawer.OnDrawerStateChangeListener() {
+            @Override
+            public void onDrawerStateChange(int oldState, int newState) {
+                //                if (newState == ElasticDrawer.STATE_CLOSED) {
+                //                    Log.i("MainActivity", "Drawer STATE_CLOSED");
+                //                }
+            }
+
+            @Override
+            public void onDrawerSlide(float openRatio, int offsetPixels) {
+                //                Log.i("MainActivity", "openRatio=" + openRatio + " ,offsetPixels=" + offsetPixels);
+            }
+        });
     }
 
     @Override
     public void onBackPressed() {
         if (mDrawer.isMenuVisible()) {
-            mDrawer.closeMenu(true);
+            mDrawer.closeMenu();
         } else {
             super.onBackPressed();
         }

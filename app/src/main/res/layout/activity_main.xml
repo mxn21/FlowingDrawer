@@ -36,9 +36,8 @@
     <!--menu-->
     <com.mxn.soul.flowingdrawer_core.FlowingMenuLayout
             android:id="@+id/menulayout"
-            android:layout_width="280dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="start"
     >
         <FrameLayout
                 android:id="@+id/id_container_menu"
