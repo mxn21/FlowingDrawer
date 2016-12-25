@@ -8,7 +8,8 @@
         android:clipToPadding="false"
         app:edPosition="1"
         app:edMenuSize="260dp"
->
+        app:edMenuBackground="#dddddd">
+
     <!--content-->
     <android.support.design.widget.CoordinatorLayout
             android:id="@+id/content"
@@ -37,13 +38,13 @@
     <com.mxn.soul.flowingdrawer_core.FlowingMenuLayout
             android:id="@+id/menulayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-    >
+            android:layout_height="match_parent">
+
         <FrameLayout
                 android:id="@+id/id_container_menu"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-        />
+                android:layout_height="match_parent"/>
+
     </com.mxn.soul.flowingdrawer_core.FlowingMenuLayout>
 
 </com.mxn.soul.flowingdrawer_core.FlowingDrawer>

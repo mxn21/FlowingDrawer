@@ -63,13 +63,15 @@ public class FlowingMenuLayout extends FrameLayout {
         mClipPath = new Path();
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
-        mPaint.setColor(getResources().getColor(R.color.paint_color2));
         mPaint.setStyle(Paint.Style.FILL);
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2
                 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             setLayerType(View.LAYER_TYPE_SOFTWARE, mPaint);
         }
+    }
 
+    public void setPaintColor(int color) {
+        mPaint.setColor(color);
     }
 
     public void setClipOffsetPixels(float clipOffsetPixels, float eventY, int type) {

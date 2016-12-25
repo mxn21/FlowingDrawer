@@ -146,6 +146,11 @@ public abstract class ElasticDrawer extends ViewGroup {
      * The custom menu view set by the user.
      */
     private FlowingMenuLayout mMenuView;
+
+    /**
+     * The color of the menu.
+     */
+    protected int mMenuBackground;
     /**
      * Current offset.
      */
@@ -283,10 +288,11 @@ public abstract class ElasticDrawer extends ViewGroup {
     protected void initDrawer(Context context, AttributeSet attrs, int defStyle) {
         setWillNotDraw(false);
         setFocusable(false);
-
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ElasticDrawer);
 
         mMenuSize = a.getDimensionPixelSize(R.styleable.ElasticDrawer_edMenuSize, dpToPx(240));
+
+        mMenuBackground = a.getColor(R.styleable.ElasticDrawer_edMenuBackground, 0xFFdddddd);
 
         mTouchBezelSize = a.getDimensionPixelSize(R.styleable.ElasticDrawer_edTouchBezelSize,
                 dpToPx(DEFAULT_DRAG_BEZEL_DP));
@@ -313,7 +319,6 @@ public abstract class ElasticDrawer extends ViewGroup {
             mContentContainer.setLayerType(View.LAYER_TYPE_NONE, null);
         }
         mContentContainer.setHardwareLayersEnabled(false);
-
     }
 
     protected int dpToPx(int dp) {
@@ -413,6 +418,8 @@ public abstract class ElasticDrawer extends ViewGroup {
         if (menu != null) {
             removeView(menu);
             mMenuView = (FlowingMenuLayout) menu;
+            mMenuView.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+            mMenuView.setPaintColor(mMenuBackground) ;
             mMenuContainer.removeAllViews();
             mMenuContainer.addView(menu, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
         } else {

@@ -8,7 +8,7 @@
     <declare-styleable name="ElasticDrawer">
 
         <!-- Drawable to use for the background of the menu. -->
-        <attr name="edMenuBackground" format="reference" />
+        <attr name="edMenuBackground" format="color" />
 
         <!-- The size of the menu. -->
         <attr name="edMenuSize" format="dimension" />
