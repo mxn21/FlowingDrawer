@@ -162,15 +162,15 @@ public class FlowingDrawer extends ElasticDrawer {
         return contentTouch;
     }
 
-    private boolean willCloseEnough(int x) {
+    private boolean willCloseEnough() {
         boolean closeEnough = false;
 
         switch (getPosition()) {
             case Position.LEFT:
-                closeEnough = x < getWidth() / 2;
+                closeEnough = mOffsetPixels <= mMenuSize/ 2;
                 break;
             case Position.RIGHT:
-                closeEnough = x > getWidth() / 2;
+                closeEnough = -mOffsetPixels <= mMenuSize / 2;
                 break;
         }
         return closeEnough;
@@ -205,7 +205,7 @@ public class FlowingDrawer extends ElasticDrawer {
             case Position.RIGHT:
                 final int width = getWidth();
                 return (!mMenuVisible && mInitialMotionX >= width - mTouchSize && (dx < 0))
-                        || (mMenuVisible && x >= width - mOffsetPixels);
+                        || (mMenuVisible && x >= width + mOffsetPixels);
 
         }
 
@@ -232,7 +232,7 @@ public class FlowingDrawer extends ElasticDrawer {
                         closeMenu(true, y);
                         return;
                     }
-                    if (mDrawerState == STATE_DRAGGING_OPEN && willCloseEnough(x)) {
+                    if (mDrawerState == STATE_DRAGGING_OPEN && willCloseEnough()) {
                         smoothClose(y);
                         return;
                     }
@@ -252,6 +252,14 @@ public class FlowingDrawer extends ElasticDrawer {
             }
             case Position.RIGHT: {
                 if (mIsDragging) {
+                    if (mDrawerState == STATE_DRAGGING_CLOSE) {
+                        closeMenu(true, y);
+                        return;
+                    }
+                    if (mDrawerState == STATE_DRAGGING_OPEN && willCloseEnough()) {
+                        smoothClose(y);
+                        return;
+                    }
                     mVelocityTracker.computeCurrentVelocity(1000, mMaxVelocity);
                     final int initialVelocity = (int) getXVelocity(mVelocityTracker);
                     mLastMotionX = x;
@@ -450,15 +458,28 @@ public class FlowingDrawer extends ElasticDrawer {
                     mLastMotionX = x;
                     mLastMotionY = y;
                     if (mDrawerState == STATE_DRAGGING_OPEN) {
-                        if (mOffsetPixels + dx < mMenuSize / 2) {
-                            onMoveEvent(dx, y, FlowingMenuLayout.TYPE_UP_MANUAL);
+                        if (getPosition() == ElasticDrawer.Position.LEFT) {
+                            if (mOffsetPixels + dx < mMenuSize / 2) {
+                                onMoveEvent(dx, y, FlowingMenuLayout.TYPE_UP_MANUAL);
+                            } else {
+                                mVelocityTracker.computeCurrentVelocity(1000, mMaxVelocity);
+                                final int initialVelocity = (int) getXVelocity(mVelocityTracker);
+                                mLastMotionX = x;
+                                animateOffsetTo(mMenuSize, initialVelocity, true, y);
+                                isFirstPointUp = true;
+                                endDrag();
+                            }
                         } else {
-                            mVelocityTracker.computeCurrentVelocity(1000, mMaxVelocity);
-                            final int initialVelocity = (int) getXVelocity(mVelocityTracker);
-                            mLastMotionX = x;
-                            animateOffsetTo(mMenuSize, initialVelocity, true, y);
-                            isFirstPointUp = true;
-                            endDrag();
+                            if (mOffsetPixels + dx > - mMenuSize / 2) {
+                                onMoveEvent(dx, y, FlowingMenuLayout.TYPE_UP_MANUAL);
+                            } else {
+                                mVelocityTracker.computeCurrentVelocity(1000, mMaxVelocity);
+                                final int initialVelocity = (int) getXVelocity(mVelocityTracker);
+                                mLastMotionX = x;
+                                animateOffsetTo(-mMenuSize, initialVelocity, true, y);
+                                isFirstPointUp = true;
+                                endDrag();
+                            }
                         }
                     } else if (mDrawerState == STATE_DRAGGING_CLOSE) {
                         onMoveEvent(dx, y, FlowingMenuLayout.TYPE_DOWN_MANUAL);

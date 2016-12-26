@@ -568,14 +568,20 @@ public abstract class ElasticDrawer extends ViewGroup {
     protected void animateOffsetTo(int position, int duration, float eventY) {
         final int startX = (int) mOffsetPixels;
         final int dx = position - startX;
-
-        if (dx > 0) {
-            setDrawerState(STATE_OPENING);
-            mScroller.startScroll(startX, 0, dx, 0, duration);
+        if (getPosition() == Position.LEFT) {
+            if (dx > 0) {
+                setDrawerState(STATE_OPENING);
+            } else {
+                setDrawerState(STATE_CLOSING);
+            }
         } else {
-            setDrawerState(STATE_CLOSING);
-            mScroller.startScroll(startX, 0, dx, 0, duration);
+            if (dx > 0) {
+                setDrawerState(STATE_CLOSING);
+            } else {
+                setDrawerState(STATE_OPENING);
+            }
         }
+        mScroller.startScroll(startX, 0, dx, 0, duration);
         this.eventY = eventY;
         startLayerTranslation();
         postAnimationInvalidate();
