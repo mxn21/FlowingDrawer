@@ -1,5 +1,8 @@
 package com.mxn.soul.flowingdrawer;
 
+import com.mxn.soul.flowingdrawer_core.ElasticDrawer;
+import com.mxn.soul.flowingdrawer_core.FlowingDrawer;
+
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -8,36 +11,26 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import com.mxn.soul.flowingdrawer_core.FlowingView;
-import com.mxn.soul.flowingdrawer_core.LeftDrawerLayout;
-
-
 public class MainActivity extends AppCompatActivity {
 
     private RecyclerView rvFeed;
-    private LeftDrawerLayout mLeftDrawerLayout;
+    private FlowingDrawer mDrawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setupToolbar();
 
-        mLeftDrawerLayout = (LeftDrawerLayout) findViewById(R.id.id_drawerlayout);
         rvFeed = (RecyclerView) findViewById(R.id.rvFeed);
+        mDrawer = (FlowingDrawer) findViewById(R.id.drawerlayout);
 
-        FragmentManager fm = getSupportFragmentManager();
-        MyMenuFragment mMenuFragment = (MyMenuFragment) fm.findFragmentById(R.id.id_container_menu);
-        FlowingView mFlowingView = (FlowingView) findViewById(R.id.sv);
-        if (mMenuFragment == null) {
-            fm.beginTransaction().add(R.id.id_container_menu, mMenuFragment = new MyMenuFragment()).commit();
-        }
-        mLeftDrawerLayout.setFluidView(mFlowingView);
-        mLeftDrawerLayout.setMenuFragment(mMenuFragment);
+        rvFeed = (RecyclerView) findViewById(R.id.rvFeed);
+        mDrawer = (FlowingDrawer) findViewById(R.id.drawerlayout);
+        mDrawer.setTouchMode(ElasticDrawer.TOUCH_MODE_BEZEL);
+        setupToolbar();
         setupFeed();
-
+        setupMenu();
     }
-
 
     protected void setupToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -47,11 +40,10 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mLeftDrawerLayout.toggle();
+                mDrawer.toggleMenu();
             }
         });
     }
-
 
     private void setupFeed() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this) {
@@ -61,16 +53,38 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         rvFeed.setLayoutManager(linearLayoutManager);
-
         FeedAdapter feedAdapter = new FeedAdapter(this);
         rvFeed.setAdapter(feedAdapter);
         feedAdapter.updateItems();
     }
 
+    private void setupMenu() {
+        FragmentManager fm = getSupportFragmentManager();
+        MenuListFragment mMenuFragment = (MenuListFragment) fm.findFragmentById(R.id.id_container_menu);
+        if (mMenuFragment == null) {
+            mMenuFragment = new MenuListFragment();
+            fm.beginTransaction().add(R.id.id_container_menu, mMenuFragment).commit();
+        }
+
+        mDrawer.setOnDrawerStateChangeListener(new ElasticDrawer.OnDrawerStateChangeListener() {
+            @Override
+            public void onDrawerStateChange(int oldState, int newState) {
+                //                if (newState == ElasticDrawer.STATE_CLOSED) {
+                //                    Log.i("MainActivity", "Drawer STATE_CLOSED");
+                //                }
+            }
+
+            @Override
+            public void onDrawerSlide(float openRatio, int offsetPixels) {
+                //                Log.i("MainActivity", "openRatio=" + openRatio + " ,offsetPixels=" + offsetPixels);
+            }
+        });
+    }
+
     @Override
     public void onBackPressed() {
-        if (mLeftDrawerLayout.isShownMenu()) {
-            mLeftDrawerLayout.closeDrawer();
+        if (mDrawer.isMenuVisible()) {
+            mDrawer.closeMenu();
         } else {
             super.onBackPressed();
         }

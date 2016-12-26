@@ -11,12 +11,12 @@ import android.widget.ImageView;
 import android.widget.TextSwitcher;
 
 
-public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context context;
     private int itemsCount = 0;
 
-    public FeedAdapter(Context context) {
+    FeedAdapter(Context context) {
         this.context = context;
     }
 
@@ -50,7 +50,7 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     }
 
-    public void updateItems() {
+    void updateItems() {
         itemsCount = 10;
         notifyDataSetChanged();
     }
@@ -65,7 +65,7 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return itemsCount;
     }
 
-    public static class CellFeedViewHolder extends RecyclerView.ViewHolder {
+    private static class CellFeedViewHolder extends RecyclerView.ViewHolder {
         ImageView ivFeedCenter;
         ImageView ivFeedBottom;
         ImageButton btnComments;
@@ -75,7 +75,7 @@ public class FeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         ImageView ivUserProfile;
         FrameLayout vImageRoot;
 
-        public CellFeedViewHolder(View view) {
+        CellFeedViewHolder(View view) {
             super(view);
 
             ivFeedCenter = (ImageView) view.findViewById(R.id.ivFeedCenter);

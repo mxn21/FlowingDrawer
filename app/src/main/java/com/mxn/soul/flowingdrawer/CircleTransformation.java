@@ -1,15 +1,15 @@
 package com.mxn.soul.flowingdrawer;
 
+import com.squareup.picasso.Transformation;
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
-import com.squareup.picasso.Transformation;
 
-
-public class CircleTransformation implements Transformation {
+class CircleTransformation implements Transformation {
 
     private static final int STROKE_WIDTH = 6;
 

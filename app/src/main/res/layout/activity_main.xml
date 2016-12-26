@@ -1,61 +1,50 @@
-<com.mxn.soul.flowingdrawer_core.LeftDrawerLayout
-    android:id="@+id/id_drawerlayout"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:clipChildren="false"
-    >
-    <!--content-->
-    <android.support.design.widget.CoordinatorLayout
-        android:id="@+id/content"
+<com.mxn.soul.flowingdrawer_core.FlowingDrawer
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/drawerlayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        app:edPosition="1"
+        app:edMenuSize="260dp"
+        app:edMenuBackground="#dddddd">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rvFeed"
+    <!--content-->
+    <android.support.design.widget.CoordinatorLayout
+            android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scrollbars="none"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
+            android:orientation="vertical">
+        <android.support.v7.widget.RecyclerView
+                android:id="@+id/rvFeed"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="none"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
         <android.support.design.widget.AppBarLayout
-            android:id="@+id/appBarLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                android:id="@+id/appBarLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
             <include
-                android:id="@+id/toolbar"
-                layout="@layout/view_feed_toolbar" />
+                    android:id="@+id/toolbar"
+                    layout="@layout/view_feed_toolbar"/>
         </android.support.design.widget.AppBarLayout>
-
-
     </android.support.design.widget.CoordinatorLayout>
 
 
     <!--menu-->
-    <RelativeLayout
-        android:layout_width="280dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:clipChildren="false"
-        >
-
-        <com.mxn.soul.flowingdrawer_core.FlowingView
-            android:id="@+id/sv"
+    <com.mxn.soul.flowingdrawer_core.FlowingMenuLayout
+            android:id="@+id/menulayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent">
 
         <FrameLayout
-            android:id="@+id/id_container_menu"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
-            android:layout_marginRight="25dp"
-            android:paddingRight="10dp"
-            />
+                android:id="@+id/id_container_menu"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
 
-    </RelativeLayout>
+    </com.mxn.soul.flowingdrawer_core.FlowingMenuLayout>
 
-</com.mxn.soul.flowingdrawer_core.LeftDrawerLayout>
+</com.mxn.soul.flowingdrawer_core.FlowingDrawer>

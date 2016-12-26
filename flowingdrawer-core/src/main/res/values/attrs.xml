@@ -1,0 +1,26 @@
+
+<resources>
+
+    <!-- Reference to a style for the menu drawer. -->
+    <attr name="elasticDrawerStyle" format="reference" />
+
+    <!-- Styleables used for styling the menu drawer. -->
+    <declare-styleable name="ElasticDrawer">
+
+        <!-- Drawable to use for the background of the menu. -->
+        <attr name="edMenuBackground" format="color" />
+
+        <!-- The size of the menu. -->
+        <attr name="edMenuSize" format="dimension" />
+
+        <!-- The touch bezel size. -->
+        <attr name="edTouchBezelSize" format="dimension" />
+
+        <!-- The maximum animation duration -->
+        <attr name="edMaxAnimationDuration" format="integer" />
+
+        <!-- The position of the drawer -->
+        <attr name="edPosition" format="integer"/>
+    </declare-styleable>
+
+</resources>
