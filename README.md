@@ -25,134 +25,84 @@ Gradle:
     }
 ```
 
+## V2.0.0 Features
+
+ * The menu can be positioned along two edges:left and right .
+ * Allows the drawer to be opened by dragging the edge or the entire screen.
+
+
 ## Usage
 
-*For a working implementation of this project see the `app/` folder.*
-
-MainActivity:
-
-```java
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-           ....
-        mLeftDrawerLayout = (LeftDrawerLayout) findViewById(R.id.id_drawerlayout);
-        FragmentManager fm = getSupportFragmentManager();
-        MyMenuFragment mMenuFragment = (MyMenuFragment) fm.findFragmentById(R.id.id_container_menu);
-        FlowingView mFlowingView = (FlowingView) findViewById(R.id.sv);
-        if (mMenuFragment == null) {
-            fm.beginTransaction().add(R.id.id_container_menu, mMenuFragment = new MyMenuFragment()).commit();
-        }
-        mLeftDrawerLayout.setFluidView(mFlowingView);
-        mLeftDrawerLayout.setMenuFragment(mMenuFragment);
-        ...
-    }
-```
+*For a working implementation of this project see the `app/` folder and check out the sample app*
 
 activity_main.xml:
 
 ```xml
-    <com.mxn.soul.flowingdrawer_core.LeftDrawerLayout
-        android:id="@+id/id_drawerlayout"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipChildren="false"
-        >
-
-        <!--content-->
-        <android.support.design.widget.CoordinatorLayout
-            android:id="@+id/content"
+    <com.mxn.soul.flowingdrawer_core.FlowingDrawer
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/drawerlayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
-        </android.support.design.widget.CoordinatorLayout>
-
-        <!--menu-->
-        <RelativeLayout
-            android:layout_width="280dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="start"
             android:clipChildren="false"
-            >
-            <com.mxn.soul.flowingdrawer_core.FlowingView
-                android:id="@+id/sv"
+            android:clipToPadding="false"
+            app:edPosition="1"
+            app:edMenuSize="260dp"
+            app:edMenuBackground="#dddddd">
+
+        <!--content-->
+        <RelativeLayout
+                android:id="@+id/content"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
-            <FrameLayout
-                android:id="@+id/id_container_menu"
+
+        <!--menu-->
+        <com.mxn.soul.flowingdrawer_core.FlowingMenuLayout
+                android:id="@+id/menulayout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignParentLeft="true"
-                android:layout_marginRight="25dp"
-                android:paddingRight="10dp"
-                />
-        </RelativeLayout>
+                android:layout_height="match_parent">
 
-    </com.mxn.soul.flowingdrawer_core.LeftDrawerLayout>
+            <FrameLayout
+                    android:id="@+id/id_container_menu"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+        </com.mxn.soul.flowingdrawer_core.FlowingMenuLayout>
+
+    </com.mxn.soul.flowingdrawer_core.FlowingDrawer>
 ```
 
-* use LeftDrawerLayout as the root of xml.
+It requires two custom classes in root view and menu's root . use FlowingDrawer as the root of xml,
+it should have two children, first for content view ,second for menu view .The menu view is a custom
+class called FlowingMenuLayout.
+Don't set any background on FlowingMenuLayout or FlowingMenuLayout's children, it means their background
+should be transparent. Don't set FlowingMenuLayout's width , it's not useful to change it's  width .
+You can change menu's attribute in FlowingDrawer use custom attribute,like edMenuBackground,edMenuSize,
+edPosition.edPosition =1 is left menu, edPosition =2 is right menu .For more custom attribute ,you can see in attrs.xml
+in flowingdrawer_core.
 
-* The root has two child, first for content,second for menu.
 
-* menu'root alse has two child , first for FlowingView to display flowing effects,second for
-fragment .
-
-* fragment need to has a 'marginRight', for example 25dp.
-marginRight here is important .
-'marginRight'  have effect on drawer's elasticity. The more  'marginRight' is  the more elastic.
-Try to set '10dp', '25dp' ,'50dp' to see the difference.
-
-* make the fragment of menu extends MenuFragment.
-
-* pay attention to MenuFragment's onCreateView: return setupReveal(root) ;
+MainActivity:
 
 ```java
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            View view = inflater.inflate(R.layout.fragment_menu, container,
-                    false);
-            .......
-            return  setupReveal(view) ;
-        }
+     mDrawer = (FlowingDrawer) findViewById(R.id.drawerlayout);
+     mDrawer.setTouchMode(ElasticDrawer.TOUCH_MODE_BEZEL);
+     mDrawer.setOnDrawerStateChangeListener(new ElasticDrawer.OnDrawerStateChangeListener() {
+                 @Override
+                 public void onDrawerStateChange(int oldState, int newState) {
+                     if (newState == ElasticDrawer.STATE_CLOSED) {
+                         Log.i("MainActivity", "Drawer STATE_CLOSED");
+                     }
+                 }
+
+                 @Override
+                 public void onDrawerSlide(float openRatio, int offsetPixels) {
+                     Log.i("MainActivity", "openRatio=" + openRatio + " ,offsetPixels=" + offsetPixels);
+                 }
+             });
 ```
-
-* in MenuFragment'xml ,add 'android:background="@android:color/transparent" '
-
-* in MainActivity,use
-
-```java
-mMenuFragment = new MyMenuFragment();
-mLeftDrawerLayout.setFluidView(mFlowingView);
-mLeftDrawerLayout.setMenuFragment(mMenuFragment);
-```
-
-in order .
-
-* you can call mLeftDrawerLayout.closeDrawer()  and  mLeftDrawerLayout.openDrawer() to close or
-open drawer automatically.
-
-* change background color for drawer by "paint_color" in colors.xml.This is not a good way,and 
-will be improved in the next version.
-
-## TODO
-
-* use spring dynamics models to make more bouncing effects.
-* close by touch effect need to enhance.
-* improve the lines to be smoother when open and close drawer.
-* some part of the code need to simplify.
-
-
-## Contribution
-
-First of all, thank you ! As you see ,the project is not as good as the original design
-sketch and thank you for watch and star. At present we still have a lot of things to do .
-I would love to get some help on the TODO list .So if you find a bug in the library or want a feature
-and think you can fix it yourself,fork + pull request and i will greatly appreciate it!
-
+setTouchMode can allows the drawer to be opened by dragging the edge or the entire screen.
+setOnDrawerStateChangeListener can listen drawer's state change.
 
 
 License
