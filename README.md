@@ -79,7 +79,7 @@ content view . FlowingMenuLayout commonly use match_parent for height and width.
 Don't set any background on FlowingMenuLayout or FlowingMenuLayout's children, it means their background
 should be transparent.
 
-Don't set FlowingMenuLayout's width , it's not a useful way to change it's width .
+Don't set FlowingMenuLayout's width with a fixed width, it's not a useful way to change it's width .
 
 You can change menu's attribute in FlowingDrawer layout node use custom attribute,like edMenuBackground,edMenuSize,
 edPosition.
