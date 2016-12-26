@@ -22,13 +22,12 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:22.2.0'
     provided 'com.nineoldandroids:library:2.4.0'
 }
 
 /**
 // 根节点添加
-version = "1.2.5"
+version = "2.0.0"
 
 def siteUrl = 'https://github.com/mxn21/FlowingDrawer'    // project homepage
 def gitUrl = 'https://github.com/mxn21/FlowingDrawer.git' // project git
@@ -104,5 +103,4 @@ bintray {
         publish = true
     }
 }
-
-*/
+ **/
