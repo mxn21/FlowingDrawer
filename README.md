@@ -72,14 +72,22 @@ activity_main.xml:
     </com.mxn.soul.flowingdrawer_core.FlowingDrawer>
 ```
 
-It requires two custom classes in root view and menu's root . use FlowingDrawer as the root of xml,
-it should have two children, first for content view ,second for menu view .The menu view is a custom
-class called FlowingMenuLayout.
+To use a FlowingDrawer, position FlowingDrawer as the root , position your primary content view as the
+first child with width and height of match_parent . Add FlowingMenuLayout as child views after the main
+content view . FlowingMenuLayout commonly use match_parent for height and width.
+
 Don't set any background on FlowingMenuLayout or FlowingMenuLayout's children, it means their background
-should be transparent. Don't set FlowingMenuLayout's width , it's not useful to change it's  width .
-You can change menu's attribute in FlowingDrawer use custom attribute,like edMenuBackground,edMenuSize,
-edPosition.edPosition =1 is left menu, edPosition =2 is right menu .For more custom attribute ,you can see in attrs.xml
-in flowingdrawer_core.
+should be transparent.
+
+Don't set FlowingMenuLayout's width , it's not a useful way to change it's width .
+
+You can change menu's attribute in FlowingDrawer layout node use custom attribute,like edMenuBackground,edMenuSize,
+edPosition.
+
+Use edPosition attribute corresponding to which side of the view you want the drawer
+to emerge from: left or right.Left menu : edPosition =1 ; Right menu: edPosition =2 .
+
+For more custom attribute ,you can see in attrs.xml.
 
 
 MainActivity:
@@ -102,7 +110,9 @@ MainActivity:
              });
 ```
 setTouchMode can allows the drawer to be opened by dragging the edge or the entire screen.
-setOnDrawerStateChangeListener can listen drawer's state change.
+setOnDrawerStateChangeListener can be used to monitor the state and motion of drawer views.
+Avoid performing expensive operations such as layout during animation as it can cause stuttering.
+ElasticDrawer.OnDrawerStateChangeListener offers default/no-op implementations of each callback method.
 
 
 License
