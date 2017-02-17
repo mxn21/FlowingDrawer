@@ -243,7 +243,7 @@ public class LeftDrawerLayout extends ViewGroup {
     }
 
     public boolean isShownMenu() {
-        return mLeftMenuOnScrren > 0.5;
+        return mLeftMenuOnScrren == 1;
     }
 
 
