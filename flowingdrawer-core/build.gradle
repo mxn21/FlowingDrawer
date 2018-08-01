@@ -1,14 +1,13 @@
 apply plugin: 'com.android.library'
-//apply plugin: 'com.github.dcendents.android-maven'
-//apply plugin: 'com.jfrog.bintray'
+apply plugin: 'com.github.dcendents.android-maven'
 
 android {
-    compileSdkVersion 22
-    buildToolsVersion "22.0.1"
+    compileSdkVersion 28
+    buildToolsVersion "28.0.1"
 
     defaultConfig {
         minSdkVersion 9
-        targetSdkVersion 21
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
     }
@@ -25,14 +24,12 @@ dependencies {
     provided 'com.nineoldandroids:library:2.4.0'
 }
 
-/**
-// 根节点添加
-version = "2.0.0"
+version = "1.0.0"
 
-def siteUrl = 'https://github.com/mxn21/FlowingDrawer'    // project homepage
-def gitUrl = 'https://github.com/mxn21/FlowingDrawer.git' // project git
+def siteUrl = 'https://github.com/PDesire/FlowingDrawer'    // project homepage
+def gitUrl = 'https://github.com/PDesire/FlowingDrawer.git' // project git
 
-group = "com.mxn.soul"
+group = "com.pdesire.fancy"
 
 install {
     repositories.mavenInstaller {
@@ -50,9 +47,9 @@ install {
                 }
                 developers {
                     developer {
-                        id 'mxn21'
-                        name 'mxn'
-                        email 'mxny21@gmail.com'
+                        id 'pdesire'
+                        name 'PDesire'
+                        email 'tristan@sqrls.de'
                     }
                 }
                 scm {
@@ -85,22 +82,3 @@ artifacts {
     archives javadocJar
     archives sourcesJar
 }
-
-Properties properties = new Properties()
-properties.load(project.rootProject.file('local.properties').newDataInputStream())
-
-bintray {
-    user = properties.getProperty("bintray.user")
-    key = properties.getProperty("bintray.apikey")
-    configurations = ['archives']
-    pkg {
-        repo = "maven"
-        name = "flowingdrawer"    // #CONFIG# project name in
-        // jcenter
-        websiteUrl = siteUrl
-        vcsUrl = gitUrl
-        licenses = ["Apache-2.0"]
-        publish = true
-    }
-}
- **/

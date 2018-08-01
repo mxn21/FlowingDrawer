@@ -1,4 +1,4 @@
-package com.mxn.soul.flowingdrawer_core;
+package com.pdesire.fancy.flowingdrawer;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -106,7 +106,7 @@ public class FlowingMenuLayout extends FrameLayout {
         }
         canvas.save();
         canvas.drawPath(mClipPath, mPaint);
-        canvas.clipPath(mClipPath, Region.Op.REPLACE);
+        canvas.clipPath(mClipPath, Region.Op.INTERSECT);
         super.dispatchDraw(canvas);
         canvas.restore();
     }

@@ -1,15 +1,15 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 22
-    buildToolsVersion "22.0.1"
+    compileSdkVersion 28
+    buildToolsVersion "28.0.1"
 
     defaultConfig {
         applicationId "com.mxn.soul.flowingdrawer"
         minSdkVersion 9
-        targetSdkVersion 22
-        versionCode 120
-        versionName "1.2.0"
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
     }
     buildTypes {
         release {

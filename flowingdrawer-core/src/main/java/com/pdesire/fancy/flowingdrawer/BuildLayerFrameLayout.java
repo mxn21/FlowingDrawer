@@ -1,5 +1,5 @@
 
-package com.mxn.soul.flowingdrawer_core;
+package com.pdesire.fancy.flowingdrawer;
 
 import android.content.Context;
 import android.graphics.Canvas;

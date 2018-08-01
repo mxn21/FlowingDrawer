@@ -1,1 +1,1 @@
-include ':app', ':flowingdrawer-core'
+include ':flowingdrawer-core'

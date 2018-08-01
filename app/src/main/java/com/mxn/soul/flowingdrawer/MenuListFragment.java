@@ -1,5 +1,5 @@
 
-package com.mxn.soul.flowingdrawer;
+package com.pdesire.fancy.flowingdrawer;
 
 import com.squareup.picasso.Picasso;
 

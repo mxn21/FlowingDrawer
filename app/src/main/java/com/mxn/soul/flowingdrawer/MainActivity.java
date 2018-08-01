@@ -1,7 +1,7 @@
-package com.mxn.soul.flowingdrawer;
+package com.pdesire.fancy.flowingdrawer;
 
-import com.mxn.soul.flowingdrawer_core.ElasticDrawer;
-import com.mxn.soul.flowingdrawer_core.FlowingDrawer;
+import com.pdesire.fancy.flowingdrawer.ElasticDrawer;
+import com.pdesire.fancy.flowingdrawer.FlowingDrawer;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;

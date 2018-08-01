@@ -1,4 +1,4 @@
-package com.mxn.soul.flowingdrawer_core;
+package com.pdesire.fancy.flowingdrawer;
 
 
 import com.nineoldandroids.animation.Animator;
