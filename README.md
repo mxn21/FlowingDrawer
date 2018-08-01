@@ -1,5 +1,7 @@
 # FlowingDrawer 
 
+This is a fork of https://github.com/mxn21/FlowingDrawer
+
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-FlowingDrawer-green.svg?style=flat)](https://android-arsenal.com/details/1/2658)
 [![travis-ic](https://travis-ci.org/mxn21/FlowingDrawer.svg?branch=master)](https://travis-ci.org/mxn21/FlowingDrawer)
 
@@ -20,7 +22,7 @@ Gradle:
     }
 
     dependencies {
-        compile 'com.mxn.soul:flowingdrawer-core:2.0.0'
+        compile 'com.pdesire.fancy:flowingdrawer-core:1.0.0'
         compile 'com.nineoldandroids:library:2.4.0'
     }
 ```
@@ -38,7 +40,7 @@ Gradle:
 activity_main.xml:
 
 ```xml
-    <com.mxn.soul.flowingdrawer_core.FlowingDrawer
+    <com.pdesire.fancy.flowingdrawer_core.FlowingDrawer
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/drawerlayout"
@@ -57,7 +59,7 @@ activity_main.xml:
                 android:layout_height="match_parent"/>
 
         <!--menu-->
-        <com.mxn.soul.flowingdrawer_core.FlowingMenuLayout
+        <com.pdesire.fancy.flowingdrawer_core.FlowingMenuLayout
                 android:id="@+id/menulayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -67,9 +69,9 @@ activity_main.xml:
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
 
-        </com.mxn.soul.flowingdrawer_core.FlowingMenuLayout>
+        </com.pdesire.fancy.flowingdrawer_core.FlowingMenuLayout>
 
-    </com.mxn.soul.flowingdrawer_core.FlowingDrawer>
+    </com.pdesire.fancy.flowingdrawer_core.FlowingDrawer>
 ```
 
 To use a FlowingDrawer, position FlowingDrawer as the root , position your primary content view as the
@@ -118,7 +120,7 @@ ElasticDrawer.OnDrawerStateChangeListener offers default/no-op implementations o
 License
 =======
 
-    Copyright 2015 soul.mxn
+    Copyright 2015 soul.mxn, PDesire
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
