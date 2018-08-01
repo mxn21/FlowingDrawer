@@ -1,4 +1,4 @@
-package com.mxn.soul.flowingdrawer;
+package com.pdesire.fancy.flowingdrawer;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

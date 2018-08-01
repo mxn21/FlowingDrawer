@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/FlowingDrawer.iml" filepath="$PROJECT_DIR$/FlowingDrawer.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/flowingdrawer.iml" filepath="$PROJECT_DIR$/flowingdrawer.iml" />
       <module fileurl="file://$PROJECT_DIR$/flowingdrawer-core/flowingdrawer-core.iml" filepath="$PROJECT_DIR$/flowingdrawer-core/flowingdrawer-core.iml" />
     </modules>
   </component>

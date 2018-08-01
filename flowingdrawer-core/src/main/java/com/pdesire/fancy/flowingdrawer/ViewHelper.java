@@ -1,4 +1,4 @@
-package com.mxn.soul.flowingdrawer_core;
+package com.pdesire.fancy.flowingdrawer;
 
 import android.annotation.SuppressLint;
 import android.os.Build;
