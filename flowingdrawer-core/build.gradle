@@ -3,12 +3,11 @@ apply plugin: 'com.android.library'
 //apply plugin: 'com.jfrog.bintray'
 
 android {
-    compileSdkVersion 22
-    buildToolsVersion "22.0.1"
+    compileSdkVersion 26
 
     defaultConfig {
-        minSdkVersion 9
-        targetSdkVersion 21
+        minSdkVersion 11
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
     }
@@ -18,21 +17,28 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        encoding "UTF-8"
+    }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    provided 'com.nineoldandroids:library:2.4.0'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    compileOnly 'com.nineoldandroids:library:2.4.0'
 }
 
 /**
 // 根节点添加
-version = "2.0.0"
+version = "2.1.0"
 
 def siteUrl = 'https://github.com/mxn21/FlowingDrawer'    // project homepage
 def gitUrl = 'https://github.com/mxn21/FlowingDrawer.git' // project git
 
 group = "com.mxn.soul"
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
 
 install {
     repositories.mavenInstaller {
@@ -81,8 +87,9 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
     from javadoc.destinationDir
 }
 
+
 artifacts {
-    archives javadocJar
+//    archives javadocJar
     archives sourcesJar
 }
 
